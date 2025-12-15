@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简历生成器调试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .debug-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .error {
+            color: red;
+            background: #ffe6e6;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .success {
+            color: green;
+            background: #e6ffe6;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .test-form {
+            margin: 20px 0;
+        }
+        .test-form input {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .test-form button {
+            padding: 8px 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #preview {
+            border: 1px solid #ddd;
+            padding: 20px;
+            background: white;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>简历生成器调试页面</h1>
+    
+    <div class="debug-panel">
+        <h2>脚本加载状态</h2>
+        <div id="scriptStatus"></div>
+    </div>
+    
+    <div class="debug-panel">
+        <h2>测试表单</h2>
+        <div class="test-form">
+            <input type="text" id="testName" placeholder="姓名" value="张三">
+            <input type="text" id="testPhone" placeholder="电话" value="13800138000">
+            <input type="email" id="testEmail" placeholder="邮箱" value="zhangsan@example.com">
+            <input type="text" id="testPosition" placeholder="职位" value="前端工程师">
+            <button onclick="testPreview()">测试预览</button>
+        </div>
+    </div>
+    
+    <div class="debug-panel">
+        <h2>预览区域</h2>
+        <div id="preview">
+            <div class="preview-placeholder">
+                <div>📄</div>
+                <p>请填写基本信息以查看简历预览</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入第三方库 -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    
+    <!-- 引入应用脚本 -->
+    <script src="js/utils.js"></script>
+    <script src="js/form-handler.js"></script>
+    <script src="js/template-engine.js"></script>
+    <script src="js/export-manager.js"></script>
+    
+    <script>
+        // 检查脚本加载状态
+        function checkScriptStatus() {
+            const statusDiv = document.getElementById('scriptStatus');
+            let status = '';
+            
+            // 检查各个类是否已定义
+            const checks = [
+                { name: 'ResumeUtils', obj: window.ResumeUtils },
+                { name: 'FormHandler', obj: window.FormHandler },
+                { name: 'TemplateEngine', obj: window.TemplateEngine },
+                { name: 'ExportManager', obj: window.ExportManager },
+                { name: 'XLSX', obj: window.XLSX },
+                { name: 'jsPDF', obj: window.jspdf },
+                { name: 'html2canvas', obj: window.html2canvas }
+            ];
+            
+            checks.forEach(check => {
+                if (check.obj) {
+                    status += `<div class="success">✅ ${check.name} 已加载</div>`;
+                } else {
+                    status += `<div class="error">❌ ${check.name} 未加载</div>`;
+                }
+            });
+            
+            statusDiv.innerHTML = status;
+        }
+        
+        // 测试预览功能
+        function testPreview() {
+            try {
+                console.log('开始测试预览功能...');
+                
+                // 检查必要的类是否存在
+                if (!window.TemplateEngine) {
+                    throw new Error('TemplateEngine 未加载');
+                }
+                
+                // 创建模板引擎实例
+                const templateEngine = new TemplateEngine();
+                console.log('TemplateEngine 实例创建成功');
+                
+                // 获取测试数据
+                const testData = {
+                    personal: {
+                        name: document.getElementById('testName').value,
+                        phone: document.getElementById('testPhone').value,
+                        email: document.getElementById('testEmail').value,
+                        position: document.getElementById('testPosition').value,
+                        age: '',
+                        gender: '',
+                        address: ''
+                    },
+                    education: [],
+                    experience: [],
+                    projects: [],
+                    skills: 'JavaScript, HTML, CSS, React',
+                    evaluation: '这是一个测试的自我评价内容。',
+                    meta: {
+                        template: 'classic',
+                        createdAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString()
+                    }
+                };
+                
+                console.log('测试数据:', testData);
+                
+                // 渲染预览
+                templateEngine.render(testData);
+                console.log('预览渲染完成');
+                
+                // 将预览内容复制到调试页面
+                const resumePreview = document.getElementById('resumePreview');
+                const debugPreview = document.getElementById('preview');
+                
+                if (resumePreview && debugPreview) {
+                    debugPreview.innerHTML = resumePreview.innerHTML;
+                    console.log('预览内容已复制到调试页面');
+                } else {
+                    console.log('预览元素未找到，直接在调试页面生成');
+                    const html = templateEngine.classicTemplate(testData);
+                    debugPreview.innerHTML = html;
+                }
+                
+                ResumeUtils.showMessage('预览测试成功！', 'success');
+                
+            } catch (error) {
+                console.error('预览测试失败:', error);
+                ResumeUtils.showMessage(`预览测试失败: ${error.message}`, 'error');
+            }
+        }
+        
+        // 页面加载完成后检查状态
+        window.addEventListener('load', () => {
+            setTimeout(checkScriptStatus, 1000);
+        });
+        
+        // 监听错误
+        window.addEventListener('error', (e) => {
+            console.error('JavaScript错误:', e.error);
+            const statusDiv = document.getElementById('scriptStatus');
+            statusDiv.innerHTML += `<div class="error">❌ JavaScript错误: ${e.message}</div>`;
+        });
+    </script>
+</body>
+</html>

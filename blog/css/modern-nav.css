@@ -1,0 +1,356 @@
+/* 现代导航栏样式 - 与demo保持一致 */
+
+/* 导航栏容器 */
+nav.modern-nav {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: 70px !important;
+    background: var(--nav-bg) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    box-shadow: none !important;
+    border-bottom: 1px solid var(--nav-border) !important;
+    z-index: 1000 !important;
+    padding: 0rem 10rem !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    max-width: none !important;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.4s ease,
+                background 0.3s ease, 
+                border-color 0.3s ease,
+                box-shadow 0.3s ease !important;
+}
+
+/* 导航栏隐藏状态（在欢迎界面） */
+nav.modern-nav.nav-hidden {
+    transform: translateY(-100%) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* 导航栏显示状态（开始滚动） */
+nav.modern-nav.nav-visible {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+/* 导航栏滚动后的阴影效果 */
+nav.modern-nav.nav-scrolled {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* 左侧：Logo */
+.modern-nav .nav-left {
+    display: flex !important;
+    align-items: center !important;
+    gap: 2rem !important;
+}
+
+.modern-nav .nav-logo {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    color: var(--nav-text) !important;
+    font-size: 1.2rem !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    transition: color 0.3s ease !important;
+}
+
+.modern-nav .logo-avatar {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    border: 2px solid var(--nav-avatar-border) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+    transition: border-color 0.3s ease !important;
+}
+
+.modern-nav .logo-text {
+    white-space: nowrap !important;
+    color: var(--nav-text) !important;
+}
+
+/* 中间：导航菜单 - 轨道容器 */
+.modern-nav .nav-center {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: var(--nav-track-bg) !important;
+    border-radius: 25px !important;
+    padding: 0rem 0.5rem !important;
+    box-shadow: 
+        0 4px 12px rgba(0, 0, 0, 0.25),
+        0 2px 6px rgba(0, 0, 0, 0.15),
+        0 8px 24px rgba(0, 0, 0, 0.1) !important;
+    position: relative !important;
+    border: 1px solid var(--nav-track-border) !important;
+    flex-direction: row !important;
+    gap: 0 !important;
+    transition: background 0.3s ease, border-color 0.3s ease !important;
+}
+
+/* 滑动指示器 */
+.modern-nav .nav-indicator {
+    position: absolute !important;
+    height: calc(100% - 0.4rem) !important;
+    background: var(--nav-indicator-bg) !important;
+    border-radius: 20px !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    pointer-events: none !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 0 15px var(--nav-indicator-glow) !important;
+    top: 0.2rem !important;
+}
+
+/* 滑块抖动动画 */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-3px); }
+    75% { transform: translateX(3px); }
+}
+
+.modern-nav .nav-indicator.shake {
+    animation: shake 0.3s ease-in-out !important;
+}
+
+/* 导航菜单列表 */
+.modern-nav .nav-menu {
+    display: flex !important;
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+}
+
+.modern-nav .nav-menu li {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* 导航项 */
+.modern-nav .nav-menu .nav-link,
+.modern-nav .nav-item {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+    padding: 0.4rem 0.9rem !important;
+    color: var(--nav-text-secondary) !important;
+    text-decoration: none !important;
+    transition: all 0.3s !important;
+    font-size: 0.9rem !important;
+    cursor: pointer !important;
+    position: relative !important;
+    z-index: 1 !important;
+    border-radius: 25px !important;
+    white-space: nowrap !important;
+    border: none !important;
+    background: transparent !important;
+}
+
+.modern-nav .nav-menu .nav-link:hover,
+.modern-nav .nav-item:hover {
+    color: var(--nav-text-hover) !important;
+    background: transparent !important;
+    border: none !important;
+}
+
+.modern-nav .nav-menu .nav-link.active,
+.modern-nav .nav-item.active {
+    color: var(--nav-text) !important;
+    background: transparent !important;
+    border: none !important;
+}
+
+.modern-nav .nav-icon,
+.modern-nav .nav-item-icon {
+    font-size: 1.1rem !important;
+}
+
+.modern-nav .nav-text,
+.modern-nav .nav-item-text {
+    font-size: 0.9rem !important;
+}
+
+/* 右侧：搜索、头像 */
+.modern-nav .nav-right {
+    display: flex !important;
+    align-items: center !important;
+    gap: 1rem !important;
+}
+
+/* 搜索框 */
+.modern-nav .search-container,
+.modern-nav .nav-search {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+.modern-nav .search-input {
+    width: 200px !important;
+    padding: 0.5rem 1rem 0.5rem 2.5rem !important;
+    background: var(--nav-search-bg) !important;
+    border: 1px solid var(--nav-search-border) !important;
+    border-radius: 20px !important;
+    color: var(--nav-text) !important;
+    font-size: 0.9rem !important;
+    transition: all 0.3s !important;
+}
+
+.modern-nav .search-input::placeholder {
+    color: var(--nav-placeholder) !important;
+}
+
+.modern-nav .search-input:focus {
+    outline: none !important;
+    background: var(--nav-search-focus-bg) !important;
+    border-color: var(--nav-search-focus-border) !important;
+    width: 250px !important;
+}
+
+.modern-nav .search-icon {
+    position: absolute !important;
+    left: 0.8rem !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    color: var(--nav-icon-color) !important;
+    font-size: 1rem !important;
+    pointer-events: none !important;
+}
+
+.modern-nav .search-btn {
+    background: var(--nav-search-bg) !important;
+    border: 1px solid var(--nav-search-border) !important;
+    border-radius: 50% !important;
+    width: 36px !important;
+    height: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    transition: all 0.3s !important;
+    font-size: 1.2rem !important;
+    color: var(--nav-text-secondary) !important;
+    margin-left: 0.5rem !important;
+}
+
+.modern-nav .search-btn:hover {
+    background: var(--nav-search-focus-bg) !important;
+    color: var(--nav-text) !important;
+}
+
+/* 图标按钮 */
+.modern-nav .icon-btn {
+    width: 36px !important;
+    height: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: none !important;
+    border-radius: 50% !important;
+    color: rgba(255, 255, 255, 0.8) !important;
+    cursor: pointer !important;
+    transition: all 0.3s !important;
+    font-size: 1.1rem !important;
+}
+
+.modern-nav .icon-btn:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+}
+
+/* 头像 */
+.modern-nav .nav-avatar {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 50% !important;
+    border: 2px solid var(--nav-avatar-border) !important;
+    cursor: pointer !important;
+    transition: all 0.3s !important;
+}
+
+.modern-nav .nav-avatar:hover {
+    border-color: var(--nav-avatar-hover) !important;
+    transform: scale(1.1) !important;
+}
+
+/* 移动端菜单按钮 */
+.modern-nav .mobile-menu-btn {
+    display: none !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+    background: transparent !important;
+    border: none !important;
+    cursor: pointer !important;
+    padding: 8px !important;
+}
+
+.modern-nav .mobile-menu-btn span {
+    width: 24px !important;
+    height: 2px !important;
+    background: white !important;
+    border-radius: 2px !important;
+    transition: all 0.3s !important;
+}
+
+.modern-nav .mobile-menu-btn:hover span {
+    background: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* 响应式 */
+@media (max-width: 1024px) {
+    .modern-nav .nav-center {
+        gap: 0.3rem !important;
+    }
+
+    .modern-nav .nav-item,
+    .modern-nav .nav-menu .nav-link {
+        padding: 0.5rem 0.8rem !important;
+        font-size: 0.9rem !important;
+    }
+
+    .modern-nav .nav-text,
+    .modern-nav .nav-item-text {
+        display: none !important;
+    }
+}
+
+@media (max-width: 768px) {
+    nav.modern-nav {
+        padding: 0 1rem !important;
+    }
+
+    .modern-nav .logo-text {
+        display: none !important;
+    }
+
+    .modern-nav .nav-center {
+        display: none !important;
+    }
+
+    .modern-nav .mobile-menu-btn {
+        display: flex !important;
+    }
+
+    .modern-nav .search-input {
+        width: 120px !important;
+    }
+
+    .modern-nav .search-input:focus {
+        width: 150px !important;
+    }
+}

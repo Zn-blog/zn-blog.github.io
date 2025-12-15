@@ -1,0 +1,20 @@
+{
+  "timestamp": "2025-12-06T11:01:12.964Z",
+  "filesCount": 13,
+  "totalSize": 356775,
+  "files": [
+    "apps.json",
+    "articles.json",
+    "categories.json",
+    "comments.json",
+    "events.json",
+    "guestbook.json",
+    "images.json",
+    "links.json",
+    "music.json",
+    "settings.json",
+    "tags.json",
+    "users.json",
+    "videos.json"
+  ]
+}

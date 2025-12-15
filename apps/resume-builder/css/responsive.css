@@ -1,0 +1,523 @@
+/* 响应式样式 */
+
+/* 大屏幕 (1400px+) */
+@media (min-width: 1400px) {
+    :root {
+        --sidebar-width: 450px;
+    }
+    
+    .main-content {
+        padding: 30px;
+        gap: 30px;
+    }
+    
+    .template-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+/* 中等屏幕 (992px - 1399px) */
+@media (min-width: 992px) and (max-width: 1399px) {
+    :root {
+        --sidebar-width: 380px;
+    }
+    
+    .template-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* 小屏幕 (768px - 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+    :root {
+        --sidebar-width: 320px;
+    }
+    
+    .main-content {
+        padding: 20px 16px;
+    }
+    
+    .template-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .form-group {
+        padding: 16px;
+    }
+    
+    .preview-area {
+        padding: 16px;
+    }
+}
+
+/* 移动端 (最大 767px) */
+@media (max-width: 767px) {
+    .resume-builder {
+        min-height: 100vh;
+    }
+    
+    .toolbar {
+        height: 50px;
+        padding: 0 12px;
+        flex-wrap: wrap;
+    }
+    
+    .app-title {
+        font-size: 14px;
+    }
+    
+    .app-title .icon {
+        font-size: 16px;
+    }
+    
+    .toolbar-right {
+        gap: 4px;
+    }
+    
+    .btn {
+        padding: 4px 8px;
+        font-size: 11px;
+        gap: 2px;
+    }
+    
+    .main-content {
+        flex-direction: column;
+        padding: 12px;
+        gap: 12px;
+        min-height: calc(100vh - 50px - 180px);
+    }
+    
+    .input-section {
+        width: 100%;
+        order: 2;
+        max-height: 60vh;
+    }
+    
+    .preview-section {
+        order: 1;
+        min-height: 300px;
+        max-height: 40vh;
+    }
+    
+    .form-group {
+        margin-bottom: 16px;
+        padding: 12px;
+    }
+    
+    .section-title {
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+    
+    .form-row {
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+    
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+    
+    .template-section {
+        padding: 12px;
+    }
+    
+    .template-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+    
+    .template-card {
+        padding: 8px;
+    }
+    
+    .template-thumbnail {
+        height: 80px;
+        font-size: 16px;
+    }
+    
+    .template-info h4 {
+        font-size: 12px;
+    }
+    
+    .template-info p {
+        font-size: 10px;
+    }
+    
+    .modal-container {
+        width: 95%;
+        max-height: 90vh;
+    }
+    
+    .modal-header {
+        padding: 12px;
+    }
+    
+    .modal-body {
+        padding: 12px;
+        max-height: 70vh;
+    }
+    
+    .resume-item {
+        padding: 12px;
+    }
+    
+    .resume-item-title {
+        font-size: 14px;
+    }
+    
+    .resume-item-description {
+        font-size: 12px;
+    }
+}
+
+/* 超小屏幕 (最大 480px) */
+@media (max-width: 480px) {
+    .toolbar {
+        height: 45px;
+        padding: 0 8px;
+    }
+    
+    .app-title {
+        font-size: 12px;
+    }
+    
+    .toolbar-right {
+        flex-wrap: wrap;
+        gap: 2px;
+    }
+    
+    .btn {
+        padding: 3px 6px;
+        font-size: 10px;
+        min-width: auto;
+    }
+    
+    .btn .icon {
+        display: none;
+    }
+    
+    .main-content {
+        padding: 8px;
+        gap: 8px;
+    }
+    
+    .input-section,
+    .preview-section {
+        border-radius: 6px;
+    }
+    
+    .form-group {
+        padding: 8px;
+        margin-bottom: 12px;
+    }
+    
+    .section-title {
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+    
+    .btn-add {
+        padding: 2px 6px;
+        font-size: 10px;
+    }
+    
+    .form-field label {
+        font-size: 12px;
+        margin-bottom: 4px;
+    }
+    
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+        padding: 6px 8px;
+        font-size: 12px;
+    }
+    
+    .preview-header {
+        padding: 8px 12px;
+    }
+    
+    .preview-header h3 {
+        font-size: 14px;
+    }
+    
+    .zoom-controls {
+        gap: 4px;
+    }
+    
+    .btn-zoom {
+        padding: 2px 4px;
+        font-size: 10px;
+    }
+    
+    .zoom-level {
+        font-size: 10px;
+        min-width: 30px;
+    }
+    
+    .preview-area {
+        padding: 8px;
+    }
+    
+    .template-section {
+        padding: 8px;
+    }
+    
+    .template-grid {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+    
+    .template-card {
+        padding: 6px;
+    }
+    
+    .template-thumbnail {
+        height: 60px;
+        font-size: 14px;
+    }
+    
+    .template-info h4 {
+        font-size: 11px;
+        margin-bottom: 2px;
+    }
+    
+    .template-info p {
+        font-size: 9px;
+    }
+    
+    .modal-container {
+        width: 98%;
+        margin: 10px;
+        border-radius: 6px;
+    }
+    
+    .modal-header {
+        padding: 8px;
+    }
+    
+    .modal-header h3 {
+        font-size: 14px;
+    }
+    
+    .modal-close {
+        font-size: 18px;
+        width: 24px;
+        height: 24px;
+    }
+    
+    .modal-body {
+        padding: 8px;
+    }
+    
+    .section-header h4 {
+        font-size: 14px;
+    }
+    
+    .resume-item {
+        padding: 8px;
+        margin-bottom: 8px;
+    }
+    
+    .resume-item-title {
+        font-size: 13px;
+    }
+    
+    .resume-item-meta {
+        font-size: 10px;
+    }
+    
+    .resume-item-description {
+        font-size: 11px;
+    }
+    
+    .form-actions {
+        gap: 8px;
+        margin-top: 12px;
+        padding-top: 12px;
+    }
+    
+    .empty-state {
+        padding: 20px 10px;
+    }
+    
+    .empty-icon {
+        font-size: 32px;
+        margin-bottom: 8px;
+    }
+    
+    .placeholder-icon {
+        font-size: 32px;
+        margin-bottom: 8px;
+    }
+}
+
+/* 横屏模式优化 */
+@media (max-width: 767px) and (orientation: landscape) {
+    .main-content {
+        flex-direction: row;
+    }
+    
+    .input-section {
+        width: 40%;
+        order: 1;
+        max-height: calc(100vh - 50px - 100px);
+    }
+    
+    .preview-section {
+        width: 60%;
+        order: 2;
+        min-height: auto;
+        max-height: calc(100vh - 50px - 100px);
+    }
+    
+    .template-section {
+        padding: 8px;
+    }
+    
+    .template-grid {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 4px;
+    }
+    
+    .template-card {
+        padding: 4px;
+    }
+    
+    .template-thumbnail {
+        height: 40px;
+        font-size: 12px;
+    }
+    
+    .template-info h4 {
+        font-size: 10px;
+    }
+    
+    .template-info p {
+        font-size: 8px;
+    }
+}
+
+/* 打印样式 */
+@media print {
+    .toolbar,
+    .template-section,
+    .input-section,
+    .preview-header,
+    .zoom-controls {
+        display: none !important;
+    }
+    
+    .main-content {
+        padding: 0;
+        margin: 0;
+    }
+    
+    .preview-section {
+        width: 100%;
+        box-shadow: none;
+        border-radius: 0;
+    }
+    
+    .preview-area {
+        padding: 0;
+        background: white;
+    }
+    
+    .resume-preview {
+        max-width: none;
+        box-shadow: none;
+        border-radius: 0;
+        transform: none !important;
+    }
+}
+
+/* 高对比度模式 */
+@media (prefers-contrast: high) {
+    :root {
+        --bg-primary: #000000;
+        --bg-secondary: #1a1a1a;
+        --bg-tertiary: #333333;
+        --bg-card: #2a2a2a;
+        --text-primary: #ffffff;
+        --text-secondary: #e0e0e0;
+        --border-color: #666666;
+        --border-light: #888888;
+    }
+    
+    .btn {
+        border: 1px solid currentColor;
+    }
+    
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+        border: 2px solid var(--border-light);
+    }
+    
+    .template-card {
+        border-width: 3px;
+    }
+}
+
+/* 减少动画模式 */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .loading-spinner {
+        animation: none;
+        border: 4px solid white;
+        border-top: 4px solid var(--primary-color);
+    }
+}
+
+/* 深色模式适配 */
+@media (prefers-color-scheme: dark) {
+    .preview-area {
+        background: #2a2a2a;
+    }
+    
+    .resume-preview {
+        background: #ffffff;
+        color: #000000;
+    }
+}
+
+/* 触摸设备优化 */
+@media (hover: none) and (pointer: coarse) {
+    .btn,
+    .template-card,
+    .resume-item,
+    .btn-add,
+    .btn-remove,
+    .btn-icon {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+        min-height: 44px;
+        font-size: 16px; /* 防止iOS缩放 */
+    }
+    
+    .modal-close {
+        min-width: 44px;
+        min-height: 44px;
+    }
+    
+    .btn-zoom {
+        min-width: 44px;
+        min-height: 44px;
+    }
+}

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频剪辑工具</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/timeline.css">
+    <link rel="stylesheet" href="css/controls.css">
+</head>
+<body>
+    <div class="video-editor" id="videoEditor">
+        <!-- 顶部工具栏 -->
+        <div class="toolbar">
+            <div class="toolbar-section">
+                <h1 class="app-title">
+                    <span class="icon">🎬</span>
+                    视频剪辑工具
+                </h1>
+            </div>
+            
+            <div class="toolbar-section">
+                <button class="btn btn-primary" id="importVideo">
+                    <span class="icon">📹</span>
+                    导入视频
+                </button>
+                <button class="btn btn-secondary" id="importAudio">
+                    <span class="icon">🎵</span>
+                    添加音乐
+                </button>
+                <button class="btn btn-secondary" id="addText">
+                    <span class="icon">📝</span>
+                    添加文字
+                </button>
+            </div>
+            
+            <div class="toolbar-section">
+                <button class="btn btn-success" id="exportVideo">
+                    <span class="icon">💾</span>
+                    导出视频
+                </button>
+            </div>
+        </div>
+        
+        <!-- 主要内容区域 -->
+        <div class="main-content">
+            <!-- 预览区域 -->
+            <div class="preview-section">
+                <div class="preview-area">
+                    <div class="preview-container" id="previewContainer">
+                        <div class="no-video-placeholder">
+                            <div class="placeholder-icon">📹</div>
+                            <div class="placeholder-text">点击"导入视频"开始编辑</div>
+                        </div>
+                    </div>
+                    
+                    <div class="preview-controls">
+                        <button class="control-btn" id="playBtn">
+                            <span class="icon">▶️</span>
+                        </button>
+                        <button class="control-btn" id="pauseBtn" style="display: none;">
+                            <span class="icon">⏸️</span>
+                        </button>
+                        <button class="control-btn" id="stopBtn">
+                            <span class="icon">⏹️</span>
+                        </button>
+                        
+                        <div class="time-display">
+                            <span id="currentTime">00:00</span>
+                            <span>/</span>
+                            <span id="totalTime">00:00</span>
+                        </div>
+                        
+                        <input type="range" class="time-slider" id="timeSlider" 
+                               min="0" max="100" value="0" disabled>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 属性面板 -->
+            <div class="properties-section">
+                <div class="properties-panel">
+                    <div class="panel-header">
+                        <h3>属性设置</h3>
+                    </div>
+                    
+                    <div class="panel-content" id="propertiesContent">
+                        <div class="property-group">
+                            <h4>项目信息</h4>
+                            <div class="property-item">
+                                <label>分辨率:</label>
+                                <span id="projectResolution">-</span>
+                            </div>
+                            <div class="property-item">
+                                <label>时长:</label>
+                                <span id="projectDuration">00:00</span>
+                            </div>
+                            <div class="property-item">
+                                <label>帧率:</label>
+                                <span id="projectFps">30 fps</span>
+                            </div>
+                        </div>
+                        
+                        <div class="property-group" id="selectedItemProperties" style="display: none;">
+                            <h4>选中项目</h4>
+                            <div id="selectedItemContent">
+                                <!-- 动态内容 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 时间轴区域 -->
+        <div class="timeline-section">
+            <div class="timeline-header">
+                <div class="timeline-ruler" id="timelineRuler">
+                    <div class="timeline-ruler-content" id="timelineRulerContent">
+                        <div class="playhead" id="playhead"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timeline-content">
+                <div class="track-labels">
+                    <div class="track-label video-track-label">视频</div>
+                    <div class="track-label audio-track-label">音频</div>
+                    <div class="track-label text-track-label">文字</div>
+                </div>
+                
+                <div class="timeline-tracks" id="timelineTracks">
+                    <div class="track video-track" id="videoTrack">
+                        <!-- 视频轨道内容 -->
+                    </div>
+                    <div class="track audio-track" id="audioTrack">
+                        <!-- 音频轨道内容 -->
+                    </div>
+                    <div class="track text-track" id="textTrack">
+                        <!-- 文字轨道内容 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 模态框 -->
+    <div class="modal" id="textModal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>添加文字</h3>
+                <button class="modal-close" id="textModalClose">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="textContent">文字内容:</label>
+                    <textarea id="textContent" placeholder="请输入文字内容"></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="textStartTime">开始时间 (秒):</label>
+                        <input type="number" id="textStartTime" min="0" step="0.1" value="0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="textDuration">持续时间 (秒):</label>
+                        <input type="number" id="textDuration" min="0.1" step="0.1" value="3">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="textFontSize">字体大小:</label>
+                        <input type="number" id="textFontSize" min="12" max="200" value="48">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="textColor">文字颜色:</label>
+                        <input type="color" id="textColor" value="#ffffff">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="textBgColor">背景颜色:</label>
+                        <input type="color" id="textBgColor" value="#000000">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="textBgOpacity">背景透明度:</label>
+                        <input type="range" id="textBgOpacity" min="0" max="100" value="70">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="textPosition">位置预设:</label>
+                    <select id="textPosition">
+                        <option value="center">居中</option>
+                        <option value="top">顶部</option>
+                        <option value="bottom">底部</option>
+                        <option value="left">左侧</option>
+                        <option value="right">右侧</option>
+                        <option value="top-left">左上角</option>
+                        <option value="top-right">右上角</option>
+                        <option value="bottom-left">左下角</option>
+                        <option value="bottom-right">右下角</option>
+                        <option value="custom">自定义</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="customPositionGroup" style="display: none;">
+                    <label>自定义位置:</label>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="textX">X坐标 (%):</label>
+                            <input type="number" id="textX" min="0" max="100" value="50" step="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="textY">Y坐标 (%):</label>
+                            <input type="number" id="textY" min="0" max="100" value="50" step="1">
+                        </div>
+                    </div>
+                    <div class="position-preview" id="positionPreview">
+                        <div class="preview-area">
+                            <div class="preview-text" id="previewText">文字位置</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="textModalCancel">取消</button>
+                <button class="btn btn-primary" id="textModalConfirm">确定</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 导出模态框 -->
+    <div class="modal" id="exportModal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>导出视频</h3>
+                <button class="modal-close" id="exportModalClose">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="exportFormat">视频格式:</label>
+                    <select id="exportFormat">
+                        <option value="webm">WebM (推荐)</option>
+                        <option value="mp4">MP4</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="exportQuality">视频质量:</label>
+                    <select id="exportQuality">
+                        <option value="low">低质量 (2 Mbps)</option>
+                        <option value="medium">中等质量 (5 Mbps)</option>
+                        <option value="high" selected>高质量 (8 Mbps)</option>
+                        <option value="ultra">超高质量 (15 Mbps)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="exportFps">帧率:</label>
+                    <select id="exportFps">
+                        <option value="24">24 fps</option>
+                        <option value="30" selected>30 fps</option>
+                        <option value="60">60 fps</option>
+                    </select>
+                </div>
+                
+                <div class="export-progress" id="exportProgress" style="display: none;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-text" id="progressText">准备导出...</div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="exportModalCancel">取消</button>
+                <button class="btn btn-primary" id="exportModalConfirm">开始导出</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 错误提示 -->
+    <div class="error-message" id="errorMessage" style="display: none;">
+        <div class="error-content">
+            <span class="error-icon">⚠️</span>
+            <span class="error-text" id="errorText"></span>
+            <button class="error-close" id="errorClose">&times;</button>
+        </div>
+    </div>
+    
+    <!-- 文件输入 -->
+    <input type="file" id="videoFileInput" accept="video/*" style="display: none;">
+    <input type="file" id="audioFileInput" accept="audio/*" style="display: none;">
+    
+    <!-- 脚本文件 -->
+    <script src="js/utils.js"></script>
+    <script src="js/media-manager.js"></script>
+    <script src="js/timeline.js"></script>
+    <script src="js/audio-mixer.js"></script>
+    <script src="js/text-renderer.js"></script>
+    <script src="js/export-manager.js"></script>
+    <script src="js/ui-controller.js"></script>
+    <script src="js/video-editor.js"></script>
+    <script src="js/debug-helper.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

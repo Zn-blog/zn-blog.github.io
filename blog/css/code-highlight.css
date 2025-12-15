@@ -1,0 +1,308 @@
+/* ========================================
+   代码高亮样式增强
+   ======================================== */
+
+/* 代码块容器 */
+pre[class*="language-"] {
+    margin: 1.5rem 0 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    position: relative !important;
+    overflow: hidden !important;
+    /* 背景色由 Prism 主题控制，不强制覆盖 */
+    padding: 1.5rem !important;
+    /* 确保没有其他背景层 */
+    background-clip: padding-box !important;
+}
+
+/* 代码块内容 */
+code[class*="language-"] {
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+    font-size: 0.9rem !important;
+    line-height: 1.6 !important;
+    text-shadow: none !important;
+    /* 背景色由 Prism 主题控制 */
+    padding: 0 !important;
+    /* 确保没有遮罩效果 */
+    background-image: none !important;
+    background-blend-mode: normal !important;
+}
+
+/* 行号样式 */
+.line-numbers .line-numbers-rows {
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    padding-right: 0.8rem;
+    /* 确保行号区域背景透明 */
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+.line-numbers-rows > span {
+    /* 确保每一行的行号背景透明 */
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+.line-numbers-rows > span:before {
+    color: rgba(255, 255, 255, 0.4);
+    /* 确保行号本身背景透明 */
+    background: transparent !important;
+}
+
+/* 行号容器 */
+pre[class*="language-"].line-numbers {
+    padding-left: 3.8em;
+    counter-reset: linenumber;
+    /* 确保容器背景透明 */
+    background-clip: padding-box !important;
+}
+
+/* 移除 Prism 可能添加的行号背景 */
+.line-numbers-rows {
+    background: none !important;
+    background-image: none !important;
+}
+
+/* ========================================
+   代码语法颜色由 Prism 主题控制
+   这里只保留一些通用的样式增强
+   ======================================== */
+
+/* 斜体 */
+.token.italic {
+    font-style: italic;
+}
+
+/* 加粗 */
+.token.bold,
+.token.important {
+    font-weight: bold;
+}
+
+/* 内联代码 */
+:not(pre) > code {
+    background: rgba(79, 195, 247, 0.1);
+    color: #e91e63;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+/* 代码块语言标签 */
+pre[class*="language-"]:before {
+    content: attr(data-language);
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.3rem 0.8rem;
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-bottom-left-radius: 4px;
+    z-index: 1;
+}
+
+/* 不同语言的标签颜色 */
+pre[class*="language-javascript"]:before {
+    content: 'JavaScript';
+    background: #f7df1e;
+    color: #000;
+}
+
+pre[class*="language-python"]:before {
+    content: 'Python';
+    background: #3776ab;
+}
+
+pre[class*="language-java"]:before {
+    content: 'Java';
+    background: #007396;
+}
+
+pre[class*="language-html"]:before {
+    content: 'HTML';
+    background: #e34c26;
+}
+
+pre[class*="language-css"]:before {
+    content: 'CSS';
+    background: #264de4;
+}
+
+pre[class*="language-json"]:before {
+    content: 'JSON';
+    background: #000;
+}
+
+pre[class*="language-bash"]:before,
+pre[class*="language-shell"]:before {
+    content: 'Shell';
+    background: #4eaa25;
+}
+
+pre[class*="language-sql"]:before {
+    content: 'SQL';
+    background: #00758f;
+}
+
+pre[class*="language-markdown"]:before {
+    content: 'Markdown';
+    background: #083fa1;
+}
+
+/* 复制按钮样式优化 */
+.copy-code-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    z-index: 2;
+    backdrop-filter: blur(10px);
+}
+
+.copy-code-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px);
+}
+
+.copy-code-btn.copied {
+    background: #4caf50;
+    border-color: #4caf50;
+}
+
+/* 代码块滚动条美化 */
+pre[class*="language-"]::-webkit-scrollbar {
+    height: 8px;
+}
+
+pre[class*="language-"]::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+
+pre[class*="language-"]::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+}
+
+pre[class*="language-"]::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    pre[class*="language-"] {
+        margin: 1rem -1rem;
+        border-radius: 0;
+    }
+    
+    code[class*="language-"] {
+        font-size: 0.85rem;
+    }
+    
+    .copy-code-btn {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.7rem;
+    }
+}
+
+/* 暗色主题适配 */
+[data-theme="dark"] :not(pre) > code {
+    background: rgba(79, 195, 247, 0.2);
+    color: #ff4081;
+}
+
+[data-theme="dark"] pre[class*="language-"] {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* 强制移除任何可能的遮罩效果 */
+pre[class*="language-"]::before,
+pre[class*="language-"]::after {
+    background: none !important;
+}
+
+/* 确保代码块内所有元素都不添加额外背景 */
+pre[class*="language-"] * {
+    background-image: none !important;
+}
+
+/* 移除可能的伪元素遮罩 */
+code[class*="language-"]::before,
+code[class*="language-"]::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* 移除 bg-tertiary 类的背景色 */
+.bg-tertiary,
+[class*="bg-tertiary"] {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+/* 移除所有可能的背景类 */
+pre[class*="language-"] .bg-tertiary,
+code[class*="language-"] .bg-tertiary,
+.line-numbers .bg-tertiary {
+    background: none !important;
+    background-color: transparent !important;
+}
+
+/* ========================================
+   完全隔离代码块，不受博客主题影响
+   ======================================== */
+
+/* 重置所有可能的主题 CSS 变量 */
+pre[class*="language-"],
+code[class*="language-"] {
+    /* 清空所有主题变量 */
+    --bg-primary: initial !important;
+    --bg-secondary: initial !important;
+    --bg-tertiary: initial !important;
+    --text-primary: initial !important;
+    --text-secondary: initial !important;
+    --text-tertiary: initial !important;
+    --primary-color: initial !important;
+    --secondary-color: initial !important;
+    --accent-color: initial !important;
+    --border-color: initial !important;
+    --shadow-sm: initial !important;
+    --shadow-md: initial !important;
+    --shadow-lg: initial !important;
+}
+
+/* 阻止代码块内所有元素继承主题颜色 */
+pre[class*="language-"] *,
+code[class*="language-"] * {
+    /* 不使用主题变量 */
+    --bg-primary: initial !important;
+    --bg-secondary: initial !important;
+    --bg-tertiary: initial !important;
+    --text-primary: initial !important;
+    --text-secondary: initial !important;
+    --text-tertiary: initial !important;
+}
+
+/* 确保代码块不继承父元素的颜色 */
+pre[class*="language-"] {
+    color: revert !important;
+}
+
+code[class*="language-"] {
+    color: revert !important;
+}

@@ -1,0 +1,79 @@
+/* 后台管理系统视频背景样式 */
+
+/* 视频背景容器 - 纯背景层，不影响布局 */
+.admin-video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1; /* 设置为-1，与背景图片同层但在其上方 */
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1s ease-in;
+}
+
+.admin-video-background.loaded {
+    opacity: 1; /* 完全不透明 */
+}
+
+/* 背景图片在最底层 - 使用更高优先级的选择器 */
+body .admin-background-layer,
+div.admin-background-layer,
+.admin-background-layer {
+    z-index: -2 !important;
+}
+
+/* 视频控制按钮 */
+.admin-video-control-btn {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: white;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.admin-video-control-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.admin-video-control-btn.hidden {
+    display: none;
+}
+
+/* 移动设备优化 */
+@media (max-width: 768px) {
+    .admin-video-background {
+        display: none; /* 移动设备不显示视频背景 */
+    }
+    
+    .admin-video-control-btn {
+        display: none;
+    }
+}
+
+/* 视频加载动画 */
+@keyframes fadeInAdminVideo {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

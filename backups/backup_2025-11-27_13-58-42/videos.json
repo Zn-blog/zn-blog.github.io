@@ -1,0 +1,12 @@
+[
+  {
+    "name": "倩女幽魂CG",
+    "url": "http://localhost:8080/blog-admin/uploads/images/cg/cg.mp4",
+    "cover": "http://localhost:8080/blog-admin/uploads/images/cg/cg.jpg",
+    "category": "CG",
+    "duration": 175,
+    "description": "倩女幽魂CG",
+    "id": 1,
+    "uploadDate": "2025-11-22"
+  }
+]

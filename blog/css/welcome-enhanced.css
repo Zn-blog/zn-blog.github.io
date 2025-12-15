@@ -1,0 +1,214 @@
+/* 增强的欢迎界面样式 */
+
+/* 欢迎界面顶部区域 */
+.welcome-top {
+    flex: 0 0 auto;
+    margin-top: 200px; /* 下移200px */
+}
+
+/* 欢迎界面底部区域 */
+.welcome-bottom {
+    flex: 0 0 auto;
+    margin-top: auto;
+    transform: translateY(-20px); /* 上移20px */
+}
+
+/* 名言警句容器 */
+.quote-container {
+    margin: 1.5rem auto;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    max-width: 700px;
+}
+
+.quote-text {
+    font-size: 1.3rem;
+    color: #fff;
+    line-height: 1.8;
+    margin: 0;
+    text-align: center;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.quote-icon {
+    font-size: 1.5rem;
+    opacity: 0.8;
+}
+
+#quoteContent {
+    display: inline-block;
+}
+
+/* 打字机光标 */
+.cursor {
+    display: inline-block;
+    animation: blink 1s infinite;
+    margin-left: 2px;
+    font-weight: 100;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+.quote-author {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-align: right;
+    margin: 0.8rem 0 0 0;
+    font-style: italic;
+}
+
+/* 操作按钮 */
+.welcome-actions {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    margin: 1.5rem 0 1rem;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.9rem 2rem;
+    font-size: 1.05rem;
+    font-weight: 500;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.primary-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.primary-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.secondary-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+}
+
+.secondary-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.8);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+}
+
+.btn-icon {
+    font-size: 1.2rem;
+}
+
+/* 社交链接 */
+.social-links {
+    display: flex;
+    gap: 1.2rem;
+    justify-content: center;
+    margin: 1rem 0 0.5rem;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.social-link:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+}
+
+.social-link svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .welcome-content {
+        padding: 6vh 1.5rem 4vh;
+    }
+    
+    .quote-container {
+        padding: 1rem;
+        margin: 1rem auto;
+    }
+    
+    .quote-text {
+        font-size: 1.1rem;
+        min-height: 50px;
+    }
+    
+    .welcome-actions {
+        gap: 1rem;
+        margin: 1rem 0 0.8rem;
+    }
+    
+    .action-btn {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.95rem;
+    }
+    
+    .social-links {
+        gap: 1rem;
+        margin: 0.8rem 0 0.5rem;
+    }
+    
+    .social-link {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .social-link svg {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .slide-indicators {
+        margin-top: 1rem;
+    }
+}
+
+/* 加载动画 */
+.quote-container.loading #quoteContent::after {
+    content: '...';
+    animation: dots 1.5s infinite;
+}
+
+@keyframes dots {
+    0%, 20% { content: '.'; }
+    40% { content: '..'; }
+    60%, 100% { content: '...'; }
+}

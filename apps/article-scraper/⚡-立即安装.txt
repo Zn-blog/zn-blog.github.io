@@ -1,0 +1,57 @@
+========================================
+⚡ 立即安装 - 文章抓取工具
+========================================
+
+🎯 最简单的方法：
+
+1. 双击运行：install.bat
+   （脚本会自动处理一切）
+
+2. 等待安装完成
+
+3. 完成！
+
+
+📋 如果遇到错误：
+
+错误1：找不到 requirements.txt
+解决：直接双击 install.bat（不要在命令行运行）
+
+错误2：找不到 Python
+解决：安装Python → https://www.python.org/downloads/
+      安装时勾选 "Add Python to PATH"
+
+错误3：权限不足
+解决：右键 install.bat → 以管理员身份运行
+
+错误4：网络问题
+解决：使用国内镜像
+      pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+
+💡 手动安装（如果脚本失败）：
+
+打开命令行，依次运行：
+
+cd apps\article-scraper
+pip install requests
+pip install beautifulsoup4
+pip install html2text
+pip install lxml
+
+
+✅ 验证安装：
+
+双击运行：check-install.bat
+
+
+📚 详细文档：
+
+- INSTALL.md - 完整安装指南
+- TROUBLESHOOTING.md - 故障排查
+- README.md - 使用文档
+
+
+========================================
+现在就双击 install.bat 开始安装吧！
+========================================

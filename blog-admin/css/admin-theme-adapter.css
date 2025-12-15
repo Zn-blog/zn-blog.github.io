@@ -1,0 +1,2119 @@
+/* ========================================
+   后台主题适配层 - 将后台样式适配到主题系统
+   ======================================== */
+
+/* 侧边栏 - 使用主题色 */
+[data-theme] .sidebar {
+    background: var(--gradient-primary) !important;
+}
+
+[data-theme] .sidebar .logo {
+    color: white !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-theme] .sidebar .logo h2 {
+    color: white !important;
+}
+
+/* 侧边栏导航项 */
+[data-theme] .sidebar-nav .nav-item {
+    color: rgba(255, 255, 255, 0.9) !important;
+    transition: all 0.3s ease !important;
+}
+
+[data-theme] .sidebar-nav .nav-item:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: white !important;
+}
+
+[data-theme] .sidebar-nav .nav-item.active {
+    background: rgba(255, 255, 255, 0.25) !important;
+    color: white !important;
+    border-left: 4px solid white !important;
+}
+
+/* 移除图标颜色覆盖，让emoji保持原色 */
+/* [data-theme] .sidebar-nav .nav-item .icon {
+    color: white !important;
+} */
+
+/* 顶部栏 - 使用主题色 */
+[data-theme] .top-bar {
+    background: var(--gradient-primary) !important;
+    border-bottom: none !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-theme] .top-bar .page-title {
+    color: white !important;
+}
+
+/* 移除通配符规则，避免覆盖下拉框样式 */
+/* [data-theme] .top-bar * {
+    color: white !important;
+} */
+
+/* ========================================
+   深色模式特殊优化 - 统一配色
+   ======================================== */
+
+/* 深色模式 - 侧边栏与内容区域统一 */
+[data-theme="dark"] .sidebar {
+    background: linear-gradient(180deg, #1a1a1a 0%, #242424 100%) !important;
+    border-right: 1px solid rgba(100, 181, 246, 0.15) !important;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="dark"] .sidebar .logo {
+    color: #e0e0e0 !important;
+    border-bottom: 1px solid rgba(100, 181, 246, 0.15) !important;
+}
+
+[data-theme="dark"] .sidebar .logo h2 {
+    color: #64b5f6 !important;
+}
+
+[data-theme="dark"] .sidebar-nav .nav-item {
+    color: #b0b0b0 !important;
+}
+
+[data-theme="dark"] .sidebar-nav .nav-item:hover {
+    background: rgba(100, 181, 246, 0.1) !important;
+    color: #e0e0e0 !important;
+}
+
+[data-theme="dark"] .sidebar-nav .nav-item.active {
+    background: rgba(100, 181, 246, 0.15) !important;
+    color: #64b5f6 !important;
+    border-left: 4px solid #64b5f6 !important;
+}
+
+/* 深色模式 - 顶部栏与内容区域统一 */
+[data-theme="dark"] .top-bar {
+    background: linear-gradient(90deg, #1a1a1a 0%, #242424 100%) !important;
+    border-bottom: 1px solid rgba(100, 181, 246, 0.15) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* 深色模式 - 统计卡片增强对比度 */
+[data-theme="dark"] .stats-grid .stat-card {
+    background: linear-gradient(135deg, rgba(100, 181, 246, 0.15) 0%, rgba(100, 181, 246, 0.25) 100%) !important;
+    border: 1px solid rgba(100, 181, 246, 0.3) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-theme="dark"] .stats-grid .stat-card:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5) !important;
+}
+
+[data-theme="dark"] .stats-grid .stat-card .stat-value {
+    color: #64b5f6 !important;
+}
+
+[data-theme="dark"] .stats-grid .stat-card .stat-label {
+    color: #b0b0b0 !important;
+}
+
+[data-theme="dark"] .top-bar .breadcrumb {
+    color: #e0e0e0 !important;
+}
+
+[data-theme="dark"] .top-bar .breadcrumb-icon {
+    color: #64b5f6 !important;
+}
+
+[data-theme="dark"] .user-dropdown-toggle {
+    background: rgba(100, 181, 246, 0.1) !important;
+    border-color: rgba(100, 181, 246, 0.3) !important;
+    color: #e0e0e0 !important;
+}
+
+[data-theme="dark"] .user-dropdown-toggle:hover {
+    background: rgba(100, 181, 246, 0.15) !important;
+    border-color: #64b5f6 !important;
+}
+
+[data-theme="dark"] .dropdown-arrow {
+    color: #64b5f6 !important;
+}
+
+[data-theme="dark"] .btn-logout {
+    background: rgba(100, 181, 246, 0.1) !important;
+    color: #e0e0e0 !important;
+    border-color: rgba(100, 181, 246, 0.3) !important;
+}
+
+[data-theme="dark"] .btn-logout:hover {
+    background: rgba(100, 181, 246, 0.2) !important;
+    border-color: #64b5f6 !important;
+}
+
+/* 按钮 */
+[data-theme] .btn-primary {
+    background: var(--gradient-primary) !important;
+    border-color: var(--primary-color) !important;
+}
+
+[data-theme] .btn-primary:hover {
+    opacity: 0.9 !important;
+    transform: translateY(-1px) !important;
+}
+
+[data-theme] .btn-secondary {
+    border-color: var(--primary-color) !important;
+    color: var(--primary-color) !important;
+}
+
+[data-theme] .btn-secondary:hover {
+    background: var(--primary-light) !important;
+    border-color: var(--primary-dark) !important;
+}
+
+/* 卡片 */
+[data-theme] .card {
+    border-color: var(--border-color) !important;
+}
+
+[data-theme] .card:hover {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* 统计卡片 - 完整主题适配 */
+[data-theme] .stats-grid .stat-card {
+    background: var(--gradient-primary) !important;
+    border: none !important;
+    color: white !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15) !important;
+}
+
+[data-theme] .stats-grid .stat-card:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2) !important;
+    transform: translateY(-3px) !important;
+}
+
+[data-theme] .stats-grid .stat-card .stat-icon {
+    filter: none !important;
+}
+
+[data-theme] .stats-grid .stat-card .stat-value {
+    color: white !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+}
+
+[data-theme] .stats-grid .stat-card .stat-label {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* 不同位置的统计卡片使用不同渐变 */
+[data-theme] .stats-grid .stat-card:nth-child(1) {
+    background: var(--gradient-primary) !important;
+}
+
+[data-theme] .stats-grid .stat-card:nth-child(2) {
+    background: var(--gradient-secondary) !important;
+}
+
+[data-theme] .stats-grid .stat-card:nth-child(3) {
+    background: linear-gradient(135deg, var(--info-color) 0%, var(--primary-color) 100%) !important;
+}
+
+[data-theme] .stats-grid .stat-card:nth-child(4) {
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--warning-color) 100%) !important;
+}
+
+/* 表格 */
+[data-theme] .table thead {
+    background: var(--primary-light) !important;
+    color: var(--primary-dark) !important;
+}
+
+[data-theme] .table tbody tr:hover {
+    background: var(--bg-secondary) !important;
+}
+
+/* 表单 */
+[data-theme] .form-control:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+}
+
+[data-theme] .form-group label {
+    color: var(--primary-dark) !important;
+}
+
+/* 标签 */
+[data-theme] .tag {
+    background: var(--primary-light) !important;
+    color: var(--primary-dark) !important;
+}
+
+[data-theme] .tag:hover {
+    background: var(--primary-color) !important;
+    color: white !important;
+}
+
+/* 分页 */
+[data-theme] .pagination .page-link {
+    color: var(--primary-color) !important;
+    border-color: var(--border-color) !important;
+}
+
+[data-theme] .pagination .page-link.active {
+    background: var(--gradient-primary) !important;
+    border-color: var(--primary-color) !important;
+    color: white !important;
+}
+
+/* 模态框 */
+[data-theme] .modal-header {
+    background: var(--gradient-primary) !important;
+    color: white !important;
+}
+
+[data-theme] .modal-header .close {
+    color: white !important;
+}
+
+/* 进度条 */
+[data-theme] .progress-bar {
+    background: var(--gradient-primary) !important;
+}
+
+/* 徽章 */
+[data-theme] .badge-primary {
+    background: var(--primary-color) !important;
+}
+
+/* 链接 */
+[data-theme] a {
+    color: var(--primary-color) !important;
+}
+
+[data-theme] a:hover {
+    color: var(--primary-dark) !important;
+}
+
+/* 开关按钮 */
+[data-theme] .switch input:checked + .slider {
+    background: var(--primary-color) !important;
+}
+
+/* 选项卡 */
+[data-theme] .tabs .tab.active {
+    border-bottom-color: var(--primary-color) !important;
+    color: var(--primary-color) !important;
+}
+
+/* 页面标题 - 移除渐变文字效果，避免影响emoji */
+/* [data-theme] .page-header h1 {
+    background: var(--gradient-primary) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+} */
+
+/* 改为使用纯色 */
+[data-theme] .page-header h1 {
+    color: var(--primary-color) !important;
+}
+
+/* 操作按钮 */
+[data-theme] .action-btn {
+    color: var(--primary-color) !important;
+}
+
+[data-theme] .action-btn:hover {
+    background: var(--primary-light) !important;
+}
+
+/* 删除按钮 */
+[data-theme] .btn-danger:hover {
+    opacity: 0.9 !important;
+}
+
+/* 成功提示 */
+[data-theme] .notification.success {
+    background: var(--success-color) !important;
+}
+
+/* 滚动条 */
+[data-theme] ::-webkit-scrollbar-thumb {
+    background: var(--primary-color) !important;
+}
+
+[data-theme] ::-webkit-scrollbar-track {
+    background: var(--bg-secondary) !important;
+}
+
+/* 选中文本 */
+[data-theme] ::selection {
+    background: var(--primary-color) !important;
+    color: white !important;
+}
+
+/* 编辑器工具栏 */
+[data-theme] .editor-toolbar {
+    border-color: var(--border-color) !important;
+}
+
+[data-theme] .editor-toolbar button:hover {
+    background: var(--primary-light) !important;
+    color: var(--primary-dark) !important;
+}
+
+/* 媒体库 */
+[data-theme] .media-item.selected {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2) !important;
+}
+
+/* 分类和标签选择器 */
+[data-theme] .category-item.selected,
+[data-theme] .tag-item.selected {
+    background: var(--primary-color) !important;
+    color: white !important;
+}
+
+/* 文件上传区域 */
+[data-theme] .upload-area {
+    border-color: var(--primary-color) !important;
+}
+
+[data-theme] .upload-area:hover {
+    background: var(--primary-light) !important;
+}
+
+/* 搜索框 */
+[data-theme] .search-box input:focus {
+    border-color: var(--primary-color) !important;
+}
+
+[data-theme] .search-btn {
+    background: var(--primary-color) !important;
+}
+
+/* 下拉菜单 */
+[data-theme] .dropdown-menu {
+    border-color: var(--border-color) !important;
+}
+
+[data-theme] .dropdown-item:hover {
+    background: var(--primary-light) !important;
+    color: var(--primary-dark) !important;
+}
+
+/* 主题和特效选择器 */
+[data-theme] .theme-option input:checked + .theme-card,
+[data-theme] .effect-option input:checked + .effect-card {
+    border-color: var(--primary-color) !important;
+    background: var(--primary-light) !important;
+}
+
+[data-theme] .theme-card:hover,
+[data-theme] .effect-card:hover {
+    border-color: var(--primary-color) !important;
+}
+
+
+/* ========================================
+   仪表盘主题适配增强
+   ======================================== */
+
+/* 顶部栏面包屑 - 保持白色 */
+[data-theme] .breadcrumb {
+    color: white !important;
+}
+
+/* 用户名 - 不覆盖，让dropdown-fix.css处理 */
+/* [data-theme] .username {
+    color: white !important;
+} */
+
+/* 退出按钮 */
+[data-theme] .btn-logout {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+[data-theme] .btn-logout:hover {
+    background: rgba(255, 255, 255, 0.3) !important;
+    border-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* 文章管理按钮 */
+[data-theme] .btn-new {
+    background: var(--gradient-primary) !important;
+}
+
+[data-theme] .btn-import {
+    background: var(--gradient-secondary) !important;
+}
+
+[data-theme] .btn-feishu {
+    background: var(--gradient-primary) !important;
+    opacity: 0.9 !important;
+}
+
+[data-theme] .btn-export {
+    background: linear-gradient(135deg, var(--warning-color) 0%, var(--accent-color) 100%) !important;
+}
+
+/* 表格头部 */
+[data-theme] .data-table thead {
+    background: var(--primary-light) !important;
+}
+
+[data-theme] .data-table th {
+    color: var(--primary-dark) !important;
+}
+
+/* 图标按钮 */
+[data-theme] .btn-icon:hover {
+    background: var(--primary-light) !important;
+    color: var(--primary-color) !important;
+}
+
+/* 媒体卡片 */
+[data-theme] .media-item:hover {
+    border-color: var(--primary-color) !important;
+}
+
+/* 标签卡片 */
+[data-theme] .tag-card:hover {
+    border-color: var(--primary-color) !important;
+}
+
+[data-theme] .tag-name {
+    color: var(--primary-color) !important;
+}
+
+/* 相册特效选择 */
+[data-theme] .effect-option:hover .effect-card {
+    border-color: var(--primary-color) !important;
+}
+
+[data-theme] .effect-option input[type="radio"]:checked + .effect-card {
+    border-color: var(--primary-color) !important;
+    background: var(--primary-light) !important;
+}
+
+[data-theme] .effect-option input[type="radio"]:checked + .effect-card::before {
+    background: var(--gradient-primary) !important;
+}
+
+/* 主题选择器 */
+[data-theme] .theme-option input[type="radio"]:checked + .theme-card {
+    border-color: var(--primary-color) !important;
+    background: var(--primary-light) !important;
+}
+
+/* 设置表单 */
+[data-theme] .settings-form {
+    border: 2px solid var(--border-light) !important;
+}
+
+[data-theme] .form-control:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 4px var(--primary-light) !important;
+}
+
+/* 头像设置 */
+[data-theme] .avatar-setting {
+    background: var(--primary-light) !important;
+    border-color: var(--primary-color) !important;
+}
+
+[data-theme] .avatar-preview {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15), 0 0 0 2px var(--primary-color) !important;
+}
+
+/* 飞书粘贴区域 */
+[data-theme] .feishu-paste-area:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 3px var(--primary-light) !important;
+}
+
+[data-theme] .feishu-paste-area h1,
+[data-theme] .feishu-paste-area h2,
+[data-theme] .feishu-paste-area h3 {
+    color: var(--primary-color) !important;
+}
+
+[data-theme] .feishu-paste-area blockquote {
+    border-left-color: var(--primary-color) !important;
+}
+
+[data-theme] .feishu-paste-area a {
+    color: var(--primary-color) !important;
+}
+
+/* 模态框优化 */
+[data-theme] .modal-header {
+    background: var(--gradient-primary) !important;
+}
+
+[data-theme] .modal-header h3 {
+    color: white !important;
+}
+
+[data-theme] .modal-close {
+    color: white !important;
+}
+
+[data-theme] .modal-close:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* 信息框 */
+[data-theme] .info-box {
+    background: var(--primary-light) !important;
+    border-left-color: var(--primary-color) !important;
+}
+
+[data-theme] .info-box h4 {
+    color: var(--primary-color) !important;
+}
+
+
+/* ========================================
+   赛博朋克主题特殊适配 🤖
+   ======================================== */
+
+/* 赛博朋克 - 侧边栏霓虹效果 */
+[data-theme="cyberpunk"] .sidebar {
+    background: linear-gradient(180deg, rgba(10, 14, 39, 0.98) 0%, rgba(26, 31, 58, 0.98) 100%) !important;
+    border-right: 2px solid rgba(0, 240, 255, 0.3) !important;
+    box-shadow: 4px 0 20px rgba(0, 240, 255, 0.2) !important;
+}
+
+[data-theme="cyberpunk"] .sidebar .logo {
+    border-bottom: 2px solid rgba(0, 240, 255, 0.3) !important;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5) !important;
+}
+
+[data-theme="cyberpunk"] .sidebar .logo h2 {
+    color: #00f0ff !important;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5) !important;
+}
+
+/* 赛博朋克 - 侧边栏导航项 */
+[data-theme="cyberpunk"] .sidebar-nav .nav-item {
+    color: #b8c5d6 !important;
+    border-left: 2px solid transparent !important;
+    position: relative !important;
+}
+
+[data-theme="cyberpunk"] .sidebar-nav .nav-item::before {
+    content: '' !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 0 !important;
+    height: 100% !important;
+    background: linear-gradient(90deg, rgba(0, 240, 255, 0.3), transparent) !important;
+    transition: width 0.3s ease !important;
+}
+
+[data-theme="cyberpunk"] .sidebar-nav .nav-item:hover {
+    background: rgba(0, 240, 255, 0.1) !important;
+    color: #00f0ff !important;
+    border-left-color: #00f0ff !important;
+    box-shadow: inset 0 0 20px rgba(0, 240, 255, 0.1) !important;
+}
+
+[data-theme="cyberpunk"] .sidebar-nav .nav-item:hover::before {
+    width: 100% !important;
+}
+
+[data-theme="cyberpunk"] .sidebar-nav .nav-item.active {
+    background: rgba(0, 240, 255, 0.15) !important;
+    color: #00f0ff !important;
+    border-left: 4px solid #00f0ff !important;
+    box-shadow: 
+        inset 0 0 30px rgba(0, 240, 255, 0.2),
+        0 0 10px rgba(0, 240, 255, 0.3) !important;
+    text-shadow: 0 0 5px rgba(0, 240, 255, 0.5) !important;
+}
+
+/* 赛博朋克 - 顶部栏 */
+[data-theme="cyberpunk"] .top-bar {
+    background: linear-gradient(90deg, rgba(10, 14, 39, 0.98) 0%, rgba(26, 31, 58, 0.98) 100%) !important;
+    border-bottom: 2px solid rgba(0, 240, 255, 0.3) !important;
+    box-shadow: 0 4px 20px rgba(0, 240, 255, 0.2) !important;
+}
+
+[data-theme="cyberpunk"] .top-bar .page-title {
+    color: #00f0ff !important;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5) !important;
+    font-weight: 700 !important;
+    letter-spacing: 1px !important;
+}
+
+/* 赛博朋克 - 按钮 */
+[data-theme="cyberpunk"] .btn-primary {
+    background: linear-gradient(135deg, #00f0ff 0%, #0099cc 100%) !important;
+    border: 2px solid #00f0ff !important;
+    color: #0a0e27 !important;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.5) !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+}
+
+[data-theme="cyberpunk"] .btn-primary:hover {
+    background: linear-gradient(135deg, #ff006e 0%, #ffbe0b 100%) !important;
+    border-color: #ff006e !important;
+    box-shadow: 0 0 20px rgba(255, 0, 110, 0.6) !important;
+    transform: translateY(-2px) !important;
+}
+
+[data-theme="cyberpunk"] .btn-secondary {
+    background: rgba(0, 240, 255, 0.1) !important;
+    border: 2px solid #00f0ff !important;
+    color: #00f0ff !important;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.3) !important;
+}
+
+[data-theme="cyberpunk"] .btn-secondary:hover {
+    background: rgba(0, 240, 255, 0.2) !important;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.5) !important;
+}
+
+/* 赛博朋克 - 卡片 */
+[data-theme="cyberpunk"] .card {
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.9) 0%, rgba(37, 42, 72, 0.9) 100%) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    box-shadow: 
+        0 4px 15px rgba(0, 240, 255, 0.2),
+        inset 0 0 20px rgba(0, 240, 255, 0.05) !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+[data-theme="cyberpunk"] .card::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: -100% !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.1), transparent) !important;
+    transition: left 0.5s !important;
+    pointer-events: none !important;
+}
+
+[data-theme="cyberpunk"] .card:hover::before {
+    left: 100% !important;
+}
+
+[data-theme="cyberpunk"] .card:hover {
+    border-color: #00f0ff !important;
+    box-shadow: 
+        0 8px 25px rgba(0, 240, 255, 0.4),
+        inset 0 0 30px rgba(0, 240, 255, 0.1) !important;
+    transform: translateY(-2px) !important;
+}
+
+/* 赛博朋克 - 统计卡片霓虹效果 */
+[data-theme="cyberpunk"] .stats-grid .stat-card {
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.95) 0%, rgba(37, 42, 72, 0.95) 100%) !important;
+    border: 2px solid #00f0ff !important;
+    box-shadow: 
+        0 0 20px rgba(0, 240, 255, 0.4),
+        inset 0 0 30px rgba(0, 240, 255, 0.1) !important;
+}
+
+[data-theme="cyberpunk"] .stats-grid .stat-card:hover {
+    box-shadow: 
+        0 0 30px rgba(0, 240, 255, 0.6),
+        inset 0 0 40px rgba(0, 240, 255, 0.15) !important;
+    transform: translateY(-3px) !important;
+}
+
+[data-theme="cyberpunk"] .stats-grid .stat-card .stat-value {
+    color: #00f0ff !important;
+    text-shadow: 0 0 15px rgba(0, 240, 255, 0.8), 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="cyberpunk"] .stats-grid .stat-card .stat-label {
+    color: #b8c5d6 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    font-size: 0.85rem !important;
+}
+
+/* 赛博朋克 - 不同卡片不同颜色 */
+[data-theme="cyberpunk"] .stats-grid .stat-card:nth-child(1) {
+    border-color: #00f0ff !important;
+    box-shadow: 
+        0 0 20px rgba(0, 240, 255, 0.4),
+        inset 0 0 30px rgba(0, 240, 255, 0.1) !important;
+}
+
+[data-theme="cyberpunk"] .stats-grid .stat-card:nth-child(1) .stat-value {
+    color: #00f0ff !important;
+    text-shadow: 0 0 15px rgba(0, 240, 255, 0.8) !important;
+}
+
+[data-theme="cyberpunk"] .stats-grid .stat-card:nth-child(2) {
+    border-color: #ff006e !important;
+    box-shadow: 
+        0 0 20px rgba(255, 0, 110, 0.4),
+        inset 0 0 30px rgba(255, 0, 110, 0.1) !important;
+}
+
+[data-theme="cyberpunk"] .stats-grid .stat-card:nth-child(2) .stat-value {
+    color: #ff006e !important;
+    text-shadow: 0 0 15px rgba(255, 0, 110, 0.8) !important;
+}
+
+[data-theme="cyberpunk"] .stats-grid .stat-card:nth-child(3) {
+    border-color: #00ff9f !important;
+    box-shadow: 
+        0 0 20px rgba(0, 255, 159, 0.4),
+        inset 0 0 30px rgba(0, 255, 159, 0.1) !important;
+}
+
+[data-theme="cyberpunk"] .stats-grid .stat-card:nth-child(3) .stat-value {
+    color: #00ff9f !important;
+    text-shadow: 0 0 15px rgba(0, 255, 159, 0.8) !important;
+}
+
+[data-theme="cyberpunk"] .stats-grid .stat-card:nth-child(4) {
+    border-color: #ffbe0b !important;
+    box-shadow: 
+        0 0 20px rgba(255, 190, 11, 0.4),
+        inset 0 0 30px rgba(255, 190, 11, 0.1) !important;
+}
+
+[data-theme="cyberpunk"] .stats-grid .stat-card:nth-child(4) .stat-value {
+    color: #ffbe0b !important;
+    text-shadow: 0 0 15px rgba(255, 190, 11, 0.8) !important;
+}
+
+/* 赛博朋克 - 表格 */
+[data-theme="cyberpunk"] .table,
+[data-theme="cyberpunk"] .data-table {
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    background: rgba(26, 31, 58, 0.8) !important;
+}
+
+[data-theme="cyberpunk"] .table thead,
+[data-theme="cyberpunk"] .data-table thead {
+    background: rgba(0, 240, 255, 0.1) !important;
+    border-bottom: 2px solid #00f0ff !important;
+}
+
+[data-theme="cyberpunk"] .table th,
+[data-theme="cyberpunk"] .data-table th {
+    color: #00f0ff !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    border-bottom: 2px solid #00f0ff !important;
+}
+
+[data-theme="cyberpunk"] .table td,
+[data-theme="cyberpunk"] .data-table td {
+    border-bottom: 1px solid rgba(0, 240, 255, 0.1) !important;
+    color: #b8c5d6 !important;
+}
+
+[data-theme="cyberpunk"] .table tbody tr:hover,
+[data-theme="cyberpunk"] .data-table tbody tr:hover {
+    background: rgba(0, 240, 255, 0.05) !important;
+}
+
+/* 赛博朋克 - 表单 */
+[data-theme="cyberpunk"] .form-control,
+[data-theme="cyberpunk"] input,
+[data-theme="cyberpunk"] textarea,
+[data-theme="cyberpunk"] select {
+    background: rgba(26, 31, 58, 0.8) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    color: #ffffff !important;
+    box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.1) !important;
+}
+
+[data-theme="cyberpunk"] .form-control:focus,
+[data-theme="cyberpunk"] input:focus,
+[data-theme="cyberpunk"] textarea:focus,
+[data-theme="cyberpunk"] select:focus {
+    border-color: #00f0ff !important;
+    box-shadow: 
+        0 0 15px rgba(0, 240, 255, 0.4),
+        inset 0 0 15px rgba(0, 240, 255, 0.2) !important;
+    outline: none !important;
+}
+
+[data-theme="cyberpunk"] .form-group label {
+    color: #00f0ff !important;
+    text-transform: uppercase !important;
+    font-size: 0.85rem !important;
+    letter-spacing: 1px !important;
+}
+
+/* 赛博朋克 - 标签 */
+[data-theme="cyberpunk"] .tag,
+[data-theme="cyberpunk"] .badge {
+    background: rgba(0, 240, 255, 0.1) !important;
+    border: 1px solid #00f0ff !important;
+    color: #00f0ff !important;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.3) !important;
+    text-transform: uppercase !important;
+    font-size: 0.75rem !important;
+    letter-spacing: 1px !important;
+}
+
+[data-theme="cyberpunk"] .tag:hover {
+    background: rgba(255, 0, 110, 0.2) !important;
+    border-color: #ff006e !important;
+    color: #ff006e !important;
+    box-shadow: 0 0 15px rgba(255, 0, 110, 0.5) !important;
+}
+
+/* 赛博朋克 - 模态框 */
+[data-theme="cyberpunk"] .modal-header {
+    background: linear-gradient(135deg, rgba(10, 14, 39, 0.98) 0%, rgba(26, 31, 58, 0.98) 100%) !important;
+    border-bottom: 2px solid rgba(0, 240, 255, 0.3) !important;
+    box-shadow: 0 2px 20px rgba(0, 240, 255, 0.2) !important;
+}
+
+[data-theme="cyberpunk"] .modal-header h3 {
+    color: #00f0ff !important;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5) !important;
+}
+
+[data-theme="cyberpunk"] .modal-content {
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.95) 0%, rgba(37, 42, 72, 0.95) 100%) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    box-shadow: 0 8px 30px rgba(0, 240, 255, 0.3) !important;
+}
+
+/* 赛博朋克 - 链接 */
+[data-theme="cyberpunk"] a {
+    color: #00f0ff !important;
+}
+
+[data-theme="cyberpunk"] a:hover {
+    color: #ff006e !important;
+    text-shadow: 0 0 10px currentColor !important;
+}
+
+/* 赛博朋克 - 操作按钮 */
+[data-theme="cyberpunk"] .action-btn {
+    color: #00f0ff !important;
+    border: 1px solid transparent !important;
+}
+
+[data-theme="cyberpunk"] .action-btn:hover {
+    background: rgba(0, 240, 255, 0.1) !important;
+    border-color: #00f0ff !important;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.3) !important;
+}
+
+/* 赛博朋克 - 滚动条 */
+[data-theme="cyberpunk"] ::-webkit-scrollbar {
+    width: 10px !important;
+    height: 10px !important;
+}
+
+[data-theme="cyberpunk"] ::-webkit-scrollbar-track {
+    background: rgba(26, 31, 58, 0.5) !important;
+    border: 1px solid rgba(0, 240, 255, 0.2) !important;
+}
+
+[data-theme="cyberpunk"] ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #00f0ff 0%, #ff006e 100%) !important;
+    border-radius: 5px !important;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.5) !important;
+}
+
+[data-theme="cyberpunk"] ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #ff006e 0%, #ffbe0b 100%) !important;
+    box-shadow: 0 0 15px rgba(255, 0, 110, 0.6) !important;
+}
+
+/* ========================================
+   赛博朋克主题 - 编辑器完整优化 🤖
+   ======================================== */
+
+/* 编辑器标题输入框 */
+[data-theme="cyberpunk"] .editor-title {
+    background: rgba(26, 31, 58, 0.9) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    color: #00f0ff !important;
+    box-shadow: 
+        0 0 20px rgba(0, 240, 255, 0.2),
+        inset 0 0 30px rgba(0, 240, 255, 0.05) !important;
+    font-family: 'Consolas', 'Monaco', 'Microsoft YaHei', sans-serif !important;
+    text-shadow: 0 0 5px rgba(0, 240, 255, 0.3) !important;
+}
+
+[data-theme="cyberpunk"] .editor-title:focus {
+    border-color: #00f0ff !important;
+    box-shadow: 
+        0 0 30px rgba(0, 240, 255, 0.4),
+        inset 0 0 40px rgba(0, 240, 255, 0.1) !important;
+}
+
+[data-theme="cyberpunk"] .editor-title::placeholder {
+    color: rgba(0, 240, 255, 0.5) !important;
+}
+
+/* 编辑器内容区域 */
+[data-theme="cyberpunk"] .editor-content {
+    background: rgba(26, 31, 58, 0.9) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    box-shadow: 
+        0 0 20px rgba(0, 240, 255, 0.2),
+        inset 0 0 30px rgba(0, 240, 255, 0.05) !important;
+}
+
+/* 编辑器工具栏 */
+[data-theme="cyberpunk"] .editor-toolbar {
+    background: rgba(10, 14, 39, 0.95) !important;
+    border-bottom: 1px solid rgba(0, 240, 255, 0.3) !important;
+    box-shadow: 0 2px 10px rgba(0, 240, 255, 0.2) !important;
+}
+
+[data-theme="cyberpunk"] .editor-toolbar button,
+[data-theme="cyberpunk"] .toolbar-btn {
+    background: rgba(0, 240, 255, 0.1) !important;
+    color: #b8c5d6 !important;
+    border: 1px solid rgba(0, 240, 255, 0.2) !important;
+    box-shadow: 0 0 5px rgba(0, 240, 255, 0.1) !important;
+}
+
+[data-theme="cyberpunk"] .editor-toolbar button:hover,
+[data-theme="cyberpunk"] .toolbar-btn:hover {
+    background: rgba(0, 240, 255, 0.2) !important;
+    color: #00f0ff !important;
+    border-color: #00f0ff !important;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.4) !important;
+    transform: translateY(-2px) !important;
+}
+
+[data-theme="cyberpunk"] .editor-toolbar button:active,
+[data-theme="cyberpunk"] .toolbar-btn:active {
+    transform: translateY(0) !important;
+}
+
+/* 编辑器文本区域 */
+[data-theme="cyberpunk"] .editor-textarea,
+[data-theme="cyberpunk"] textarea.editor-textarea {
+    background: rgba(10, 14, 39, 0.95) !important;
+    color: #b8c5d6 !important;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+    border: none !important;
+    caret-color: #00f0ff !important;
+}
+
+[data-theme="cyberpunk"] .editor-textarea::selection,
+[data-theme="cyberpunk"] textarea.editor-textarea::selection {
+    background: rgba(0, 240, 255, 0.3) !important;
+    color: #ffffff !important;
+}
+
+/* 编辑器侧边栏 */
+[data-theme="cyberpunk"] .editor-sidebar {
+    background: rgba(26, 31, 58, 0.9) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    box-shadow: 
+        0 0 20px rgba(0, 240, 255, 0.2),
+        inset 0 0 30px rgba(0, 240, 255, 0.05) !important;
+}
+
+[data-theme="cyberpunk"] .editor-sidebar h3,
+[data-theme="cyberpunk"] .sidebar-section h3 {
+    color: #00f0ff !important;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5) !important;
+    border-bottom: 2px solid rgba(0, 240, 255, 0.3) !important;
+    padding-bottom: 0.5rem !important;
+}
+
+/* 侧边栏标签 */
+[data-theme="cyberpunk"] .select-group label {
+    color: #b8c5d6 !important;
+    text-transform: uppercase !important;
+    font-size: 0.85rem !important;
+    letter-spacing: 1px !important;
+}
+
+/* 侧边栏输入框和选择框 */
+[data-theme="cyberpunk"] .select-group select,
+[data-theme="cyberpunk"] .select-group input,
+[data-theme="cyberpunk"] .editor-sidebar select,
+[data-theme="cyberpunk"] .editor-sidebar input[type="text"],
+[data-theme="cyberpunk"] .editor-sidebar input[type="date"] {
+    background: rgba(10, 14, 39, 0.8) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    color: #b8c5d6 !important;
+    box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.1) !important;
+}
+
+[data-theme="cyberpunk"] .select-group select:focus,
+[data-theme="cyberpunk"] .select-group input:focus,
+[data-theme="cyberpunk"] .editor-sidebar select:focus,
+[data-theme="cyberpunk"] .editor-sidebar input:focus {
+    border-color: #00f0ff !important;
+    box-shadow: 
+        0 0 15px rgba(0, 240, 255, 0.4),
+        inset 0 0 15px rgba(0, 240, 255, 0.2) !important;
+    outline: none !important;
+}
+
+[data-theme="cyberpunk"] .select-group select option {
+    background: rgba(10, 14, 39, 0.95) !important;
+    color: #b8c5d6 !important;
+}
+
+/* 标签输入区域 */
+[data-theme="cyberpunk"] .tags-input-wrapper,
+[data-theme="cyberpunk"] .tags-display {
+    background: rgba(10, 14, 39, 0.8) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.1) !important;
+}
+
+[data-theme="cyberpunk"] .tag-item {
+    background: rgba(0, 240, 255, 0.1) !important;
+    border: 1px solid #00f0ff !important;
+    color: #00f0ff !important;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.3) !important;
+    text-transform: uppercase !important;
+    font-size: 0.75rem !important;
+    letter-spacing: 1px !important;
+}
+
+[data-theme="cyberpunk"] .tag-item:hover {
+    background: rgba(255, 0, 110, 0.2) !important;
+    border-color: #ff006e !important;
+    color: #ff006e !important;
+    box-shadow: 0 0 15px rgba(255, 0, 110, 0.5) !important;
+}
+
+[data-theme="cyberpunk"] .tag-remove {
+    color: #00f0ff !important;
+}
+
+[data-theme="cyberpunk"] .tag-remove:hover {
+    color: #ff006e !important;
+}
+
+[data-theme="cyberpunk"] .tag-input {
+    background: transparent !important;
+    color: #b8c5d6 !important;
+    caret-color: #00f0ff !important;
+}
+
+/* 特色图片区域 */
+[data-theme="cyberpunk"] .featured-image {
+    background: rgba(10, 14, 39, 0.8) !important;
+    border: 2px dashed rgba(0, 240, 255, 0.3) !important;
+    box-shadow: inset 0 0 20px rgba(0, 240, 255, 0.1) !important;
+}
+
+[data-theme="cyberpunk"] .featured-image:hover {
+    background: rgba(0, 240, 255, 0.05) !important;
+    border-color: #00f0ff !important;
+    box-shadow: 
+        0 0 20px rgba(0, 240, 255, 0.3),
+        inset 0 0 30px rgba(0, 240, 255, 0.15) !important;
+}
+
+[data-theme="cyberpunk"] .upload-placeholder {
+    color: rgba(0, 240, 255, 0.6) !important;
+}
+
+[data-theme="cyberpunk"] .featured-image img {
+    border: 2px solid rgba(0, 240, 255, 0.3) !important;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.3) !important;
+}
+
+/* 操作按钮 */
+[data-theme="cyberpunk"] .btn-publish {
+    background: linear-gradient(135deg, #00ff9f 0%, #00cc7f 100%) !important;
+    color: #0a0e27 !important;
+    border: 2px solid #00ff9f !important;
+    box-shadow: 0 0 15px rgba(0, 255, 159, 0.5) !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+}
+
+[data-theme="cyberpunk"] .btn-publish:hover {
+    background: linear-gradient(135deg, #00f0ff 0%, #0099cc 100%) !important;
+    border-color: #00f0ff !important;
+    box-shadow: 0 0 25px rgba(0, 240, 255, 0.6) !important;
+    transform: translateY(-2px) !important;
+}
+
+[data-theme="cyberpunk"] .btn-draft {
+    background: rgba(0, 240, 255, 0.1) !important;
+    color: #b8c5d6 !important;
+    border: 2px solid rgba(0, 240, 255, 0.3) !important;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.2) !important;
+}
+
+[data-theme="cyberpunk"] .btn-draft:hover {
+    background: rgba(0, 240, 255, 0.2) !important;
+    border-color: #00f0ff !important;
+    color: #00f0ff !important;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.4) !important;
+}
+
+[data-theme="cyberpunk"] .btn-preview {
+    background: linear-gradient(135deg, #ff006e 0%, #ffbe0b 100%) !important;
+    color: #0a0e27 !important;
+    border: 2px solid #ff006e !important;
+    box-shadow: 0 0 15px rgba(255, 0, 110, 0.5) !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+}
+
+[data-theme="cyberpunk"] .btn-preview:hover {
+    background: linear-gradient(135deg, #ffbe0b 0%, #ff006e 100%) !important;
+    border-color: #ffbe0b !important;
+    box-shadow: 0 0 25px rgba(255, 190, 11, 0.6) !important;
+    transform: translateY(-2px) !important;
+}
+
+[data-theme="cyberpunk"] .btn-secondary {
+    background: rgba(0, 240, 255, 0.1) !important;
+    color: #b8c5d6 !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.2) !important;
+}
+
+[data-theme="cyberpunk"] .btn-secondary:hover {
+    background: rgba(255, 0, 110, 0.2) !important;
+    border-color: #ff006e !important;
+    color: #ff006e !important;
+    box-shadow: 0 0 15px rgba(255, 0, 110, 0.4) !important;
+}
+
+[data-theme="cyberpunk"] .btn-full {
+    transition: all 0.3s ease !important;
+}
+
+/* 编辑器容器 */
+[data-theme="cyberpunk"] .editor-container {
+    position: relative !important;
+}
+
+/* 扫描线效果 - 编辑器专用 */
+[data-theme="cyberpunk"] .editor-content::after,
+[data-theme="cyberpunk"] .editor-sidebar::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 240, 255, 0.02) 0px,
+        rgba(0, 240, 255, 0.02) 1px,
+        transparent 1px,
+        transparent 2px
+    ) !important;
+    pointer-events: none !important;
+    z-index: 1 !important;
+}
+
+[data-theme="cyberpunk"] .editor-textarea {
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+/* 编辑器滚动条 */
+[data-theme="cyberpunk"] .editor-textarea::-webkit-scrollbar,
+[data-theme="cyberpunk"] .editor-sidebar::-webkit-scrollbar {
+    width: 10px !important;
+}
+
+[data-theme="cyberpunk"] .editor-textarea::-webkit-scrollbar-track,
+[data-theme="cyberpunk"] .editor-sidebar::-webkit-scrollbar-track {
+    background: rgba(26, 31, 58, 0.5) !important;
+    border: 1px solid rgba(0, 240, 255, 0.2) !important;
+}
+
+[data-theme="cyberpunk"] .editor-textarea::-webkit-scrollbar-thumb,
+[data-theme="cyberpunk"] .editor-sidebar::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #00f0ff 0%, #ff006e 100%) !important;
+    border-radius: 5px !important;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.5) !important;
+}
+
+[data-theme="cyberpunk"] .editor-textarea::-webkit-scrollbar-thumb:hover,
+[data-theme="cyberpunk"] .editor-sidebar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #ff006e 0%, #ffbe0b 100%) !important;
+    box-shadow: 0 0 15px rgba(255, 0, 110, 0.6) !important;
+}
+
+/* Markdown 预览区域（如果有） */
+[data-theme="cyberpunk"] .markdown-preview,
+[data-theme="cyberpunk"] .editor-preview {
+    background: rgba(10, 14, 39, 0.95) !important;
+    color: #b8c5d6 !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    box-shadow: 
+        0 0 20px rgba(0, 240, 255, 0.2),
+        inset 0 0 30px rgba(0, 240, 255, 0.05) !important;
+}
+
+[data-theme="cyberpunk"] .markdown-preview h1,
+[data-theme="cyberpunk"] .markdown-preview h2,
+[data-theme="cyberpunk"] .markdown-preview h3,
+[data-theme="cyberpunk"] .editor-preview h1,
+[data-theme="cyberpunk"] .editor-preview h2,
+[data-theme="cyberpunk"] .editor-preview h3 {
+    color: #00f0ff !important;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5) !important;
+}
+
+[data-theme="cyberpunk"] .markdown-preview code,
+[data-theme="cyberpunk"] .editor-preview code {
+    background: rgba(0, 240, 255, 0.1) !important;
+    color: #00ff9f !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    text-shadow: 0 0 5px rgba(0, 255, 159, 0.3) !important;
+}
+
+[data-theme="cyberpunk"] .markdown-preview pre,
+[data-theme="cyberpunk"] .editor-preview pre {
+    background: rgba(10, 14, 39, 0.95) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    box-shadow: 
+        0 0 20px rgba(0, 240, 255, 0.2),
+        inset 0 0 30px rgba(0, 240, 255, 0.05) !important;
+}
+
+/* 字数统计等信息 */
+[data-theme="cyberpunk"] .editor-info,
+[data-theme="cyberpunk"] .word-count,
+[data-theme="cyberpunk"] .char-count {
+    color: rgba(0, 240, 255, 0.7) !important;
+    font-family: 'Consolas', 'Monaco', monospace !important;
+    text-shadow: 0 0 5px rgba(0, 240, 255, 0.3) !important;
+}
+
+/* 保存状态提示 */
+[data-theme="cyberpunk"] .save-status {
+    color: #00ff9f !important;
+    text-shadow: 0 0 5px rgba(0, 255, 159, 0.5) !important;
+}
+
+[data-theme="cyberpunk"] .save-status.saving {
+    color: #ffbe0b !important;
+    text-shadow: 0 0 5px rgba(255, 190, 11, 0.5) !important;
+}
+
+[data-theme="cyberpunk"] .save-status.error {
+    color: #ff006e !important;
+    text-shadow: 0 0 5px rgba(255, 0, 110, 0.5) !important;
+}
+
+/* 赛博朋克 - 媒体库 */
+[data-theme="cyberpunk"] .media-item {
+    border: 1px solid rgba(0, 240, 255, 0.2) !important;
+    background: rgba(26, 31, 58, 0.5) !important;
+}
+
+[data-theme="cyberpunk"] .media-item:hover {
+    border-color: #00f0ff !important;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.4) !important;
+}
+
+[data-theme="cyberpunk"] .media-item.selected {
+    border-color: #00f0ff !important;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.6) !important;
+}
+
+/* 赛博朋克 - 分页 */
+[data-theme="cyberpunk"] .pagination .page-link {
+    background: rgba(26, 31, 58, 0.8) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    color: #00f0ff !important;
+}
+
+[data-theme="cyberpunk"] .pagination .page-link:hover {
+    background: rgba(0, 240, 255, 0.1) !important;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.3) !important;
+}
+
+[data-theme="cyberpunk"] .pagination .page-link.active {
+    background: linear-gradient(135deg, #00f0ff 0%, #0099cc 100%) !important;
+    border-color: #00f0ff !important;
+    color: #0a0e27 !important;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.5) !important;
+}
+
+/* 赛博朋克 - 退出按钮 */
+[data-theme="cyberpunk"] .btn-logout {
+    background: rgba(0, 240, 255, 0.1) !important;
+    color: #00f0ff !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.2) !important;
+}
+
+[data-theme="cyberpunk"] .btn-logout:hover {
+    background: rgba(255, 0, 110, 0.2) !important;
+    border-color: #ff006e !important;
+    color: #ff006e !important;
+    box-shadow: 0 0 15px rgba(255, 0, 110, 0.4) !important;
+}
+
+/* 赛博朋克 - 主体内容区域 */
+[data-theme="cyberpunk"] .main-content {
+    background: transparent !important;
+}
+
+/* 赛博朋克 - 页面标题 */
+[data-theme="cyberpunk"] .page-header h1 {
+    color: #00f0ff !important;
+    text-shadow: 0 0 15px rgba(0, 240, 255, 0.6) !important;
+}
+
+/* 赛博朋克 - 信息框 */
+[data-theme="cyberpunk"] .info-box {
+    background: rgba(0, 240, 255, 0.05) !important;
+    border-left: 4px solid #00f0ff !important;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.2) !important;
+}
+
+[data-theme="cyberpunk"] .info-box h4 {
+    color: #00f0ff !important;
+    text-shadow: 0 0 5px rgba(0, 240, 255, 0.5) !important;
+}
+
+/* 赛博朋克 - 下拉菜单 */
+[data-theme="cyberpunk"] .dropdown-menu {
+    background: rgba(26, 31, 58, 0.98) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    box-shadow: 0 8px 25px rgba(0, 240, 255, 0.3) !important;
+}
+
+[data-theme="cyberpunk"] .dropdown-item {
+    color: #b8c5d6 !important;
+}
+
+[data-theme="cyberpunk"] .dropdown-item:hover {
+    background: rgba(0, 240, 255, 0.1) !important;
+    color: #00f0ff !important;
+}
+
+/* 赛博朋克 - 主题选择器 */
+[data-theme="cyberpunk"] .theme-option input:checked + .theme-card {
+    border-color: #00f0ff !important;
+    background: rgba(0, 240, 255, 0.1) !important;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.4) !important;
+}
+
+/* 赛博朋克 - 特效选择器 */
+[data-theme="cyberpunk"] .effect-option input:checked + .effect-card {
+    border-color: #00f0ff !important;
+    background: rgba(0, 240, 255, 0.1) !important;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.4) !important;
+}
+
+
+/* ========================================
+   通用卡片背景适配 - 所有主题
+   ======================================== */
+
+/* 卡片背景 */
+[data-theme] .card,
+[data-theme] .tag-card,
+[data-theme] .media-item,
+[data-theme] .app-manage-card,
+[data-theme] .settings-form,
+[data-theme] .table-container,
+[data-theme] .modal-content,
+[data-theme] .effect-card,
+[data-theme] .theme-card {
+    background: var(--bg-color) !important;
+    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+/* 表单控件背景 */
+[data-theme] .form-control,
+[data-theme] input[type="text"],
+[data-theme] input[type="email"],
+[data-theme] input[type="password"],
+[data-theme] input[type="number"],
+[data-theme] input[type="url"],
+[data-theme] textarea,
+[data-theme] select {
+    background: var(--bg-color) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+    transition: all 0.3s ease !important;
+}
+
+[data-theme] .form-control:hover {
+    background: var(--bg-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+[data-theme] .form-control:focus {
+    background: var(--bg-color) !important;
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 4px var(--primary-light) !important;
+}
+
+/* 开关按钮背景 */
+[data-theme] .switch .slider {
+    background: var(--bg-secondary) !important;
+}
+
+[data-theme] .switch .slider:before {
+    background: white !important;
+}
+
+/* 头像预览背景 */
+[data-theme] .avatar-preview {
+    background: var(--bg-color) !important;
+}
+
+/* 头像上传控件 */
+[data-theme] .avatar-upload-controls .form-control {
+    background: var(--bg-color) !important;
+}
+
+/* 飞书粘贴区域 */
+[data-theme] .feishu-paste-area {
+    background: var(--bg-color) !important;
+    color: var(--text-primary) !important;
+}
+
+/* 代码预览区域 */
+[data-theme] .code-preview {
+    background: var(--bg-color) !important;
+}
+
+/* 搜索框 */
+[data-theme] .search-box input {
+    background: var(--bg-color) !important;
+    color: var(--text-primary) !important;
+}
+
+/* 分页输入框 */
+[data-theme] .page-input {
+    background: var(--bg-color) !important;
+    color: var(--text-primary) !important;
+}
+
+/* 统计卡片保持渐变背景 */
+[data-theme] .stat-card[style*="background: linear-gradient"] {
+    /* 保持内联样式的渐变背景 */
+}
+
+/* 警告徽章 */
+[data-theme] .badge-warning,
+[data-theme] .status-badge.warning {
+    background: var(--warning-color) !important;
+    color: white !important;
+    opacity: 0.9 !important;
+}
+
+/* 按钮危险状态悬停 */
+[data-theme] .btn-icon.btn-danger:hover {
+    background: var(--error-color) !important;
+    color: white !important;
+    opacity: 0.1 !important;
+}
+
+
+/* ========================================
+   通用卡片背景适配 - 所有主题
+   ======================================== */
+
+/* 卡片背景 */
+[data-theme] .card,
+[data-theme] .tag-card,
+[data-theme] .app-manage-card,
+[data-theme] .settings-form,
+[data-theme] .table-container {
+    background: var(--bg-color) !important;
+    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+/* 表单控件背景 */
+[data-theme] .form-control,
+[data-theme] input[type="text"],
+[data-theme] input[type="email"],
+[data-theme] input[type="password"],
+[data-theme] input[type="number"],
+[data-theme] input[type="url"],
+[data-theme] textarea,
+[data-theme] select {
+    background: var(--bg-color) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+    transition: all 0.3s ease !important;
+}
+
+[data-theme] .form-control:hover {
+    background: var(--bg-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+[data-theme] .form-control:focus {
+    background: var(--bg-color) !important;
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 4px var(--primary-light) !important;
+}
+
+/* 开关按钮背景 */
+[data-theme] .switch .slider {
+    background: var(--bg-secondary) !important;
+}
+
+[data-theme] .switch .slider:before {
+    background: white !important;
+}
+
+/* 头像预览背景 */
+[data-theme] .avatar-preview {
+    background: var(--bg-color) !important;
+}
+
+/* 头像上传控件 */
+[data-theme] .avatar-upload-controls .form-control {
+    background: var(--bg-color) !important;
+}
+
+/* 飞书粘贴区域 */
+[data-theme] .feishu-paste-area {
+    background: var(--bg-color) !important;
+    color: var(--text-primary) !important;
+}
+
+/* 代码预览区域 */
+[data-theme] .code-preview {
+    background: var(--bg-color) !important;
+}
+
+/* 搜索框 */
+[data-theme] .search-box input {
+    background: var(--bg-color) !important;
+    color: var(--text-primary) !important;
+}
+
+/* 分页输入框 */
+[data-theme] .page-input {
+    background: var(--bg-color) !important;
+    color: var(--text-primary) !important;
+}
+
+
+/* ========================================
+   赛博朋克主题 - 卡片特殊效果
+   ======================================== */
+
+/* 赛博朋克 - 标签卡片 */
+[data-theme="cyberpunk"] .tag-card {
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.9) 0%, rgba(37, 42, 72, 0.9) 100%) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    box-shadow: 
+        0 4px 15px rgba(0, 240, 255, 0.2),
+        inset 0 0 20px rgba(0, 240, 255, 0.05) !important;
+}
+
+[data-theme="cyberpunk"] .tag-card:hover {
+    border-color: #00f0ff !important;
+    box-shadow: 
+        0 8px 25px rgba(0, 240, 255, 0.4),
+        inset 0 0 30px rgba(0, 240, 255, 0.1) !important;
+}
+
+/* 赛博朋克 - 应用管理卡片 */
+[data-theme="cyberpunk"] .app-manage-card {
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.9) 0%, rgba(37, 42, 72, 0.9) 100%) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    box-shadow: 0 4px 15px rgba(0, 240, 255, 0.2) !important;
+}
+
+[data-theme="cyberpunk"] .app-manage-card:hover {
+    border-color: #00f0ff !important;
+    box-shadow: 0 8px 25px rgba(0, 240, 255, 0.4) !important;
+}
+
+/* 赛博朋克 - 设置表单 */
+[data-theme="cyberpunk"] .settings-form {
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.95) 0%, rgba(37, 42, 72, 0.95) 100%) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+}
+
+/* 赛博朋克 - 表格容器 */
+[data-theme="cyberpunk"] .table-container {
+    background: rgba(26, 31, 58, 0.5) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+}
+
+
+/* ========================================
+   仪表盘卡片主题适配
+   ======================================== */
+
+/* 仪表盘卡片 */
+[data-theme] .dashboard-card {
+    background: var(--bg-color) !important;
+    backdrop-filter: blur(10px) !important;
+    transition: all 0.3s ease !important;
+}
+
+[data-theme] .dashboard-card:hover {
+    box-shadow: var(--shadow-md) !important;
+}
+
+[data-theme] .dashboard-card h3 {
+    color: var(--primary-dark) !important;
+}
+
+/* 赛博朋克 - 仪表盘卡片 */
+[data-theme="cyberpunk"] .dashboard-card {
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.9) 0%, rgba(37, 42, 72, 0.9) 100%) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    box-shadow: 0 4px 15px rgba(0, 240, 255, 0.2) !important;
+}
+
+[data-theme="cyberpunk"] .dashboard-card:hover {
+    border-color: #00f0ff !important;
+    box-shadow: 0 8px 25px rgba(0, 240, 255, 0.4) !important;
+}
+
+[data-theme="cyberpunk"] .dashboard-card h3 {
+    color: #00f0ff !important;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5) !important;
+}
+
+
+/* ========================================
+   分页区域主题适配
+   ======================================== */
+
+/* 分页容器 */
+[data-theme] .pagination-container {
+    background: var(--bg-color) !important;
+    transition: background 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+[data-theme] .pagination-info {
+    color: var(--text-secondary) !important;
+}
+
+/* 分页按钮 */
+[data-theme] .pagination .page-link {
+    background: var(--bg-color) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+    transition: all 0.3s ease !important;
+}
+
+[data-theme] .pagination .page-link:hover {
+    background: var(--primary-light) !important;
+    border-color: var(--primary-color) !important;
+    color: var(--primary-color) !important;
+}
+
+[data-theme] .pagination .page-link.active {
+    background: var(--gradient-primary) !important;
+    border-color: var(--primary-color) !important;
+    color: white !important;
+}
+
+[data-theme] .pagination .page-link:disabled {
+    background: var(--bg-secondary) !important;
+    color: var(--text-tertiary) !important;
+    border-color: var(--border-light) !important;
+}
+
+/* 赛博朋克 - 分页容器 */
+[data-theme="cyberpunk"] .pagination-container {
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.9) 0%, rgba(37, 42, 72, 0.9) 100%) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    box-shadow: 0 4px 15px rgba(0, 240, 255, 0.2) !important;
+}
+
+[data-theme="cyberpunk"] .pagination-info {
+    color: #b8c5d6 !important;
+}
+
+
+/* ========================================
+   留言/评论卡片主题适配
+   ======================================== */
+
+/* 留言卡片 */
+[data-theme] .comment-card,
+[data-theme] .guestbook-item,
+[data-theme] .message-card {
+    background: var(--bg-color) !important;
+    border-color: var(--border-color) !important;
+    transition: all 0.3s ease !important;
+}
+
+[data-theme] .comment-card:hover,
+[data-theme] .guestbook-item:hover,
+[data-theme] .message-card:hover {
+    border-color: var(--primary-color) !important;
+    box-shadow: var(--shadow-md) !important;
+}
+
+/* 留言内容 */
+[data-theme] .comment-content,
+[data-theme] .message-content {
+    color: var(--text-primary) !important;
+}
+
+/* 留言作者 */
+[data-theme] .comment-author,
+[data-theme] .message-author {
+    color: var(--primary-dark) !important;
+}
+
+/* 留言时间 */
+[data-theme] .comment-time,
+[data-theme] .message-time {
+    color: var(--text-tertiary) !important;
+}
+
+/* 赛博朋克 - 留言卡片 */
+[data-theme="cyberpunk"] .comment-card,
+[data-theme="cyberpunk"] .guestbook-item,
+[data-theme="cyberpunk"] .message-card {
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.9) 0%, rgba(37, 42, 72, 0.9) 100%) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    box-shadow: 0 4px 15px rgba(0, 240, 255, 0.2) !important;
+}
+
+[data-theme="cyberpunk"] .comment-card:hover,
+[data-theme="cyberpunk"] .guestbook-item:hover,
+[data-theme="cyberpunk"] .message-card:hover {
+    border-color: #00f0ff !important;
+    box-shadow: 0 8px 25px rgba(0, 240, 255, 0.4) !important;
+}
+
+[data-theme="cyberpunk"] .comment-author,
+[data-theme="cyberpunk"] .message-author {
+    color: #00f0ff !important;
+}
+
+
+/* ========================================
+   其他白色背景元素适配
+   ======================================== */
+
+/* 代码预览 */
+[data-theme] .code-preview {
+    background: var(--bg-color) !important;
+    border-color: var(--border-color) !important;
+}
+
+/* 按钮危险状态悬停 */
+[data-theme] .btn-icon.btn-danger:hover {
+    background: rgba(255, 107, 107, 0.1) !important;
+}
+
+/* 赛博朋克 - 代码预览 */
+[data-theme="cyberpunk"] .code-preview {
+    background: rgba(10, 14, 39, 0.9) !important;
+    border: 1px solid rgba(0, 240, 255, 0.2) !important;
+}
+
+
+/* ========================================
+   仪表盘滚动条统一主题适配
+   ======================================== */
+
+/* 最近文章和最新评论滚动条 - 使用主题色 */
+[data-theme] .dashboard-grid .recent-list::-webkit-scrollbar-thumb {
+    background: var(--gradient-primary) !important;
+}
+
+[data-theme] .dashboard-grid .recent-list::-webkit-scrollbar-thumb:hover {
+    background: var(--gradient-secondary) !important;
+}
+
+[data-theme] .dashboard-grid .recent-list::-webkit-scrollbar-track {
+    background: var(--bg-secondary) !important;
+}
+
+/* 重要事项列表滚动条 - 使用主题色 */
+[data-theme] .events-list-container::-webkit-scrollbar-thumb {
+    background: var(--gradient-primary) !important;
+}
+
+[data-theme] .events-list-container::-webkit-scrollbar-thumb:hover {
+    background: var(--gradient-secondary) !important;
+}
+
+[data-theme] .events-list-container::-webkit-scrollbar-track {
+    background: var(--bg-secondary) !important;
+}
+
+/* 热搜榜滚动条 - 使用主题色 */
+[data-theme] .hot-search-list::-webkit-scrollbar-thumb {
+    background: var(--gradient-primary) !important;
+}
+
+[data-theme] .hot-search-list::-webkit-scrollbar-thumb:hover {
+    background: var(--gradient-secondary) !important;
+}
+
+[data-theme] .hot-search-list::-webkit-scrollbar-track {
+    background: var(--bg-secondary) !important;
+}
+
+/* 深色模式 - 滚动条增强对比度 */
+[data-theme="dark"] .dashboard-grid .recent-list::-webkit-scrollbar-thumb,
+[data-theme="dark"] .events-list-container::-webkit-scrollbar-thumb,
+[data-theme="dark"] .hot-search-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, rgba(100, 181, 246, 0.6) 0%, rgba(100, 181, 246, 0.8) 100%) !important;
+}
+
+[data-theme="dark"] .dashboard-grid .recent-list::-webkit-scrollbar-thumb:hover,
+[data-theme="dark"] .events-list-container::-webkit-scrollbar-thumb:hover,
+[data-theme="dark"] .hot-search-list::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, rgba(100, 181, 246, 0.8) 0%, rgba(100, 181, 246, 1) 100%) !important;
+}
+
+[data-theme="dark"] .dashboard-grid .recent-list::-webkit-scrollbar-track,
+[data-theme="dark"] .events-list-container::-webkit-scrollbar-track,
+[data-theme="dark"] .hot-search-list::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3) !important;
+}
+
+/* 赛博朋克主题 - 霓虹滚动条 */
+[data-theme="cyberpunk"] .dashboard-grid .recent-list::-webkit-scrollbar-thumb,
+[data-theme="cyberpunk"] .events-list-container::-webkit-scrollbar-thumb,
+[data-theme="cyberpunk"] .hot-search-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #00f0ff 0%, #ff006e 100%) !important;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.5) !important;
+}
+
+[data-theme="cyberpunk"] .dashboard-grid .recent-list::-webkit-scrollbar-thumb:hover,
+[data-theme="cyberpunk"] .events-list-container::-webkit-scrollbar-thumb:hover,
+[data-theme="cyberpunk"] .hot-search-list::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #ff006e 0%, #ffbe0b 100%) !important;
+    box-shadow: 0 0 15px rgba(255, 0, 110, 0.6) !important;
+}
+
+[data-theme="cyberpunk"] .dashboard-grid .recent-list::-webkit-scrollbar-track,
+[data-theme="cyberpunk"] .events-list-container::-webkit-scrollbar-track,
+[data-theme="cyberpunk"] .hot-search-list::-webkit-scrollbar-track {
+    background: rgba(26, 31, 58, 0.5) !important;
+    border: 1px solid rgba(0, 240, 255, 0.2) !important;
+}
+
+/* 粉色主题 - 浪漫滚动条 */
+[data-theme="pink"] .dashboard-grid .recent-list::-webkit-scrollbar-thumb,
+[data-theme="pink"] .events-list-container::-webkit-scrollbar-thumb,
+[data-theme="pink"] .hot-search-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%) !important;
+}
+
+[data-theme="pink"] .dashboard-grid .recent-list::-webkit-scrollbar-thumb:hover,
+[data-theme="pink"] .events-list-container::-webkit-scrollbar-thumb:hover,
+[data-theme="pink"] .hot-search-list::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #c44569 0%, #ff6b9d 100%) !important;
+}
+
+/* 玻璃暗黑主题 - 半透明滚动条 */
+[data-theme="glass-dark"] .dashboard-grid .recent-list::-webkit-scrollbar-thumb,
+[data-theme="glass-dark"] .events-list-container::-webkit-scrollbar-thumb,
+[data-theme="glass-dark"] .hot-search-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, rgba(100, 181, 246, 0.5) 0%, rgba(100, 181, 246, 0.7) 100%) !important;
+}
+
+[data-theme="glass-dark"] .dashboard-grid .recent-list::-webkit-scrollbar-thumb:hover,
+[data-theme="glass-dark"] .events-list-container::-webkit-scrollbar-thumb:hover,
+[data-theme="glass-dark"] .hot-search-list::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, rgba(100, 181, 246, 0.7) 0%, rgba(100, 181, 246, 0.9) 100%) !important;
+}
+
+[data-theme="glass-dark"] .dashboard-grid .recent-list::-webkit-scrollbar-track,
+[data-theme="glass-dark"] .events-list-container::-webkit-scrollbar-track,
+[data-theme="glass-dark"] .hot-search-list::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2) !important;
+}
+
+
+/* ========================================
+   模态框完整主题适配
+   ======================================== */
+
+/* 赛博朋克主题 - 模态框完整适配 */
+[data-theme="cyberpunk"] .modal-content,
+[data-theme="cyberpunk"] .modal-overlay .modal-content,
+[data-theme="cyberpunk"] .modal-container {
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.98) 0%, rgba(37, 42, 72, 0.98) 100%) !important;
+    border: 2px solid rgba(0, 240, 255, 0.4) !important;
+    box-shadow: 0 10px 40px rgba(0, 240, 255, 0.3) !important;
+}
+
+[data-theme="cyberpunk"] .modal-header {
+    background: linear-gradient(135deg, rgba(10, 14, 39, 0.98) 0%, rgba(26, 31, 58, 0.98) 100%) !important;
+    border-bottom: 2px solid rgba(0, 240, 255, 0.3) !important;
+}
+
+[data-theme="cyberpunk"] .modal-header h2,
+[data-theme="cyberpunk"] .modal-header h3,
+[data-theme="cyberpunk"] .modal-title {
+    color: #00f0ff !important;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5) !important;
+}
+
+[data-theme="cyberpunk"] .modal-body {
+    color: #b8c5d6 !important;
+    background: transparent !important;
+}
+
+[data-theme="cyberpunk"] .modal-body label,
+[data-theme="cyberpunk"] .form-group label {
+    color: #00f0ff !important;
+    text-transform: uppercase !important;
+    font-size: 0.85rem !important;
+    letter-spacing: 1px !important;
+}
+
+/* 赛博朋克 - 表单输入框 */
+[data-theme="cyberpunk"] .modal-body input[type="text"],
+[data-theme="cyberpunk"] .modal-body input[type="url"],
+[data-theme="cyberpunk"] .modal-body input[type="file"],
+[data-theme="cyberpunk"] .modal-body textarea,
+[data-theme="cyberpunk"] .modal-body select,
+[data-theme="cyberpunk"] .form-control {
+    background: rgba(10, 14, 39, 0.8) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    color: #b8c5d6 !important;
+    box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.1) !important;
+}
+
+[data-theme="cyberpunk"] .modal-body input:focus,
+[data-theme="cyberpunk"] .modal-body textarea:focus,
+[data-theme="cyberpunk"] .modal-body select:focus {
+    border-color: #00f0ff !important;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.4), inset 0 0 15px rgba(0, 240, 255, 0.2) !important;
+    outline: none !important;
+}
+
+/* 赛博朋克 - 按钮 */
+[data-theme="cyberpunk"] .modal-footer .btn-primary,
+[data-theme="cyberpunk"] .btn-save {
+    background: linear-gradient(135deg, #00f0ff 0%, #0099cc 100%) !important;
+    border: 2px solid #00f0ff !important;
+    color: #0a0e27 !important;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.5) !important;
+}
+
+[data-theme="cyberpunk"] .modal-footer .btn-secondary,
+[data-theme="cyberpunk"] .btn-cancel {
+    background: rgba(0, 240, 255, 0.1) !important;
+    border: 2px solid #00f0ff !important;
+    color: #00f0ff !important;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.3) !important;
+}
+
+/* 深色模式 - 模态框 */
+[data-theme="dark"] .modal-content {
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.98) 0%, rgba(36, 36, 36, 0.98) 100%) !important;
+    border: 1px solid rgba(100, 181, 246, 0.3) !important;
+}
+
+[data-theme="dark"] .modal-header {
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.98) 0%, rgba(36, 36, 36, 0.98) 100%) !important;
+    border-bottom: 1px solid rgba(100, 181, 246, 0.3) !important;
+}
+
+[data-theme="dark"] .modal-header h2,
+[data-theme="dark"] .modal-header h3 {
+    color: #64b5f6 !important;
+}
+
+[data-theme="dark"] .modal-body {
+    color: #e0e0e0 !important;
+}
+
+[data-theme="dark"] .modal-body label {
+    color: #64b5f6 !important;
+}
+
+
+/* 赛博朋克 - 模态框底部 */
+[data-theme="cyberpunk"] .modal-footer {
+    background: rgba(10, 14, 39, 0.95) !important;
+    border-top: 2px solid rgba(0, 240, 255, 0.3) !important;
+    padding: 1.5rem 2rem !important;
+}
+
+/* 赛博朋克 - 强制覆盖所有白色背景 */
+[data-theme="cyberpunk"] .modal-overlay,
+[data-theme="cyberpunk"] .modal-content,
+[data-theme="cyberpunk"] .modal-container,
+[data-theme="cyberpunk"] .modal-body,
+[data-theme="cyberpunk"] .modal-footer {
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.98) 0%, rgba(37, 42, 72, 0.98) 100%) !important;
+}
+
+/* 赛博朋克 - 模态框头部保持深色 */
+[data-theme="cyberpunk"] .modal-header {
+    background: linear-gradient(135deg, rgba(10, 14, 39, 0.98) 0%, rgba(26, 31, 58, 0.98) 100%) !important;
+    border-bottom: 2px solid rgba(0, 240, 255, 0.3) !important;
+}
+
+/* 赛博朋克 - 所有文本颜色 */
+[data-theme="cyberpunk"] .modal-body *,
+[data-theme="cyberpunk"] .modal-footer * {
+    color: #b8c5d6 !important;
+}
+
+/* 赛博朋克 - 标签和标题保持青色 */
+[data-theme="cyberpunk"] .modal-body label,
+[data-theme="cyberpunk"] .modal-body h1,
+[data-theme="cyberpunk"] .modal-body h2,
+[data-theme="cyberpunk"] .modal-body h3,
+[data-theme="cyberpunk"] .modal-body h4 {
+    color: #00f0ff !important;
+}
+
+/* 赛博朋克 - 按钮文字颜色 */
+[data-theme="cyberpunk"] .modal-footer .btn-primary,
+[data-theme="cyberpunk"] .modal-footer .btn-save {
+    color: #0a0e27 !important;
+}
+
+[data-theme="cyberpunk"] .modal-footer .btn-secondary,
+[data-theme="cyberpunk"] .modal-footer .btn-cancel {
+    color: #00f0ff !important;
+}
+
+/* 赛博朋克 - 占位符文字 */
+[data-theme="cyberpunk"] .modal-body input::placeholder,
+[data-theme="cyberpunk"] .modal-body textarea::placeholder {
+    color: rgba(184, 197, 214, 0.5) !important;
+}
+
+/* 赛博朋克 - 选择框选项 */
+[data-theme="cyberpunk"] .modal-body select option {
+    background: rgba(10, 14, 39, 0.95) !important;
+    color: #b8c5d6 !important;
+}
+
+/* 深色模式 - 模态框底部 */
+[data-theme="dark"] .modal-footer {
+    background: rgba(26, 26, 26, 0.98) !important;
+    border-top: 1px solid rgba(100, 181, 246, 0.3) !important;
+}
+
+[data-theme="dark"] .modal-body,
+[data-theme="dark"] .modal-footer {
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.98) 0%, rgba(36, 36, 36, 0.98) 100%) !important;
+}

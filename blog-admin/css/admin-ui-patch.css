@@ -1,0 +1,658 @@
+/* ========================================
+   后台管理系统UI优化补丁
+   统一风格，参考系统设置页面设计
+   ======================================== */
+
+/* ========== 1. 页面标题优化 ========== */
+.page-content > h1 {
+    font-size: 2.2rem;
+    color: #2c5f7c;
+    /* 移除渐变文字效果，避免影响emoji图标 */
+    /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text; */
+    margin-bottom: 2rem;
+    font-weight: 700;
+    text-align: center;
+    animation: fadeInDown 0.5s ease;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========== 2. 统计卡片优化 ========== */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+}
+
+.stat-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.2);
+    border-color: rgba(102, 126, 234, 0.3);
+}
+
+.stat-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+}
+
+.stat-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    color: #666;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* ========== 3. 表格优化 ========== */
+.data-table {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    animation: fadeInUp 0.5s ease;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+thead th {
+    padding: 1.25rem 1.5rem;
+    text-align: left;
+    font-weight: 600;
+    color: white;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+}
+
+tbody tr {
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.2s ease;
+}
+
+tbody tr:hover {
+    background: linear-gradient(90deg, #f8f9fa 0%, #ffffff 100%);
+    transform: scale(1.005);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+tbody tr:last-child {
+    border-bottom: none;
+}
+
+tbody td {
+    padding: 1.25rem 1.5rem;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+/* ========== 4. 徽章优化 ========== */
+.badge {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.badge-success {
+    background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+.badge-warning {
+    background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(255, 152, 0, 0.3);
+}
+
+.badge-danger {
+    background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(244, 67, 54, 0.3);
+}
+
+.badge-info {
+    background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+}
+
+/* ========== 5. 标签网格优化 ========== */
+.tags-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
+    animation: fadeInUp 0.5s ease;
+}
+
+.tag-card {
+    background: white;
+    border-radius: 16px;
+    padding: 1.75rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    border-left: 4px solid #667eea;
+    position: relative;
+    overflow: hidden;
+}
+
+.tag-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    transform: translate(30%, -30%);
+}
+
+.tag-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.2);
+    border-left-color: #764ba2;
+}
+
+.tag-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2c5f7c;
+    margin-bottom: 0.75rem;
+    position: relative;
+    z-index: 1;
+}
+
+.tag-count {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.tag-actions {
+    display: flex;
+    gap: 0.75rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* ========== 6. 分类表格优化 ========== */
+.categories-table {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+/* ========== 7. 评论/留言列表优化 ========== */
+.comments-list,
+.guestbook-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.comment-item,
+.guestbook-item,
+.admin-message-item {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    border-left: 4px solid #4fc3f7;
+}
+
+.comment-item:hover,
+.guestbook-item:hover,
+.admin-message-item:hover {
+    transform: translateX(8px);
+    box-shadow: 0 8px 30px rgba(79, 195, 247, 0.2);
+}
+
+/* 置顶留言样式 */
+.guestbook-item.pinned,
+.admin-message-item.pinned {
+    background: linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%);
+    border: 2px solid #ffc107;
+    border-left: 4px solid #ffc107;
+}
+
+/* 留言内容结构 */
+.message-content-wrapper {
+    display: flex;
+    gap: 1rem;
+}
+
+.message-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4fc3f7 0%, #2c5f7c 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.message-body {
+    flex: 1;
+}
+
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+}
+
+.message-author-name {
+    font-weight: 600;
+    color: #333;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.pinned-badge {
+    background: #ff9800;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 10px;
+    font-size: 0.75rem;
+}
+
+.message-meta {
+    font-size: 0.85rem;
+    color: #999;
+    margin-top: 0.25rem;
+}
+
+.message-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.message-text {
+    color: #555;
+    line-height: 1.6;
+    margin: 1rem 0;
+    padding: 1rem;
+    background: rgba(0,0,0,0.02);
+    border-radius: 8px;
+}
+
+.message-footer {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.9rem;
+    color: #999;
+}
+
+.message-likes {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* 主题适配 - 移除硬编码背景色 */
+[data-theme] .comment-item,
+[data-theme] .guestbook-item,
+[data-theme] .admin-message-item {
+    background: var(--bg-color);
+    border-left-color: var(--primary-color);
+    color: var(--text-primary);
+}
+
+[data-theme] .comment-item:hover,
+[data-theme] .guestbook-item:hover,
+[data-theme] .admin-message-item:hover {
+    box-shadow: var(--shadow-md);
+}
+
+[data-theme] .message-author-name {
+    color: var(--text-primary);
+}
+
+[data-theme] .message-text {
+    color: var(--text-secondary);
+    background: var(--bg-secondary);
+}
+
+[data-theme] .message-meta,
+[data-theme] .message-footer {
+    color: var(--text-tertiary);
+}
+
+[data-theme] .message-avatar {
+    background: var(--gradient-primary);
+}
+
+/* 置顶留言主题适配 */
+[data-theme] .guestbook-item.pinned,
+[data-theme] .admin-message-item.pinned {
+    background: var(--primary-light);
+    border-color: var(--accent-color);
+    border-left-color: var(--accent-color);
+}
+
+[data-theme] .pinned-badge {
+    background: var(--accent-color);
+}
+
+/* 深色模式特殊处理 */
+[data-theme="dark"] .guestbook-item.pinned,
+[data-theme="dark"] .admin-message-item.pinned {
+    background: rgba(255, 183, 77, 0.1);
+    border-color: #ffb74d;
+}
+
+[data-theme="dark"] .message-text {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+/* 赛博朋克主题 */
+[data-theme="cyberpunk"] .guestbook-item.pinned,
+[data-theme="cyberpunk"] .admin-message-item.pinned {
+    background: rgba(255, 190, 11, 0.1);
+    border-color: #ffbe0b;
+    box-shadow: 0 0 15px rgba(255, 190, 11, 0.3);
+}
+
+[data-theme="cyberpunk"] .message-text {
+    background: rgba(0, 240, 255, 0.05);
+    border: 1px solid rgba(0, 240, 255, 0.1);
+}
+
+/* ========== 8. 媒体库标签页优化 ========== */
+.media-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    background: white;
+    padding: 0.5rem;
+    border-radius: 16px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+}
+
+.media-tab {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    border: none;
+    background: transparent;
+    color: #666;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.media-tab:hover {
+    background: #f8f9fa;
+    color: #667eea;
+}
+
+.media-tab.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+/* ========== 9. 媒体网格优化 ========== */
+.media-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.media-item {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+.media-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+}
+
+.media-item img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.media-item:hover img {
+    transform: scale(1.1);
+}
+
+.media-info {
+    padding: 1.25rem;
+}
+
+.media-name {
+    font-weight: 600;
+    color: #2c5f7c;
+    margin-bottom: 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.media-meta {
+    color: #999;
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem;
+}
+
+.media-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* ========== 10. 仪表盘卡片优化 ========== */
+.dashboard-card {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    margin-bottom: 2rem;
+}
+
+.dashboard-card h2 {
+    font-size: 1.5rem;
+    color: #2c5f7c;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.recent-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.recent-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.recent-item:hover {
+    background: rgba(102, 126, 234, 0.1);
+    transform: translateX(5px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.item-title {
+    font-weight: 500;
+    color: #333;
+}
+
+.item-date {
+    color: #999;
+    font-size: 0.9rem;
+}
+
+/* ========== 11. 页面头部优化 ========== */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.page-header h1 {
+    font-size: 2rem;
+    color: #2c5f7c;
+    margin: 0;
+}
+
+/* ========== 12. 操作按钮组优化 ========== */
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* ========== 13. 空状态优化 ========== */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #999;
+}
+
+.empty-state-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.empty-state-text {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* ========== 14. 加载动画 ========== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* ========== 15. 响应式优化 ========== */
+@media (max-width: 1024px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .tags-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+    
+    .media-grid {
+        grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .tags-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .media-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .page-content > h1 {
+        font-size: 1.8rem;
+    }
+}

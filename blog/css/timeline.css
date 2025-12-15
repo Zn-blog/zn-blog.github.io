@@ -1,0 +1,586 @@
+/* ========================================
+   时光轴样式
+   ======================================== */
+
+/* 文章日历样式 - 响应式优化 */
+.calendar-container {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2rem, 3vw, 3rem);
+}
+
+.calendar-year {
+    margin-bottom: 2rem;
+}
+
+.calendar-year-title {
+    color: #2c5f7c;
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+/* GitHub风格日历 - 自适应优化 + 居中 */
+.github-calendar {
+    background: white;
+    border-radius: 12px;
+    padding: clamp(1rem, 2vw, 1.5rem);
+    overflow-x: auto;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+}
+
+.github-calendar-graph {
+    display: inline-block;
+    min-width: fit-content;
+}
+
+.github-calendar-months {
+    display: flex;
+    margin-bottom: 8px;
+    padding-left: 30px;
+}
+
+.github-calendar-month-spacer {
+    width: 30px;
+}
+
+.github-calendar-month {
+    font-size: 0.75rem;
+    color: #666;
+    font-weight: 500;
+}
+
+.github-calendar-body {
+    display: flex;
+    gap: 4px;
+}
+
+.github-calendar-weekdays {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding-right: 4px;
+}
+
+.github-calendar-weekday {
+    height: 11px;
+    line-height: 11px;
+    font-size: 0.65rem;
+    color: #666;
+    text-align: right;
+}
+
+.github-calendar-weeks {
+    display: flex;
+    gap: 3px;
+}
+
+.github-calendar-week {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.github-calendar-day {
+    width: 11px;
+    height: 11px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid rgba(27, 31, 35, 0.06);
+}
+
+.github-calendar-day.empty {
+    background: transparent;
+    border: none;
+    cursor: default;
+}
+
+.github-calendar-day.level-0 {
+    background: #ebedf0;
+}
+
+.github-calendar-day.level-1 {
+    background: #c6e48b;
+}
+
+.github-calendar-day.level-2 {
+    background: #7bc96f;
+}
+
+.github-calendar-day.level-3 {
+    background: #239a3b;
+}
+
+.github-calendar-day.level-4 {
+    background: #196127;
+}
+
+.github-calendar-day:not(.empty):hover {
+    border: 1px solid rgba(27, 31, 35, 0.3);
+    transform: scale(1.2);
+}
+
+.github-calendar-legend {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+    margin-top: 12px;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+.github-calendar-legend-item {
+    width: 11px;
+    height: 11px;
+    border-radius: 2px;
+    border: 1px solid rgba(27, 31, 35, 0.06);
+}
+
+.github-calendar-legend-item.level-0 {
+    background: #ebedf0;
+}
+
+.github-calendar-legend-item.level-1 {
+    background: #c6e48b;
+}
+
+.github-calendar-legend-item.level-2 {
+    background: #7bc96f;
+}
+
+.github-calendar-legend-item.level-3 {
+    background: #239a3b;
+}
+
+.github-calendar-legend-item.level-4 {
+    background: #196127;
+}
+
+/* 时间列表样式 - 响应式优化 */
+.timeline-list-container {
+    max-width: min(1000px, 100%);
+    width: 100%;
+    margin: 0 auto;
+}
+
+.timeline-year-section {
+    margin-bottom: clamp(2rem, 3vw, 3rem);
+}
+
+.timeline-year-header {
+    background: linear-gradient(135deg, #4fc3f7 0%, #2c5f7c 100%);
+    color: white;
+    padding: clamp(0.8rem, 1.5vw, 1rem) clamp(1.5rem, 2vw, 2rem);
+    border-radius: 25px;
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 15px rgba(79, 195, 247, 0.3);
+}
+
+.timeline-articles-list {
+    background: white;
+    border-radius: 15px;
+    padding: clamp(1rem, 2vw, 1.5rem);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.timeline-article-item {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.5rem, 1vw, 1rem);
+    padding: clamp(0.8rem, 1.5vw, 1rem);
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.3s;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.timeline-article-item:last-child {
+    border-bottom: none;
+}
+
+.timeline-article-item:hover {
+    background: linear-gradient(135deg, rgba(79, 195, 247, 0.05) 0%, rgba(44, 95, 124, 0.05) 100%);
+    transform: translateX(5px);
+    box-shadow: 0 2px 8px rgba(79, 195, 247, 0.15);
+}
+
+.timeline-article-date {
+    min-width: clamp(100px, 15vw, 120px);
+    color: #4fc3f7;
+    font-weight: 600;
+    font-size: clamp(0.85rem, 1.2vw, 0.95rem);
+    white-space: nowrap;
+}
+
+.timeline-article-title {
+    flex: 1;
+    color: #2c5f7c;
+    font-size: clamp(0.95rem, 1.3vw, 1.05rem);
+    line-height: 1.5;
+}
+
+.timeline-article-category {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    color: #2c5f7c;
+    padding: clamp(0.25rem, 0.5vw, 0.3rem) clamp(0.6rem, 1vw, 0.8rem);
+    border-radius: 15px;
+    font-size: clamp(0.75rem, 1vw, 0.85rem);
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* 时间轴样式 - 响应式优化 */
+.timeline-axis-container {
+    max-width: min(1200px, 100%);
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    padding: clamp(1.5rem, 2vw, 2rem) 0;
+}
+
+/* 中间的时间线 */
+.timeline-axis-container::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, #4fc3f7 0%, #2c5f7c 100%);
+    transform: translateX(-50%);
+}
+
+.timeline-year-marker {
+    position: relative;
+    text-align: center;
+    margin: 3rem 0;
+}
+
+.timeline-year-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #4fc3f7 0%, #2c5f7c 100%);
+    color: white;
+    padding: 0.8rem 2rem;
+    border-radius: 30px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    box-shadow: 0 4px 15px rgba(79, 195, 247, 0.4);
+    position: relative;
+    z-index: 2;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 3rem;
+    display: flex;
+    align-items: center;
+}
+
+.timeline-item.left {
+    justify-content: flex-start;
+}
+
+.timeline-item.right {
+    justify-content: flex-end;
+}
+
+.timeline-content {
+    width: 45%;
+    position: relative;
+}
+
+.timeline-item.left .timeline-content {
+    padding-right: 3rem;
+}
+
+.timeline-item.right .timeline-content {
+    padding-left: 3rem;
+}
+
+/* 时间节点 */
+.timeline-dot {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    background: white;
+    border: 4px solid #4fc3f7;
+    border-radius: 50%;
+    z-index: 3;
+    box-shadow: 0 0 0 4px rgba(79, 195, 247, 0.2);
+    transition: all 0.3s;
+}
+
+.timeline-item:hover .timeline-dot {
+    transform: translate(-50%, -50%) scale(1.3);
+    box-shadow: 0 0 0 8px rgba(79, 195, 247, 0.3);
+}
+
+/* 连接线 */
+.timeline-connector {
+    position: absolute;
+    top: 50%;
+    width: 3rem;
+    height: 2px;
+    background: #4fc3f7;
+}
+
+.timeline-item.left .timeline-connector {
+    right: 0;
+}
+
+.timeline-item.right .timeline-connector {
+    left: 0;
+}
+
+/* 文章卡片 */
+.timeline-article-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.timeline-article-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.timeline-article-image {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.timeline-article-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.timeline-article-card:hover .timeline-article-image img {
+    transform: scale(1.1);
+}
+
+.timeline-article-category-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(79, 195, 247, 0.9);
+    color: white;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.timeline-article-body {
+    padding: 1.5rem;
+}
+
+.timeline-article-header h3 {
+    color: #2c5f7c;
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.timeline-article-meta {
+    color: #999;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.timeline-article-excerpt {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.timeline-article-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid #f0f0f0;
+}
+
+.timeline-article-stats {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.85rem;
+    color: #999;
+}
+
+.timeline-article-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.timeline-article-tag {
+    background: #f0f8ff;
+    color: #4fc3f7;
+    padding: 0.2rem 0.6rem;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+/* 响应式设计 - 多断点优化 */
+
+/* 大屏幕 (1200px - 1600px) */
+@media (min-width: 1200px) and (max-width: 1600px) {
+    .github-calendar {
+        padding: 1.2rem;
+    }
+}
+
+/* 中等屏幕 (1024px - 1199px) */
+@media (min-width: 1024px) and (max-width: 1199px) {
+    .github-calendar {
+        padding: 1rem;
+    }
+    
+    .github-calendar-day {
+        width: 10px;
+        height: 10px;
+    }
+    
+    .github-calendar-legend-item {
+        width: 10px;
+        height: 10px;
+    }
+}
+
+/* 平板屏幕 (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .github-calendar {
+        padding: 0.9rem;
+    }
+    
+    .github-calendar-day {
+        width: 9px;
+        height: 9px;
+    }
+    
+    .github-calendar-weeks {
+        gap: 2px;
+    }
+    
+    .github-calendar-week {
+        gap: 2px;
+    }
+    
+    .github-calendar-legend-item {
+        width: 9px;
+        height: 9px;
+    }
+    
+    .timeline-article-item {
+        flex-wrap: wrap;
+    }
+}
+
+/* 手机屏幕 (<768px) */
+@media (max-width: 767px) {
+    .github-calendar {
+        padding: 0.8rem;
+    }
+    
+    .github-calendar-month {
+        font-size: 0.7rem;
+    }
+    
+    .github-calendar-weekday {
+        font-size: 0.6rem;
+        height: 9px;
+        line-height: 9px;
+    }
+    
+    .github-calendar-day {
+        width: 8px;
+        height: 8px;
+    }
+    
+    .github-calendar-weeks {
+        gap: 2px;
+    }
+    
+    .github-calendar-week {
+        gap: 2px;
+    }
+    
+    .github-calendar-legend {
+        font-size: 0.7rem;
+    }
+    
+    .github-calendar-legend-item {
+        width: 8px;
+        height: 8px;
+    }
+    
+    .timeline-axis-container::before {
+        left: 30px;
+    }
+    
+    .timeline-item {
+        justify-content: flex-end !important;
+    }
+    
+    .timeline-content {
+        width: calc(100% - 60px) !important;
+        padding-left: 3rem !important;
+        padding-right: 0 !important;
+    }
+    
+    .timeline-dot {
+        left: 30px !important;
+    }
+    
+    .timeline-connector {
+        left: 30px !important;
+        right: auto !important;
+    }
+    
+    .timeline-article-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .timeline-article-date {
+        min-width: auto;
+        font-size: 0.85rem;
+    }
+    
+    .timeline-article-title {
+        font-size: 0.95rem;
+    }
+    
+    .timeline-article-category {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.6rem;
+    }
+}

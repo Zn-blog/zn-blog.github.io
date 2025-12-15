@@ -1,0 +1,93 @@
+/* ========================================
+   统一滚动条样式 - 确保所有列表滚动条一致
+   ======================================== */
+
+/* 强制统一所有仪表盘滚动条的宽度和样式 */
+.dashboard-grid .recent-list::-webkit-scrollbar,
+.events-list-container::-webkit-scrollbar,
+.hot-search-list::-webkit-scrollbar {
+    width: 6px !important;
+    height: 6px !important;
+}
+
+.dashboard-grid .recent-list::-webkit-scrollbar-track,
+.events-list-container::-webkit-scrollbar-track,
+.hot-search-list::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05) !important;
+    border-radius: 3px !important;
+}
+
+/* 默认紫色渐变 - 与热搜榜完全一致 */
+.dashboard-grid .recent-list::-webkit-scrollbar-thumb,
+.events-list-container::-webkit-scrollbar-thumb,
+.hot-search-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    border-radius: 3px !important;
+    transition: background 0.3s !important;
+}
+
+.dashboard-grid .recent-list::-webkit-scrollbar-thumb:hover,
+.events-list-container::-webkit-scrollbar-thumb:hover,
+.hot-search-list::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%) !important;
+}
+
+/* 主题适配 - 统一使用主题色 */
+[data-theme] .dashboard-grid .recent-list::-webkit-scrollbar-thumb,
+[data-theme] .events-list-container::-webkit-scrollbar-thumb,
+[data-theme] .hot-search-list::-webkit-scrollbar-thumb {
+    background: var(--gradient-primary) !important;
+}
+
+[data-theme] .dashboard-grid .recent-list::-webkit-scrollbar-thumb:hover,
+[data-theme] .events-list-container::-webkit-scrollbar-thumb:hover,
+[data-theme] .hot-search-list::-webkit-scrollbar-thumb:hover {
+    background: var(--gradient-secondary) !important;
+}
+
+[data-theme] .dashboard-grid .recent-list::-webkit-scrollbar-track,
+[data-theme] .events-list-container::-webkit-scrollbar-track,
+[data-theme] .hot-search-list::-webkit-scrollbar-track {
+    background: var(--bg-secondary) !important;
+}
+
+/* 深色模式 */
+[data-theme="dark"] .dashboard-grid .recent-list::-webkit-scrollbar-thumb,
+[data-theme="dark"] .events-list-container::-webkit-scrollbar-thumb,
+[data-theme="dark"] .hot-search-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, rgba(100, 181, 246, 0.6) 0%, rgba(100, 181, 246, 0.8) 100%) !important;
+}
+
+[data-theme="dark"] .dashboard-grid .recent-list::-webkit-scrollbar-thumb:hover,
+[data-theme="dark"] .events-list-container::-webkit-scrollbar-thumb:hover,
+[data-theme="dark"] .hot-search-list::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, rgba(100, 181, 246, 0.8) 0%, rgba(100, 181, 246, 1) 100%) !important;
+}
+
+[data-theme="dark"] .dashboard-grid .recent-list::-webkit-scrollbar-track,
+[data-theme="dark"] .events-list-container::-webkit-scrollbar-track,
+[data-theme="dark"] .hot-search-list::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3) !important;
+}
+
+/* 赛博朋克主题 */
+[data-theme="cyberpunk"] .dashboard-grid .recent-list::-webkit-scrollbar-thumb,
+[data-theme="cyberpunk"] .events-list-container::-webkit-scrollbar-thumb,
+[data-theme="cyberpunk"] .hot-search-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #00f0ff 0%, #ff006e 100%) !important;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.5) !important;
+}
+
+[data-theme="cyberpunk"] .dashboard-grid .recent-list::-webkit-scrollbar-thumb:hover,
+[data-theme="cyberpunk"] .events-list-container::-webkit-scrollbar-thumb:hover,
+[data-theme="cyberpunk"] .hot-search-list::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #ff006e 0%, #ffbe0b 100%) !important;
+    box-shadow: 0 0 15px rgba(255, 0, 110, 0.6) !important;
+}
+
+[data-theme="cyberpunk"] .dashboard-grid .recent-list::-webkit-scrollbar-track,
+[data-theme="cyberpunk"] .events-list-container::-webkit-scrollbar-track,
+[data-theme="cyberpunk"] .hot-search-list::-webkit-scrollbar-track {
+    background: rgba(26, 31, 58, 0.5) !important;
+    border: 1px solid rgba(0, 240, 255, 0.2) !important;
+}

@@ -1,0 +1,503 @@
+/* 重要事项统一样式 - 参照热搜榜风格 */
+/* 使用!important确保覆盖旧样式 */
+
+/* 事项容器 - 移除额外边框，但不覆盖dashboard-card的padding */
+.events-widget {
+    border: none !important;
+    margin: 0 !important;
+    margin-bottom: 0 !important;
+    min-height: auto !important;
+    background: none !important;
+    position: relative !important;
+    /* 不设置padding，让dashboard-card的1.2rem生效 */
+}
+
+/* 标题行容器 - 让标题和按钮在同一行 */
+.events-widget h3 {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin: 0 0 1rem 0 !important;
+    padding-bottom: 0.8rem !important;
+    border-bottom: 2px solid #e8f4f8 !important;
+    width: 100% !important;
+}
+
+.calendar-events-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+}
+
+/* 添加按钮 - 在标题右侧 */
+.btn-add-event {
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: 2px solid #667eea;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: bold;
+    transition: all 0.3s;
+    margin-left: auto;
+}
+
+.btn-add-event:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.btn-add-event:active {
+    transform: translateY(0);
+}
+
+/* 事项列表容器 - 与热搜榜一致 */
+.events-list-container {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    margin: 0;
+    border: none;
+}
+
+/* 自定义滚动条 - 使用主题色 */
+.events-list-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.events-list-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+}
+
+.events-list-container::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 3px;
+}
+
+.events-list-container::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+/* 主题适配 - 滚动条使用主题色 */
+[data-theme] .events-list-container::-webkit-scrollbar-thumb {
+    background: var(--gradient-primary);
+}
+
+[data-theme] .events-list-container::-webkit-scrollbar-thumb:hover {
+    background: var(--gradient-secondary);
+}
+
+[data-theme] .events-list-container::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+/* 深色模式 */
+[data-theme="dark"] .events-list-container::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, rgba(100, 181, 246, 0.6) 0%, rgba(100, 181, 246, 0.8) 100%);
+}
+
+[data-theme="dark"] .events-list-container::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, rgba(100, 181, 246, 0.8) 0%, rgba(100, 181, 246, 1) 100%);
+}
+
+[data-theme="dark"] .events-list-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* 赛博朋克主题 */
+[data-theme="cyberpunk"] .events-list-container::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #00f0ff 0%, #ff006e 100%);
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+}
+
+[data-theme="cyberpunk"] .events-list-container::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #ff006e 0%, #ffbe0b 100%);
+    box-shadow: 0 0 15px rgba(255, 0, 110, 0.6);
+}
+
+[data-theme="cyberpunk"] .events-list-container::-webkit-scrollbar-track {
+    background: rgba(26, 31, 58, 0.5);
+    border: 1px solid rgba(0, 240, 255, 0.2);
+}
+
+/* 事项列表 */
+.events-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* 事项卡片 - 参照热搜榜项目样式 */
+.event-item {
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 0.75rem 1rem !important;
+    background: rgba(255, 255, 255, 0.5) !important;
+    border-radius: 8px !important;
+    border: none !important;
+    border-left: 4px solid #667eea !important;
+    transition: all 0.3s !important;
+    cursor: pointer !important;
+    position: relative !important;
+    backdrop-filter: none !important;
+}
+
+/* 移除旧样式的伪元素 */
+.event-item::before {
+    display: none !important;
+}
+
+.event-item:hover {
+    background: rgba(102, 126, 234, 0.1) !important;
+    transform: translateX(5px) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* 移除旧样式的悬停伪元素 */
+.event-item:hover::before {
+    display: none !important;
+}
+
+/* 优先级颜色 */
+.event-item.priority-high {
+    border-left-color: #ff4757 !important;
+}
+
+.event-item.priority-high::before {
+    display: none !important;
+}
+
+.event-item.priority-medium {
+    border-left-color: #ffa502 !important;
+}
+
+.event-item.priority-medium::before {
+    display: none !important;
+}
+
+.event-item.priority-low {
+    border-left-color: #667eea !important;
+}
+
+/* 已完成状态 */
+.event-item.completed {
+    opacity: 0.5 !important;
+    background: rgba(240, 240, 240, 0.5) !important;
+}
+
+.event-item.completed .event-title {
+    text-decoration: line-through !important;
+    color: #999 !important;
+}
+
+/* 事项头部 */
+.event-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.event-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #333;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 70%;
+}
+
+/* 优先级标签 - 参照热搜榜标签样式 */
+.event-priority {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    margin-left: 0.5rem;
+}
+
+.event-priority.high {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+}
+
+.event-priority.medium {
+    background: linear-gradient(135deg, #ffa502 0%, #ffb84d 100%);
+}
+
+.event-priority.low {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+/* 事项描述 */
+.event-body {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 事项底部 */
+.event-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 倒计时 */
+.event-countdown {
+    font-size: 0.8rem;
+    color: #999;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.event-countdown.urgent {
+    color: #ff4757;
+    font-weight: bold;
+}
+
+/* 操作按钮组 */
+.event-actions {
+    display: flex;
+    gap: 0.4rem;
+}
+
+.event-action-btn {
+    background: rgba(102, 126, 234, 0.1);
+    border: none;
+    border-radius: 6px;
+    padding: 0.4rem 0.6rem;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.event-action-btn:hover {
+    transform: translateY(-2px) scale(1.1);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);
+}
+
+.event-action-btn:active {
+    transform: translateY(0) scale(0.95);
+}
+
+/* 模态框样式 */
+.event-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.event-modal.show {
+    display: flex;
+}
+
+.event-modal-content {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.event-modal-header {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.event-form-group {
+    margin-bottom: 1.2rem;
+}
+
+.event-form-label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 0.5rem;
+}
+
+.event-form-input,
+.event-form-textarea,
+.event-form-select {
+    width: 100%;
+    padding: 0.7rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+}
+
+.event-form-input:focus,
+.event-form-textarea:focus,
+.event-form-select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.event-form-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.event-modal-footer {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 2px solid #f0f0f0;
+}
+
+.btn-modal {
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-modal-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-modal-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.btn-modal-secondary {
+    background: #f0f0f0;
+    color: #666;
+}
+
+.btn-modal-secondary:hover {
+    background: #e0e0e0;
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+    .event-title {
+        max-width: 60%;
+    }
+    
+    .btn-add-event {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+    }
+    
+    .event-modal-content {
+        padding: 1.5rem;
+    }
+}
+
+
+/* ========================================
+   强制覆盖旧样式 - 确保与热搜榜完全一致
+   ======================================== */
+
+/* 强制重置事项列表容器 */
+.events-list-container {
+    background: none !important;
+    border: none !important;
+}
+
+/* 强制重置事项列表 */
+.events-list {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+/* 强制重置事项标题 */
+.calendar-events-title {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+.calendar-events-title::before {
+    content: '' !important;
+    display: none !important;
+}
+
+/* 强制重置事项头部 */
+.event-header {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin-bottom: 0.5rem !important;
+}
+
+/* 强制重置事项标题 */
+.event-title {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+/* 强制重置事项描述 */
+.event-body {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin-bottom: 0.5rem !important;
+}
+
+/* 强制重置事项底部 */
+.event-footer {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+/* 强制重置倒计时 */
+.event-countdown {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+.event-countdown::before {
+    content: '' !important;
+    margin-right: 0.3rem !important;
+}
+
+.event-countdown.urgent::before {
+    content: '🔥' !important;
+}
+
+/* 强制重置操作按钮 */
+.event-actions {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+}

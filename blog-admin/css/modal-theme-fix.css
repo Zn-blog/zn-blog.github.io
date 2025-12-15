@@ -1,0 +1,1868 @@
+/* ========================================
+   模态框和设置页面主题修复 - 最终版本
+   优先级最高，覆盖所有其他样式
+   ======================================== */
+
+/* ========================================
+   模态框遮罩层和内容区域
+   ======================================== */
+
+/* 遮罩层保持半透明黑色 - 排除四种原始主题 */
+[data-theme]:not([data-theme="ocean"]):not([data-theme="purple"]):not([data-theme="green"]):not([data-theme="orange"]) .modal-overlay,
+[data-theme]:not([data-theme="ocean"]):not([data-theme="purple"]):not([data-theme="green"]):not([data-theme="orange"]) #userModal.modal-overlay,
+[data-theme]:not([data-theme="ocean"]):not([data-theme="purple"]):not([data-theme="green"]):not([data-theme="orange"]) #resetPasswordModal.modal-overlay,
+[data-theme]:not([data-theme="ocean"]):not([data-theme="purple"]):not([data-theme="green"]):not([data-theme="orange"]) #appModal.modal-overlay,
+[data-theme]:not([data-theme="ocean"]):not([data-theme="purple"]):not([data-theme="green"]):not([data-theme="orange"]) #changePasswordModal.modal-overlay {
+    background: rgba(0, 0, 0, 0.5) !important;
+}
+
+/* 四种原始主题的遮罩层 - 保持黑色半透明 */
+[data-theme="ocean"] .modal-overlay,
+[data-theme="ocean"] #userModal.modal-overlay,
+[data-theme="ocean"] #resetPasswordModal.modal-overlay,
+[data-theme="ocean"] #appModal.modal-overlay,
+[data-theme="ocean"] #changePasswordModal.modal-overlay,
+[data-theme="purple"] .modal-overlay,
+[data-theme="purple"] #userModal.modal-overlay,
+[data-theme="purple"] #resetPasswordModal.modal-overlay,
+[data-theme="purple"] #appModal.modal-overlay,
+[data-theme="purple"] #changePasswordModal.modal-overlay,
+[data-theme="green"] .modal-overlay,
+[data-theme="green"] #userModal.modal-overlay,
+[data-theme="green"] #resetPasswordModal.modal-overlay,
+[data-theme="green"] #appModal.modal-overlay,
+[data-theme="green"] #changePasswordModal.modal-overlay,
+[data-theme="orange"] .modal-overlay,
+[data-theme="orange"] #userModal.modal-overlay,
+[data-theme="orange"] #resetPasswordModal.modal-overlay,
+[data-theme="orange"] #appModal.modal-overlay,
+[data-theme="orange"] #changePasswordModal.modal-overlay {
+    background: rgba(0, 0, 0, 0.5) !important;
+}
+
+/* 模态框内容区域 */
+[data-theme] .modal-content,
+[data-theme] .modal-header,
+[data-theme] .modal-body,
+[data-theme] .modal-footer {
+    background: var(--card-bg) !important;
+    color: var(--text-color) !important;
+}
+
+[data-theme] .modal-header {
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+[data-theme] .modal-footer {
+    border-top: 1px solid var(--border-color) !important;
+}
+
+/* 友情链接模态框特殊处理 */
+[data-theme] #linkModal {
+    background: rgba(0, 0, 0, 0.5) !important;
+}
+
+[data-theme] #linkModal > div {
+    background: var(--card-bg) !important;
+    color: var(--text-color) !important;
+}
+
+/* ========================================
+   系统设置页面 - 强制覆盖
+   ======================================== */
+
+/* 赛博朋克主题 - 设置表单和卡片 */
+[data-theme="cyberpunk"] .settings-form,
+[data-theme="cyberpunk"] .table-container,
+[data-theme="cyberpunk"] .tag-card,
+[data-theme="cyberpunk"] .media-item,
+[data-theme="cyberpunk"] .effect-card,
+[data-theme="cyberpunk"] .theme-card,
+[data-theme="cyberpunk"] .app-manage-card,
+[data-theme="cyberpunk"] .modal-content,
+[data-theme="cyberpunk"] #linkModal > div {
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.95) 0%, rgba(37, 42, 72, 0.95) 100%) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    box-shadow: 0 4px 20px rgba(0, 240, 255, 0.1), 0 0 40px rgba(0, 240, 255, 0.05) !important;
+    color: #e0e0e0 !important;
+}
+
+/* 赛博朋克 - 表单控件 */
+[data-theme="cyberpunk"] .form-control,
+[data-theme="cyberpunk"] .modal-content input,
+[data-theme="cyberpunk"] .modal-content textarea,
+[data-theme="cyberpunk"] .modal-content select,
+[data-theme="cyberpunk"] #linkModal input,
+[data-theme="cyberpunk"] #linkModal textarea,
+[data-theme="cyberpunk"] #linkModal select,
+[data-theme="cyberpunk"] .avatar-upload-controls .form-control,
+[data-theme="cyberpunk"] select.form-control,
+[data-theme="cyberpunk"] .code-preview,
+[data-theme="cyberpunk"] .search-box {
+    background: rgba(26, 31, 58, 0.8) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    color: #00f0ff !important;
+}
+
+[data-theme="cyberpunk"] .form-control:hover,
+[data-theme="cyberpunk"] .form-control:focus {
+    border-color: #00f0ff !important;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.3), 0 0 20px rgba(0, 240, 255, 0.1) !important;
+    background: rgba(26, 31, 58, 0.9) !important;
+}
+
+[data-theme="cyberpunk"] .form-control::placeholder,
+[data-theme="cyberpunk"] .modal-content input::placeholder,
+[data-theme="cyberpunk"] .modal-content textarea::placeholder,
+[data-theme="cyberpunk"] #linkModal input::placeholder,
+[data-theme="cyberpunk"] #linkModal textarea::placeholder {
+    color: rgba(0, 240, 255, 0.5) !important;
+}
+
+/* 赛博朋克 - 标签和标题 */
+[data-theme="cyberpunk"] .settings-form label,
+[data-theme="cyberpunk"] .settings-form h3,
+[data-theme="cyberpunk"] .settings-form h4,
+[data-theme="cyberpunk"] .modal-content label,
+[data-theme="cyberpunk"] .modal-header h2,
+[data-theme="cyberpunk"] .modal-header h3,
+[data-theme="cyberpunk"] #linkModal label,
+[data-theme="cyberpunk"] #linkModal h2 {
+    color: #00f0ff !important;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5) !important;
+}
+
+/* 赛博朋克 - 小文字 */
+[data-theme="cyberpunk"] .modal-content small,
+[data-theme="cyberpunk"] .settings-form small {
+    color: rgba(0, 240, 255, 0.7) !important;
+}
+
+/* 赛博朋克 - 开关按钮 */
+[data-theme="cyberpunk"] .switch {
+    background: rgba(26, 31, 58, 0.8) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+}
+
+[data-theme="cyberpunk"] .switch.active,
+[data-theme="cyberpunk"] .switch input:checked + .slider {
+    background: linear-gradient(135deg, #00f0ff 0%, #0099cc 100%) !important;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.5) !important;
+}
+
+/* 赛博朋克 - 按钮 */
+[data-theme="cyberpunk"] .btn-primary,
+[data-theme="cyberpunk"] .modal-content .btn-primary,
+[data-theme="cyberpunk"] #linkModal .btn-primary {
+    background: linear-gradient(135deg, #00f0ff 0%, #0099cc 100%) !important;
+    border: none !important;
+    color: #1a1f3a !important;
+    font-weight: 600 !important;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.3) !important;
+}
+
+[data-theme="cyberpunk"] .btn-primary:hover {
+    box-shadow: 0 0 25px rgba(0, 240, 255, 0.5) !important;
+    transform: translateY(-2px) !important;
+}
+
+[data-theme="cyberpunk"] .btn-secondary,
+[data-theme="cyberpunk"] .modal-content .btn-secondary,
+[data-theme="cyberpunk"] #linkModal .btn-secondary {
+    background: rgba(0, 240, 255, 0.1) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    color: #00f0ff !important;
+}
+
+/* 赛博朋克 - 主题卡片选中状态 */
+[data-theme="cyberpunk"] .theme-option input:checked + .theme-card,
+[data-theme="cyberpunk"] .effect-option input:checked + .effect-card {
+    border-color: #00f0ff !important;
+    background: rgba(0, 240, 255, 0.15) !important;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.3) !important;
+}
+
+/* ========================================
+   深色主题
+   ======================================== */
+
+[data-theme="dark"] .settings-form,
+[data-theme="dark"] .table-container,
+[data-theme="dark"] .tag-card,
+[data-theme="dark"] .media-item,
+[data-theme="dark"] .effect-card,
+[data-theme="dark"] .theme-card,
+[data-theme="dark"] .app-manage-card,
+[data-theme="dark"] .modal-content,
+[data-theme="dark"] .modal-container,
+[data-theme="dark"] #linkModal > div {
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(36, 36, 36, 0.95) 100%) !important;
+    border: 1px solid rgba(100, 181, 246, 0.3) !important;
+    color: #e0e0e0 !important;
+}
+
+/* 深色主题 - 模态框容器标题和文字 */
+[data-theme="dark"] .modal-container .modal-header h3,
+[data-theme="dark"] .modal-container .modal-header,
+[data-theme="dark"] .modal-container .modal-body,
+[data-theme="dark"] .modal-container label,
+[data-theme="dark"] .modal-container .form-label {
+    color: #e0e0e0 !important;
+}
+
+[data-theme="dark"] .modal-container .modal-close {
+    color: rgba(100, 181, 246, 0.7) !important;
+}
+
+[data-theme="dark"] .modal-container .modal-close:hover {
+    color: #64b5f6 !important;
+}
+
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .modal-content input,
+[data-theme="dark"] .modal-content textarea,
+[data-theme="dark"] .modal-content select,
+[data-theme="dark"] .modal-container input,
+[data-theme="dark"] .modal-container textarea,
+[data-theme="dark"] .modal-container select,
+[data-theme="dark"] #linkModal input,
+[data-theme="dark"] #linkModal textarea,
+[data-theme="dark"] #linkModal select {
+    background: rgba(26, 26, 26, 0.8) !important;
+    border: 1px solid rgba(100, 181, 246, 0.3) !important;
+    color: #e0e0e0 !important;
+}
+
+[data-theme="dark"] .form-control:focus,
+[data-theme="dark"] .modal-content input:focus,
+[data-theme="dark"] .modal-content textarea:focus,
+[data-theme="dark"] .modal-content select:focus,
+[data-theme="dark"] .modal-container input:focus,
+[data-theme="dark"] .modal-container textarea:focus,
+[data-theme="dark"] .modal-container select:focus {
+    border-color: #64b5f6 !important;
+    box-shadow: 0 0 10px rgba(100, 181, 246, 0.3) !important;
+    outline: none !important;
+}
+
+/* 深色主题 - 模态框按钮 */
+[data-theme="dark"] .modal-container .btn-primary,
+[data-theme="dark"] .modal-container button[onclick*="save"] {
+    background: linear-gradient(135deg, #64b5f6 0%, #42a5f5 100%) !important;
+    border: none !important;
+    color: #1a1a1a !important;
+    padding: 0.8rem 1.5rem !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s !important;
+}
+
+[data-theme="dark"] .modal-container .btn-primary:hover,
+[data-theme="dark"] .modal-container button[onclick*="save"]:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 15px rgba(100, 181, 246, 0.3) !important;
+}
+
+[data-theme="dark"] .modal-container .btn-secondary {
+    background: rgba(100, 181, 246, 0.1) !important;
+    border: 1px solid rgba(100, 181, 246, 0.3) !important;
+    color: #64b5f6 !important;
+    padding: 0.8rem 1.5rem !important;
+    border-radius: 8px !important;
+}
+
+[data-theme="dark"] .modal-container .btn-secondary:hover {
+    background: rgba(100, 181, 246, 0.2) !important;
+    border-color: #64b5f6 !important;
+}
+
+/* ========================================
+   四种原始主题 - 模态框内容背景适配
+   ======================================== */
+
+/* 蓝色海洋主题 */
+[data-theme="ocean"] .settings-form,
+[data-theme="ocean"] .table-container,
+[data-theme="ocean"] .tag-card,
+[data-theme="ocean"] .media-item,
+[data-theme="ocean"] .effect-card,
+[data-theme="ocean"] .theme-card,
+[data-theme="ocean"] .app-manage-card,
+[data-theme="ocean"] .modal-content,
+[data-theme="ocean"] .modal-container,
+[data-theme="ocean"] #linkModal > div {
+    background: linear-gradient(135deg, rgba(232, 244, 249, 0.95) 0%, rgba(225, 240, 248, 0.95) 100%) !important;
+    border: 2px solid rgba(129, 196, 232, 0.4) !important;
+    box-shadow: 0 4px 20px rgba(129, 196, 232, 0.15) !important;
+}
+
+/* 紫色梦幻主题 */
+[data-theme="purple"] .settings-form,
+[data-theme="purple"] .table-container,
+[data-theme="purple"] .tag-card,
+[data-theme="purple"] .media-item,
+[data-theme="purple"] .effect-card,
+[data-theme="purple"] .theme-card,
+[data-theme="purple"] .app-manage-card,
+[data-theme="purple"] .modal-content,
+[data-theme="purple"] .modal-container,
+[data-theme="purple"] #linkModal > div {
+    background: linear-gradient(135deg, rgba(243, 229, 245, 0.95) 0%, rgba(240, 220, 243, 0.95) 100%) !important;
+    border: 2px solid rgba(186, 104, 200, 0.4) !important;
+    box-shadow: 0 4px 20px rgba(186, 104, 200, 0.15) !important;
+}
+
+/* 绿色自然主题 */
+[data-theme="green"] .settings-form,
+[data-theme="green"] .table-container,
+[data-theme="green"] .tag-card,
+[data-theme="green"] .media-item,
+[data-theme="green"] .effect-card,
+[data-theme="green"] .theme-card,
+[data-theme="green"] .app-manage-card,
+[data-theme="green"] .modal-content,
+[data-theme="green"] .modal-container,
+[data-theme="green"] #linkModal > div {
+    background: linear-gradient(135deg, rgba(232, 245, 233, 0.95) 0%, rgba(225, 242, 227, 0.95) 100%) !important;
+    border: 2px solid rgba(129, 199, 132, 0.4) !important;
+    box-shadow: 0 4px 20px rgba(129, 199, 132, 0.15) !important;
+}
+
+/* 橙色活力主题 */
+[data-theme="orange"] .settings-form,
+[data-theme="orange"] .table-container,
+[data-theme="orange"] .tag-card,
+[data-theme="orange"] .media-item,
+[data-theme="orange"] .effect-card,
+[data-theme="orange"] .theme-card,
+[data-theme="orange"] .app-manage-card,
+[data-theme="orange"] .modal-content,
+[data-theme="orange"] .modal-container,
+[data-theme="orange"] #linkModal > div {
+    background: linear-gradient(135deg, rgba(255, 243, 224, 0.95) 0%, rgba(255, 238, 215, 0.95) 100%) !important;
+    border: 2px solid rgba(255, 183, 77, 0.4) !important;
+    box-shadow: 0 4px 20px rgba(255, 183, 77, 0.15) !important;
+}
+
+/* ========================================
+   粉色主题
+   ======================================== */
+
+[data-theme="pink"] .settings-form,
+[data-theme="pink"] .table-container,
+[data-theme="pink"] .tag-card,
+[data-theme="pink"] .media-item,
+[data-theme="pink"] .effect-card,
+[data-theme="pink"] .theme-card,
+[data-theme="pink"] .app-manage-card,
+[data-theme="pink"] .modal-content,
+[data-theme="pink"] .modal-container,
+[data-theme="pink"] #linkModal > div {
+    background: linear-gradient(135deg, rgba(255, 240, 245, 0.95) 0%, rgba(255, 228, 240, 0.95) 100%) !important;
+    border: 2px solid rgba(255, 105, 180, 0.3) !important;
+    box-shadow: 0 4px 20px rgba(255, 105, 180, 0.15) !important;
+}
+
+/* 粉色主题 - 模态框容器标题和文字 */
+[data-theme="pink"] .modal-container .modal-header h3,
+[data-theme="pink"] .modal-container .modal-header,
+[data-theme="pink"] .modal-container .modal-body,
+[data-theme="pink"] .modal-container label,
+[data-theme="pink"] .modal-container .form-label {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="pink"] .modal-container .modal-close {
+    color: var(--text-muted) !important;
+}
+
+[data-theme="pink"] .modal-container .modal-close:hover {
+    color: #ff69b4 !important;
+}
+
+/* 粉色主题 - 表单控件 */
+[data-theme="pink"] .modal-container input,
+[data-theme="pink"] .modal-container textarea,
+[data-theme="pink"] .modal-container select {
+    background: rgba(255, 240, 245, 0.9) !important;
+    border: 1px solid rgba(255, 105, 180, 0.4) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="pink"] .modal-container input:focus,
+[data-theme="pink"] .modal-container textarea:focus,
+[data-theme="pink"] .modal-container select:focus {
+    border-color: #ff69b4 !important;
+    box-shadow: 0 0 10px rgba(255, 105, 180, 0.3) !important;
+    outline: none !important;
+}
+
+/* 粉色主题 - 模态框按钮 */
+[data-theme="pink"] .modal-container .btn-primary,
+[data-theme="pink"] .modal-container button[onclick*="save"] {
+    background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%) !important;
+    border: none !important;
+    color: white !important;
+    padding: 0.8rem 1.5rem !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s !important;
+}
+
+[data-theme="pink"] .modal-container .btn-primary:hover,
+[data-theme="pink"] .modal-container button[onclick*="save"]:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3) !important;
+}
+
+[data-theme="pink"] .modal-container .btn-secondary {
+    background: rgba(255, 105, 180, 0.1) !important;
+    border: 1px solid rgba(255, 105, 180, 0.3) !important;
+    color: #ff69b4 !important;
+    padding: 0.8rem 1.5rem !important;
+    border-radius: 8px !important;
+}
+
+[data-theme="pink"] .modal-container .btn-secondary:hover {
+    background: rgba(255, 105, 180, 0.2) !important;
+    border-color: #ff69b4 !important;
+}
+
+/* ========================================
+   玻璃暗黑主题
+   ======================================== */
+
+[data-theme="glass-dark"] .settings-form,
+[data-theme="glass-dark"] .table-container,
+[data-theme="glass-dark"] .tag-card,
+[data-theme="glass-dark"] .media-item,
+[data-theme="glass-dark"] .effect-card,
+[data-theme="glass-dark"] .theme-card,
+[data-theme="glass-dark"] .app-manage-card,
+[data-theme="glass-dark"] .modal-content,
+[data-theme="glass-dark"] .modal-container,
+[data-theme="glass-dark"] #linkModal > div {
+    background: linear-gradient(135deg, rgba(20, 20, 30, 0.9) 0%, rgba(30, 30, 45, 0.9) 100%) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(100, 181, 246, 0.2) !important;
+    box-shadow: 0 4px 20px rgba(100, 181, 246, 0.1) !important;
+}
+
+/* 玻璃暗黑主题 - 模态框容器标题和文字 */
+[data-theme="glass-dark"] .modal-container .modal-header h3,
+[data-theme="glass-dark"] .modal-container .modal-header,
+[data-theme="glass-dark"] .modal-container .modal-body,
+[data-theme="glass-dark"] .modal-container label,
+[data-theme="glass-dark"] .modal-container .form-label {
+    color: #e0e0e0 !important;
+}
+
+[data-theme="glass-dark"] .modal-container .modal-close {
+    color: rgba(100, 181, 246, 0.7) !important;
+}
+
+[data-theme="glass-dark"] .modal-container .modal-close:hover {
+    color: #64b5f6 !important;
+}
+
+[data-theme="glass-dark"] .form-control,
+[data-theme="glass-dark"] .modal-content input,
+[data-theme="glass-dark"] .modal-content textarea,
+[data-theme="glass-dark"] .modal-content select,
+[data-theme="glass-dark"] .modal-container input,
+[data-theme="glass-dark"] .modal-container textarea,
+[data-theme="glass-dark"] .modal-container select,
+[data-theme="glass-dark"] #linkModal input,
+[data-theme="glass-dark"] #linkModal textarea,
+[data-theme="glass-dark"] #linkModal select {
+    background: rgba(20, 20, 30, 0.7) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(100, 181, 246, 0.2) !important;
+    color: #e0e0e0 !important;
+}
+
+[data-theme="glass-dark"] .modal-container input:focus,
+[data-theme="glass-dark"] .modal-container textarea:focus,
+[data-theme="glass-dark"] .modal-container select:focus {
+    border-color: #64b5f6 !important;
+    box-shadow: 0 0 10px rgba(100, 181, 246, 0.3) !important;
+    backdrop-filter: blur(15px) !important;
+    outline: none !important;
+}
+
+/* 玻璃暗黑主题 - 模态框按钮 */
+[data-theme="glass-dark"] .modal-container .btn-primary,
+[data-theme="glass-dark"] .modal-container button[onclick*="save"] {
+    background: linear-gradient(135deg, #64b5f6 0%, #42a5f5 100%) !important;
+    border: none !important;
+    color: #1a1a1a !important;
+    padding: 0.8rem 1.5rem !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+[data-theme="glass-dark"] .modal-container .btn-primary:hover,
+[data-theme="glass-dark"] .modal-container button[onclick*="save"]:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 15px rgba(100, 181, 246, 0.3) !important;
+    backdrop-filter: blur(15px) !important;
+}
+
+[data-theme="glass-dark"] .modal-container .btn-secondary {
+    background: rgba(100, 181, 246, 0.1) !important;
+    border: 1px solid rgba(100, 181, 246, 0.3) !important;
+    color: #64b5f6 !important;
+    padding: 0.8rem 1.5rem !important;
+    border-radius: 8px !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+[data-theme="glass-dark"] .modal-container .btn-secondary:hover {
+    background: rgba(100, 181, 246, 0.2) !important;
+    border-color: #64b5f6 !important;
+    backdrop-filter: blur(15px) !important;
+}
+
+
+/* ========================================
+   提示框和信息框
+   ======================================== */
+
+/* 赛博朋克主题 - 提示框 */
+[data-theme="cyberpunk"] .info-box,
+[data-theme="cyberpunk"] .modal-body .info-box,
+[data-theme="cyberpunk"] .settings-form .info-box {
+    background: rgba(0, 240, 255, 0.1) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    border-left: 4px solid #00f0ff !important;
+    color: #e0e0e0 !important;
+}
+
+[data-theme="cyberpunk"] .info-box h4,
+[data-theme="cyberpunk"] .modal-body .info-box h4 {
+    color: #00f0ff !important;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5) !important;
+}
+
+[data-theme="cyberpunk"] .info-box ul li,
+[data-theme="cyberpunk"] .modal-body .info-box ul li {
+    color: rgba(224, 224, 224, 0.9) !important;
+}
+
+/* 深色主题 - 提示框 */
+[data-theme="dark"] .info-box,
+[data-theme="dark"] .modal-body .info-box {
+    background: rgba(100, 181, 246, 0.1) !important;
+    border: 1px solid rgba(100, 181, 246, 0.3) !important;
+    border-left: 4px solid #64b5f6 !important;
+    color: #e0e0e0 !important;
+}
+
+[data-theme="dark"] .info-box h4,
+[data-theme="dark"] .modal-body .info-box h4 {
+    color: #64b5f6 !important;
+}
+
+/* 粉色主题 - 提示框 */
+[data-theme="pink"] .info-box,
+[data-theme="pink"] .modal-body .info-box {
+    background: rgba(255, 105, 180, 0.1) !important;
+    border: 1px solid rgba(255, 105, 180, 0.3) !important;
+    border-left: 4px solid #ff69b4 !important;
+}
+
+[data-theme="pink"] .info-box h4,
+[data-theme="pink"] .modal-body .info-box h4 {
+    color: #ff69b4 !important;
+}
+
+/* 玻璃暗黑主题 - 提示框 */
+[data-theme="glass-dark"] .info-box,
+[data-theme="glass-dark"] .modal-body .info-box {
+    background: rgba(100, 181, 246, 0.1) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(100, 181, 246, 0.2) !important;
+    border-left: 4px solid #64b5f6 !important;
+    color: #e0e0e0 !important;
+}
+
+[data-theme="glass-dark"] .info-box h4,
+[data-theme="glass-dark"] .modal-body .info-box h4 {
+    color: #64b5f6 !important;
+}
+
+
+/* ========================================
+   表单组背景修复
+   ======================================== */
+
+/* 赛博朋克主题 - 表单组 */
+[data-theme="cyberpunk"] .form-group,
+[data-theme="cyberpunk"] .settings-form .form-group,
+[data-theme="cyberpunk"] .modal-content .form-group {
+    background: transparent !important;
+}
+
+/* 深色主题 - 表单组 */
+[data-theme="dark"] .form-group,
+[data-theme="dark"] .settings-form .form-group,
+[data-theme="dark"] .modal-content .form-group {
+    background: transparent !important;
+}
+
+/* 粉色主题 - 表单组 */
+[data-theme="pink"] .form-group,
+[data-theme="pink"] .settings-form .form-group,
+[data-theme="pink"] .modal-content .form-group {
+    background: transparent !important;
+}
+
+/* 玻璃暗黑主题 - 表单组 */
+[data-theme="glass-dark"] .form-group,
+[data-theme="glass-dark"] .settings-form .form-group,
+[data-theme="glass-dark"] .modal-content .form-group {
+    background: transparent !important;
+}
+
+/* 通用主题 - 表单组 */
+[data-theme] .form-group,
+[data-theme] .settings-form .form-group,
+[data-theme] .modal-content .form-group {
+    background: transparent !important;
+}
+
+
+/* ========================================
+   所有剩余的白色/浅色背景元素修复
+   ======================================== */
+
+/* 赛博朋克主题 - 所有需要修复的元素 */
+[data-theme="cyberpunk"] .form-row,
+[data-theme="cyberpunk"] .settings-section,
+[data-theme="cyberpunk"] .page-content,
+[data-theme="cyberpunk"] .content-wrapper,
+[data-theme="cyberpunk"] .settings-container,
+[data-theme="cyberpunk"] div[style*="background: #f8f9fa"],
+[data-theme="cyberpunk"] div[style*="background:#f8f9fa"],
+[data-theme="cyberpunk"] div[style*="background: #f5f5f5"],
+[data-theme="cyberpunk"] div[style*="background:#f5f5f5"],
+[data-theme="cyberpunk"] div[style*="background: white"],
+[data-theme="cyberpunk"] div[style*="background:white"],
+[data-theme="cyberpunk"] div[style*="background: #fff"],
+[data-theme="cyberpunk"] div[style*="background:#fff"] {
+    background: transparent !important;
+}
+
+/* 赛博朋克 - 特殊容器保持主题背景 */
+[data-theme="cyberpunk"] .settings-form > div,
+[data-theme="cyberpunk"] .modal-content > div {
+    background: transparent !important;
+}
+
+/* 深色主题 - 所有需要修复的元素 */
+[data-theme="dark"] .form-row,
+[data-theme="dark"] .settings-section,
+[data-theme="dark"] .page-content,
+[data-theme="dark"] .content-wrapper,
+[data-theme="dark"] .settings-container,
+[data-theme="dark"] div[style*="background: #f8f9fa"],
+[data-theme="dark"] div[style*="background:#f8f9fa"],
+[data-theme="dark"] div[style*="background: #f5f5f5"],
+[data-theme="dark"] div[style*="background:#f5f5f5"],
+[data-theme="dark"] div[style*="background: white"],
+[data-theme="dark"] div[style*="background:white"],
+[data-theme="dark"] div[style*="background: #fff"],
+[data-theme="dark"] div[style*="background:#fff"] {
+    background: transparent !important;
+}
+
+/* 粉色主题 - 所有需要修复的元素 */
+[data-theme="pink"] .form-row,
+[data-theme="pink"] .settings-section,
+[data-theme="pink"] .page-content,
+[data-theme="pink"] .content-wrapper,
+[data-theme="pink"] .settings-container,
+[data-theme="pink"] div[style*="background: #f8f9fa"],
+[data-theme="pink"] div[style*="background:#f8f9fa"],
+[data-theme="pink"] div[style*="background: #f5f5f5"],
+[data-theme="pink"] div[style*="background:#f5f5f5"],
+[data-theme="pink"] div[style*="background: white"],
+[data-theme="pink"] div[style*="background:white"],
+[data-theme="pink"] div[style*="background: #fff"],
+[data-theme="pink"] div[style*="background:#fff"] {
+    background: transparent !important;
+}
+
+/* 玻璃暗黑主题 - 所有需要修复的元素 */
+[data-theme="glass-dark"] .form-row,
+[data-theme="glass-dark"] .settings-section,
+[data-theme="glass-dark"] .page-content,
+[data-theme="glass-dark"] .content-wrapper,
+[data-theme="glass-dark"] .settings-container,
+[data-theme="glass-dark"] div[style*="background: #f8f9fa"],
+[data-theme="glass-dark"] div[style*="background:#f8f9fa"],
+[data-theme="glass-dark"] div[style*="background: #f5f5f5"],
+[data-theme="glass-dark"] div[style*="background:#f5f5f5"],
+[data-theme="glass-dark"] div[style*="background: white"],
+[data-theme="glass-dark"] div[style*="background:white"],
+[data-theme="glass-dark"] div[style*="background: #fff"],
+[data-theme="glass-dark"] div[style*="background:#fff"] {
+    background: transparent !important;
+}
+
+/* 通用主题 - 强制所有内联样式的白色背景变透明 */
+[data-theme] div[style*="background: #f8f9fa"],
+[data-theme] div[style*="background:#f8f9fa"],
+[data-theme] div[style*="background: #f5f5f5"],
+[data-theme] div[style*="background:#f5f5f5"],
+[data-theme] div[style*="background: white"],
+[data-theme] div[style*="background:white"],
+[data-theme] div[style*="background: #fff"],
+[data-theme] div[style*="background:#fff"],
+[data-theme] div[style*="background-color: #f8f9fa"],
+[data-theme] div[style*="background-color:#f8f9fa"],
+[data-theme] div[style*="background-color: white"],
+[data-theme] div[style*="background-color:white"],
+[data-theme] div[style*="background-color: #fff"],
+[data-theme] div[style*="background-color:#fff"] {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+/* 赛博朋克 - 确保所有文字可读 */
+[data-theme="cyberpunk"] .settings-form *:not(input):not(textarea):not(select):not(button):not(.btn):not(.switch) {
+    color: inherit !important;
+}
+
+[data-theme="cyberpunk"] .settings-form label,
+[data-theme="cyberpunk"] .settings-form h3,
+[data-theme="cyberpunk"] .settings-form h4,
+[data-theme="cyberpunk"] .settings-form .form-label {
+    color: #00f0ff !important;
+}
+
+[data-theme="cyberpunk"] .settings-form p,
+[data-theme="cyberpunk"] .settings-form span:not(.switch):not(.slider),
+[data-theme="cyberpunk"] .settings-form div:not(.form-group):not(.form-row):not(.switch) {
+    color: rgba(224, 224, 224, 0.9) !important;
+}
+
+
+/* ========================================
+   浅蓝色背景和按钮边框修复
+   ======================================== */
+
+/* 赛博朋克主题 - 浅蓝色背景区域 */
+[data-theme="cyberpunk"] div[style*="background: #e3f2fd"],
+[data-theme="cyberpunk"] div[style*="background:#e3f2fd"],
+[data-theme="cyberpunk"] div[style*="background-color: #e3f2fd"],
+[data-theme="cyberpunk"] div[style*="background-color:#e3f2fd"] {
+    background: rgba(0, 240, 255, 0.05) !important;
+    border: 1px solid rgba(0, 240, 255, 0.2) !important;
+}
+
+/* 赛博朋克主题 - 按钮边框修复 */
+[data-theme="cyberpunk"] button,
+[data-theme="cyberpunk"] .btn,
+[data-theme="cyberpunk"] input[type="button"],
+[data-theme="cyberpunk"] input[type="submit"] {
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+}
+
+[data-theme="cyberpunk"] button:hover,
+[data-theme="cyberpunk"] .btn:hover {
+    border-color: #00f0ff !important;
+}
+
+/* 赛博朋克主题 - 开关按钮特殊处理 */
+[data-theme="cyberpunk"] .switch,
+[data-theme="cyberpunk"] input[type="checkbox"] {
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+}
+
+/* 深色主题 - 浅蓝色背景区域 */
+[data-theme="dark"] div[style*="background: #e3f2fd"],
+[data-theme="dark"] div[style*="background:#e3f2fd"],
+[data-theme="dark"] div[style*="background-color: #e3f2fd"],
+[data-theme="dark"] div[style*="background-color:#e3f2fd"] {
+    background: rgba(100, 181, 246, 0.1) !important;
+    border: 1px solid rgba(100, 181, 246, 0.2) !important;
+}
+
+/* 粉色主题 - 浅蓝色背景区域 */
+[data-theme="pink"] div[style*="background: #e3f2fd"],
+[data-theme="pink"] div[style*="background:#e3f2fd"],
+[data-theme="pink"] div[style*="background-color: #e3f2fd"],
+[data-theme="pink"] div[style*="background-color:#e3f2fd"] {
+    background: rgba(255, 105, 180, 0.1) !important;
+    border: 1px solid rgba(255, 105, 180, 0.2) !important;
+}
+
+/* 玻璃暗黑主题 - 浅蓝色背景区域 */
+[data-theme="glass-dark"] div[style*="background: #e3f2fd"],
+[data-theme="glass-dark"] div[style*="background:#e3f2fd"],
+[data-theme="glass-dark"] div[style*="background-color: #e3f2fd"],
+[data-theme="glass-dark"] div[style*="background-color:#e3f2fd"] {
+    background: rgba(100, 181, 246, 0.1) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(100, 181, 246, 0.2) !important;
+}
+
+/* 通用 - 所有浅蓝色背景 */
+[data-theme] div[style*="background: #e3f2fd"],
+[data-theme] div[style*="background:#e3f2fd"],
+[data-theme] div[style*="background-color: #e3f2fd"],
+[data-theme] div[style*="background-color:#e3f2fd"],
+[data-theme] div[style*="background: #bbdefb"],
+[data-theme] div[style*="background:#bbdefb"],
+[data-theme] div[style*="background: #90caf9"],
+[data-theme] div[style*="background:#90caf9"] {
+    background: transparent !important;
+}
+
+
+/* ========================================
+   头像上传和文件输入框修复
+   ======================================== */
+
+/* 赛博朋克主题 - 头像上传容器 */
+[data-theme="cyberpunk"] .avatar-upload-container,
+[data-theme="cyberpunk"] .avatar-upload-controls,
+[data-theme="cyberpunk"] .avatar-preview {
+    background: transparent !important;
+}
+
+/* 赛博朋克主题 - 文件输入框和URL输入框 */
+[data-theme="cyberpunk"] input[type="file"],
+[data-theme="cyberpunk"] input[type="url"],
+[data-theme="cyberpunk"] input[id*="avatar"],
+[data-theme="cyberpunk"] input[id*="Avatar"],
+[data-theme="cyberpunk"] .avatar-upload-controls input,
+[data-theme="cyberpunk"] .avatar-upload-controls .form-control {
+    background: rgba(26, 31, 58, 0.8) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    color: #00f0ff !important;
+}
+
+[data-theme="cyberpunk"] input[type="file"]:hover,
+[data-theme="cyberpunk"] input[type="url"]:hover,
+[data-theme="cyberpunk"] input[id*="avatar"]:hover,
+[data-theme="cyberpunk"] input[id*="Avatar"]:hover {
+    border-color: #00f0ff !important;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.3) !important;
+}
+
+/* 赛博朋克主题 - 小文字提示 */
+[data-theme="cyberpunk"] .avatar-upload-controls small,
+[data-theme="cyberpunk"] small[style*="color: #999"],
+[data-theme="cyberpunk"] small[style*="color:#999"] {
+    color: rgba(0, 240, 255, 0.7) !important;
+    background: rgba(0, 240, 255, 0.05) !important;
+}
+
+/* 深色主题 - 头像上传 */
+[data-theme="dark"] .avatar-upload-container,
+[data-theme="dark"] .avatar-upload-controls,
+[data-theme="dark"] .avatar-preview {
+    background: transparent !important;
+}
+
+[data-theme="dark"] input[type="file"],
+[data-theme="dark"] input[type="url"],
+[data-theme="dark"] input[id*="avatar"],
+[data-theme="dark"] input[id*="Avatar"] {
+    background: rgba(26, 26, 26, 0.8) !important;
+    border: 1px solid rgba(100, 181, 246, 0.3) !important;
+    color: #e0e0e0 !important;
+}
+
+/* 四种原始主题 - 表单控件和头像上传 */
+
+/* 蓝色海洋主题 */
+[data-theme="ocean"] .avatar-upload-container,
+[data-theme="ocean"] .avatar-upload-controls,
+[data-theme="ocean"] .avatar-preview {
+    background: transparent !important;
+}
+
+/* 蓝色海洋主题 - 模态框容器标题和文字 */
+[data-theme="ocean"] .modal-container .modal-header h3,
+[data-theme="ocean"] .modal-container .modal-header,
+[data-theme="ocean"] .modal-container .modal-body,
+[data-theme="ocean"] .modal-container label,
+[data-theme="ocean"] .modal-container .form-label {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="ocean"] .modal-container .modal-close {
+    color: var(--text-muted) !important;
+}
+
+[data-theme="ocean"] .modal-container .modal-close:hover {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="ocean"] input[type="file"],
+[data-theme="ocean"] input[type="url"],
+[data-theme="ocean"] input[id*="avatar"],
+[data-theme="ocean"] input[id*="Avatar"],
+[data-theme="ocean"] .form-control,
+[data-theme="ocean"] .modal-content input,
+[data-theme="ocean"] .modal-content textarea,
+[data-theme="ocean"] .modal-content select,
+[data-theme="ocean"] .modal-container input,
+[data-theme="ocean"] .modal-container textarea,
+[data-theme="ocean"] .modal-container select {
+    background: rgba(248, 252, 255, 0.9) !important;
+    border: 1px solid rgba(129, 196, 232, 0.4) !important;
+    color: var(--text-primary) !important;
+}
+
+/* 紫色梦幻主题 */
+[data-theme="purple"] .avatar-upload-container,
+[data-theme="purple"] .avatar-upload-controls,
+[data-theme="purple"] .avatar-preview {
+    background: transparent !important;
+}
+
+/* 紫色梦幻主题 - 模态框容器标题和文字 */
+[data-theme="purple"] .modal-container .modal-header h3,
+[data-theme="purple"] .modal-container .modal-header,
+[data-theme="purple"] .modal-container .modal-body,
+[data-theme="purple"] .modal-container label,
+[data-theme="purple"] .modal-container .form-label {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="purple"] .modal-container .modal-close {
+    color: var(--text-muted) !important;
+}
+
+[data-theme="purple"] .modal-container .modal-close:hover {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="purple"] input[type="file"],
+[data-theme="purple"] input[type="url"],
+[data-theme="purple"] input[id*="avatar"],
+[data-theme="purple"] input[id*="Avatar"],
+[data-theme="purple"] .form-control,
+[data-theme="purple"] .modal-content input,
+[data-theme="purple"] .modal-content textarea,
+[data-theme="purple"] .modal-content select,
+[data-theme="purple"] .modal-container input,
+[data-theme="purple"] .modal-container textarea,
+[data-theme="purple"] .modal-container select {
+    background: rgba(250, 248, 252, 0.9) !important;
+    border: 1px solid rgba(186, 104, 200, 0.4) !important;
+    color: var(--text-primary) !important;
+}
+
+/* 绿色自然主题 */
+[data-theme="green"] .avatar-upload-container,
+[data-theme="green"] .avatar-upload-controls,
+[data-theme="green"] .avatar-preview {
+    background: transparent !important;
+}
+
+/* 绿色自然主题 - 模态框容器标题和文字 */
+[data-theme="green"] .modal-container .modal-header h3,
+[data-theme="green"] .modal-container .modal-header,
+[data-theme="green"] .modal-container .modal-body,
+[data-theme="green"] .modal-container label,
+[data-theme="green"] .modal-container .form-label {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="green"] .modal-container .modal-close {
+    color: var(--text-muted) !important;
+}
+
+[data-theme="green"] .modal-container .modal-close:hover {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="green"] input[type="file"],
+[data-theme="green"] input[type="url"],
+[data-theme="green"] input[id*="avatar"],
+[data-theme="green"] input[id*="Avatar"],
+[data-theme="green"] .form-control,
+[data-theme="green"] .modal-content input,
+[data-theme="green"] .modal-content textarea,
+[data-theme="green"] .modal-content select,
+[data-theme="green"] .modal-container input,
+[data-theme="green"] .modal-container textarea,
+[data-theme="green"] .modal-container select {
+    background: rgba(249, 253, 249, 0.9) !important;
+    border: 1px solid rgba(129, 199, 132, 0.4) !important;
+    color: var(--text-primary) !important;
+}
+
+/* 橙色活力主题 */
+[data-theme="orange"] .avatar-upload-container,
+[data-theme="orange"] .avatar-upload-controls,
+[data-theme="orange"] .avatar-preview {
+    background: transparent !important;
+}
+
+/* 橙色活力主题 - 模态框容器标题和文字 */
+[data-theme="orange"] .modal-container .modal-header h3,
+[data-theme="orange"] .modal-container .modal-header,
+[data-theme="orange"] .modal-container .modal-body,
+[data-theme="orange"] .modal-container label,
+[data-theme="orange"] .modal-container .form-label {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="orange"] .modal-container .modal-close {
+    color: var(--text-muted) !important;
+}
+
+[data-theme="orange"] .modal-container .modal-close:hover {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="orange"] input[type="file"],
+[data-theme="orange"] input[type="url"],
+[data-theme="orange"] input[id*="avatar"],
+[data-theme="orange"] input[id*="Avatar"],
+[data-theme="orange"] .form-control,
+[data-theme="orange"] .modal-content input,
+[data-theme="orange"] .modal-content textarea,
+[data-theme="orange"] .modal-content select,
+[data-theme="orange"] .modal-container input,
+[data-theme="orange"] .modal-container textarea,
+[data-theme="orange"] .modal-container select {
+    background: rgba(255, 250, 245, 0.9) !important;
+    border: 1px solid rgba(255, 183, 77, 0.4) !important;
+    color: var(--text-primary) !important;
+}
+
+/* 四种原始主题 - 焦点状态 */
+[data-theme="ocean"] .form-control:focus,
+[data-theme="ocean"] .modal-content input:focus,
+[data-theme="ocean"] .modal-content textarea:focus,
+[data-theme="ocean"] .modal-content select:focus,
+[data-theme="ocean"] .modal-container input:focus,
+[data-theme="ocean"] .modal-container textarea:focus,
+[data-theme="ocean"] .modal-container select:focus,
+[data-theme="ocean"] input[type="file"]:focus,
+[data-theme="ocean"] input[type="url"]:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 10px rgba(129, 196, 232, 0.3) !important;
+    outline: none !important;
+}
+
+[data-theme="purple"] .form-control:focus,
+[data-theme="purple"] .modal-content input:focus,
+[data-theme="purple"] .modal-content textarea:focus,
+[data-theme="purple"] .modal-content select:focus,
+[data-theme="purple"] input[type="file"]:focus,
+[data-theme="purple"] input[type="url"]:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 10px rgba(186, 104, 200, 0.3) !important;
+    outline: none !important;
+}
+
+[data-theme="green"] .form-control:focus,
+[data-theme="green"] .modal-content input:focus,
+[data-theme="green"] .modal-content textarea:focus,
+[data-theme="green"] .modal-content select:focus,
+[data-theme="green"] input[type="file"]:focus,
+[data-theme="green"] input[type="url"]:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 10px rgba(129, 199, 132, 0.3) !important;
+    outline: none !important;
+}
+
+[data-theme="orange"] .form-control:focus,
+[data-theme="orange"] .modal-content input:focus,
+[data-theme="orange"] .modal-content textarea:focus,
+[data-theme="orange"] .modal-content select:focus,
+[data-theme="orange"] .modal-container input:focus,
+[data-theme="orange"] .modal-container textarea:focus,
+[data-theme="orange"] .modal-container select:focus,
+[data-theme="orange"] input[type="file"]:focus,
+[data-theme="orange"] input[type="url"]:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 10px rgba(255, 183, 77, 0.3) !important;
+    outline: none !important;
+}
+
+/* 四种原始主题 - 模态框按钮样式 */
+
+/* 蓝色海洋主题 - 按钮 */
+[data-theme="ocean"] .modal-container .btn-primary,
+[data-theme="ocean"] .modal-container button[onclick*="save"] {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%) !important;
+    border: none !important;
+    color: white !important;
+    padding: 0.8rem 1.5rem !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s !important;
+}
+
+[data-theme="ocean"] .modal-container .btn-primary:hover,
+[data-theme="ocean"] .modal-container button[onclick*="save"]:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 15px rgba(129, 196, 232, 0.3) !important;
+}
+
+[data-theme="ocean"] .modal-container .btn-secondary {
+    background: rgba(129, 196, 232, 0.1) !important;
+    border: 1px solid rgba(129, 196, 232, 0.3) !important;
+    color: var(--primary-color) !important;
+    padding: 0.8rem 1.5rem !important;
+    border-radius: 8px !important;
+}
+
+[data-theme="ocean"] .modal-container .btn-secondary:hover {
+    background: rgba(129, 196, 232, 0.2) !important;
+    border-color: var(--primary-color) !important;
+}
+
+/* 紫色梦幻主题 - 按钮 */
+[data-theme="purple"] .modal-container .btn-primary,
+[data-theme="purple"] .modal-container button[onclick*="save"] {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%) !important;
+    border: none !important;
+    color: white !important;
+    padding: 0.8rem 1.5rem !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s !important;
+}
+
+[data-theme="purple"] .modal-container .btn-primary:hover,
+[data-theme="purple"] .modal-container button[onclick*="save"]:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 15px rgba(186, 104, 200, 0.3) !important;
+}
+
+[data-theme="purple"] .modal-container .btn-secondary {
+    background: rgba(186, 104, 200, 0.1) !important;
+    border: 1px solid rgba(186, 104, 200, 0.3) !important;
+    color: var(--primary-color) !important;
+    padding: 0.8rem 1.5rem !important;
+    border-radius: 8px !important;
+}
+
+[data-theme="purple"] .modal-container .btn-secondary:hover {
+    background: rgba(186, 104, 200, 0.2) !important;
+    border-color: var(--primary-color) !important;
+}
+
+/* 绿色自然主题 - 按钮 */
+[data-theme="green"] .modal-container .btn-primary,
+[data-theme="green"] .modal-container button[onclick*="save"] {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%) !important;
+    border: none !important;
+    color: white !important;
+    padding: 0.8rem 1.5rem !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s !important;
+}
+
+[data-theme="green"] .modal-container .btn-primary:hover,
+[data-theme="green"] .modal-container button[onclick*="save"]:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 15px rgba(129, 199, 132, 0.3) !important;
+}
+
+[data-theme="green"] .modal-container .btn-secondary {
+    background: rgba(129, 199, 132, 0.1) !important;
+    border: 1px solid rgba(129, 199, 132, 0.3) !important;
+    color: var(--primary-color) !important;
+    padding: 0.8rem 1.5rem !important;
+    border-radius: 8px !important;
+}
+
+[data-theme="green"] .modal-container .btn-secondary:hover {
+    background: rgba(129, 199, 132, 0.2) !important;
+    border-color: var(--primary-color) !important;
+}
+
+/* 橙色活力主题 - 按钮 */
+[data-theme="orange"] .modal-container .btn-primary,
+[data-theme="orange"] .modal-container button[onclick*="save"] {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%) !important;
+    border: none !important;
+    color: white !important;
+    padding: 0.8rem 1.5rem !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s !important;
+}
+
+[data-theme="orange"] .modal-container .btn-primary:hover,
+[data-theme="orange"] .modal-container button[onclick*="save"]:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 15px rgba(255, 183, 77, 0.3) !important;
+}
+
+[data-theme="orange"] .modal-container .btn-secondary {
+    background: rgba(255, 183, 77, 0.1) !important;
+    border: 1px solid rgba(255, 183, 77, 0.3) !important;
+    color: var(--primary-color) !important;
+    padding: 0.8rem 1.5rem !important;
+    border-radius: 8px !important;
+}
+
+[data-theme="orange"] .modal-container .btn-secondary:hover {
+    background: rgba(255, 183, 77, 0.2) !important;
+    border-color: var(--primary-color) !important;
+}
+
+/* 粉色主题 - 头像上传 */
+[data-theme="pink"] .avatar-upload-container,
+[data-theme="pink"] .avatar-upload-controls,
+[data-theme="pink"] .avatar-preview {
+    background: transparent !important;
+}
+
+[data-theme="pink"] input[type="file"],
+[data-theme="pink"] input[type="url"],
+[data-theme="pink"] input[id*="avatar"],
+[data-theme="pink"] input[id*="Avatar"] {
+    background: rgba(255, 240, 245, 0.8) !important;
+    border: 1px solid rgba(255, 105, 180, 0.3) !important;
+}
+
+/* 玻璃暗黑主题 - 头像上传 */
+[data-theme="glass-dark"] .avatar-upload-container,
+[data-theme="glass-dark"] .avatar-upload-controls,
+[data-theme="glass-dark"] .avatar-preview {
+    background: transparent !important;
+}
+
+[data-theme="glass-dark"] input[type="file"],
+[data-theme="glass-dark"] input[type="url"],
+[data-theme="glass-dark"] input[id*="avatar"],
+[data-theme="glass-dark"] input[id*="Avatar"] {
+    background: rgba(20, 20, 30, 0.7) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(100, 181, 246, 0.2) !important;
+    color: #e0e0e0 !important;
+}
+
+/* 通用 - 所有白色背景的小文字 */
+[data-theme] small[style*="color: #999"],
+[data-theme] small[style*="color:#999"],
+[data-theme] small[style*="color: #666"],
+[data-theme] small[style*="color:#666"] {
+    color: var(--text-muted) !important;
+}
+
+
+/* ========================================
+   标签页/选项卡修复
+   ======================================== */
+
+/* 赛博朋克主题 - 标签页容器 */
+[data-theme="cyberpunk"] .tabs,
+[data-theme="cyberpunk"] .tab-container,
+[data-theme="cyberpunk"] .tabs-container,
+[data-theme="cyberpunk"] .nav-tabs {
+    background: transparent !important;
+    border-bottom: 1px solid rgba(0, 240, 255, 0.3) !important;
+}
+
+/* 赛博朋克主题 - 标签页按钮 */
+[data-theme="cyberpunk"] .tab,
+[data-theme="cyberpunk"] .tab-item,
+[data-theme="cyberpunk"] .nav-tabs .nav-item,
+[data-theme="cyberpunk"] .nav-tabs .nav-link {
+    background: rgba(26, 31, 58, 0.5) !important;
+    color: rgba(0, 240, 255, 0.7) !important;
+    border: 1px solid rgba(0, 240, 255, 0.2) !important;
+}
+
+[data-theme="cyberpunk"] .tab:hover,
+[data-theme="cyberpunk"] .tab-item:hover,
+[data-theme="cyberpunk"] .nav-tabs .nav-link:hover {
+    background: rgba(26, 31, 58, 0.8) !important;
+    color: #00f0ff !important;
+    border-color: rgba(0, 240, 255, 0.5) !important;
+}
+
+/* 赛博朋克主题 - 激活的标签页 */
+[data-theme="cyberpunk"] .tab.active,
+[data-theme="cyberpunk"] .tab-item.active,
+[data-theme="cyberpunk"] .nav-tabs .nav-link.active {
+    background: rgba(0, 240, 255, 0.15) !important;
+    color: #00f0ff !important;
+    border-color: #00f0ff !important;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.3) !important;
+}
+
+/* 深色主题 - 标签页 */
+[data-theme="dark"] .tabs,
+[data-theme="dark"] .tab-container,
+[data-theme="dark"] .tabs-container,
+[data-theme="dark"] .nav-tabs {
+    background: transparent !important;
+    border-bottom: 1px solid rgba(100, 181, 246, 0.3) !important;
+}
+
+[data-theme="dark"] .tab,
+[data-theme="dark"] .tab-item,
+[data-theme="dark"] .nav-tabs .nav-link {
+    background: rgba(26, 26, 26, 0.5) !important;
+    color: rgba(100, 181, 246, 0.7) !important;
+    border: 1px solid rgba(100, 181, 246, 0.2) !important;
+}
+
+[data-theme="dark"] .tab.active,
+[data-theme="dark"] .tab-item.active,
+[data-theme="dark"] .nav-tabs .nav-link.active {
+    background: rgba(100, 181, 246, 0.15) !important;
+    color: #64b5f6 !important;
+    border-color: #64b5f6 !important;
+}
+
+/* 粉色主题 - 标签页 */
+[data-theme="pink"] .tabs,
+[data-theme="pink"] .tab-container,
+[data-theme="pink"] .tabs-container,
+[data-theme="pink"] .nav-tabs {
+    background: transparent !important;
+    border-bottom: 1px solid rgba(255, 105, 180, 0.3) !important;
+}
+
+[data-theme="pink"] .tab,
+[data-theme="pink"] .tab-item,
+[data-theme="pink"] .nav-tabs .nav-link {
+    background: rgba(255, 240, 245, 0.5) !important;
+    color: rgba(255, 105, 180, 0.7) !important;
+    border: 1px solid rgba(255, 105, 180, 0.2) !important;
+}
+
+[data-theme="pink"] .tab.active,
+[data-theme="pink"] .tab-item.active,
+[data-theme="pink"] .nav-tabs .nav-link.active {
+    background: rgba(255, 105, 180, 0.15) !important;
+    color: #ff69b4 !important;
+    border-color: #ff69b4 !important;
+}
+
+/* 玻璃暗黑主题 - 标签页 */
+[data-theme="glass-dark"] .tabs,
+[data-theme="glass-dark"] .tab-container,
+[data-theme="glass-dark"] .tabs-container,
+[data-theme="glass-dark"] .nav-tabs {
+    background: transparent !important;
+    border-bottom: 1px solid rgba(100, 181, 246, 0.2) !important;
+}
+
+[data-theme="glass-dark"] .tab,
+[data-theme="glass-dark"] .tab-item,
+[data-theme="glass-dark"] .nav-tabs .nav-link {
+    background: rgba(20, 20, 30, 0.5) !important;
+    backdrop-filter: blur(10px) !important;
+    color: rgba(100, 181, 246, 0.7) !important;
+    border: 1px solid rgba(100, 181, 246, 0.2) !important;
+}
+
+[data-theme="glass-dark"] .tab.active,
+[data-theme="glass-dark"] .tab-item.active,
+[data-theme="glass-dark"] .nav-tabs .nav-link.active {
+    background: rgba(100, 181, 246, 0.15) !important;
+    backdrop-filter: blur(15px) !important;
+    color: #64b5f6 !important;
+    border-color: #64b5f6 !important;
+}
+
+
+/* ========================================
+   媒体库标签页特殊修复
+   ======================================== */
+
+/* 赛博朋克主题 - 媒体库标签页容器 */
+[data-theme="cyberpunk"] .media-tabs {
+    background: rgba(26, 31, 58, 0.5) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    box-shadow: 0 4px 20px rgba(0, 240, 255, 0.1) !important;
+}
+
+[data-theme="cyberpunk"] .media-tab {
+    color: rgba(0, 240, 255, 0.7) !important;
+}
+
+[data-theme="cyberpunk"] .media-tab:hover {
+    background: rgba(0, 240, 255, 0.1) !important;
+    color: #00f0ff !important;
+}
+
+[data-theme="cyberpunk"] .media-tab.active {
+    background: linear-gradient(135deg, #00f0ff 0%, #0099cc 100%) !important;
+    color: #1a1f3a !important;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.5) !important;
+}
+
+/* 深色主题 - 媒体库标签页 */
+[data-theme="dark"] .media-tabs {
+    background: rgba(26, 26, 26, 0.5) !important;
+    border: 1px solid rgba(100, 181, 246, 0.3) !important;
+}
+
+[data-theme="dark"] .media-tab {
+    color: rgba(100, 181, 246, 0.7) !important;
+}
+
+[data-theme="dark"] .media-tab:hover {
+    background: rgba(100, 181, 246, 0.1) !important;
+    color: #64b5f6 !important;
+}
+
+[data-theme="dark"] .media-tab.active {
+    background: linear-gradient(135deg, #64b5f6 0%, #42a5f5 100%) !important;
+    color: #1a1a1a !important;
+}
+
+/* 粉色主题 - 媒体库标签页 */
+[data-theme="pink"] .media-tabs {
+    background: rgba(255, 240, 245, 0.5) !important;
+    border: 1px solid rgba(255, 105, 180, 0.3) !important;
+}
+
+[data-theme="pink"] .media-tab.active {
+    background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%) !important;
+    color: white !important;
+}
+
+/* 玻璃暗黑主题 - 媒体库标签页 */
+[data-theme="glass-dark"] .media-tabs {
+    background: rgba(20, 20, 30, 0.5) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(100, 181, 246, 0.2) !important;
+}
+
+[data-theme="glass-dark"] .media-tab.active {
+    background: linear-gradient(135deg, #64b5f6 0%, #42a5f5 100%) !important;
+    backdrop-filter: blur(15px) !important;
+}
+
+
+/* ========================================
+   音乐播放器和视频播放器 - 赛博朋克主题
+   ======================================== */
+
+/* 赛博朋克 - 音乐播放器容器 */
+[data-theme="cyberpunk"] .music-player,
+[data-theme="cyberpunk"] .player-content,
+[data-theme="cyberpunk"] .main-player-left,
+[data-theme="cyberpunk"] .main-player-right {
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.95) 0%, rgba(37, 42, 72, 0.95) 100%) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    box-shadow: 0 4px 20px rgba(0, 240, 255, 0.1), 0 0 40px rgba(0, 240, 255, 0.05) !important;
+}
+
+/* 赛博朋克 - 播放器标题和文字 */
+[data-theme="cyberpunk"] .player-title,
+[data-theme="cyberpunk"] .music-title,
+[data-theme="cyberpunk"] .player-details h3,
+[data-theme="cyberpunk"] .song-title {
+    color: #00f0ff !important;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5) !important;
+}
+
+/* 赛博朋克 - 播放器副标题 */
+[data-theme="cyberpunk"] .player-details p,
+[data-theme="cyberpunk"] .song-artist,
+[data-theme="cyberpunk"] .song-album {
+    color: rgba(0, 240, 255, 0.7) !important;
+}
+
+/* 赛博朋克 - 播放按钮 */
+[data-theme="cyberpunk"] .player-toggle,
+[data-theme="cyberpunk"] .player-controls button,
+[data-theme="cyberpunk"] .play-btn {
+    background: linear-gradient(135deg, #00f0ff 0%, #0099cc 100%) !important;
+    border: none !important;
+    color: #1a1f3a !important;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.3) !important;
+}
+
+[data-theme="cyberpunk"] .player-toggle:hover,
+[data-theme="cyberpunk"] .player-controls button:hover,
+[data-theme="cyberpunk"] .play-btn:hover {
+    box-shadow: 0 0 25px rgba(0, 240, 255, 0.5) !important;
+    transform: scale(1.05) !important;
+}
+
+/* 赛博朋克 - 进度条 */
+[data-theme="cyberpunk"] .player-progress input[type="range"],
+[data-theme="cyberpunk"] .progress-bar {
+    background: rgba(0, 240, 255, 0.2) !important;
+}
+
+[data-theme="cyberpunk"] .player-progress input[type="range"]::-webkit-slider-thumb {
+    background: #00f0ff !important;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.5) !important;
+}
+
+[data-theme="cyberpunk"] .progress-fill {
+    background: linear-gradient(90deg, #00f0ff 0%, #0099cc 100%) !important;
+}
+
+/* 赛博朋克 - 播放列表 */
+[data-theme="cyberpunk"] .playlist-item,
+[data-theme="cyberpunk"] .song-item {
+    background: rgba(26, 31, 58, 0.5) !important;
+    border: 1px solid rgba(0, 240, 255, 0.2) !important;
+    color: #e0e0e0 !important;
+}
+
+[data-theme="cyberpunk"] .playlist-item:hover,
+[data-theme="cyberpunk"] .song-item:hover {
+    background: rgba(0, 240, 255, 0.1) !important;
+    border-color: #00f0ff !important;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.2) !important;
+}
+
+[data-theme="cyberpunk"] .playlist-item.active,
+[data-theme="cyberpunk"] .song-item.active {
+    background: rgba(0, 240, 255, 0.15) !important;
+    border-color: #00f0ff !important;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.3) !important;
+}
+
+/* 赛博朋克 - 歌词面板 */
+[data-theme="cyberpunk"] .lyrics-panel,
+[data-theme="cyberpunk"] .lyrics-content {
+    background: rgba(26, 31, 58, 0.8) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+}
+
+[data-theme="cyberpunk"] .lyrics-line {
+    color: rgba(224, 224, 224, 0.6) !important;
+}
+
+[data-theme="cyberpunk"] .lyrics-line.active {
+    color: #00f0ff !important;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5) !important;
+    font-weight: 600 !important;
+}
+
+/* 赛博朋克 - 视频播放器 */
+[data-theme="cyberpunk"] .video-section,
+[data-theme="cyberpunk"] .video-player,
+[data-theme="cyberpunk"] .video-container {
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.95) 0%, rgba(37, 42, 72, 0.95) 100%) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    box-shadow: 0 4px 20px rgba(0, 240, 255, 0.1) !important;
+}
+
+[data-theme="cyberpunk"] .video-title {
+    color: #00f0ff !important;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5) !important;
+}
+
+[data-theme="cyberpunk"] .video-description {
+    color: rgba(224, 224, 224, 0.8) !important;
+}
+
+/* 赛博朋克 - 视频列表 */
+[data-theme="cyberpunk"] .video-list-item {
+    background: rgba(26, 31, 58, 0.5) !important;
+    border: 1px solid rgba(0, 240, 255, 0.2) !important;
+}
+
+[data-theme="cyberpunk"] .video-list-item:hover {
+    background: rgba(0, 240, 255, 0.1) !important;
+    border-color: #00f0ff !important;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.2) !important;
+}
+
+[data-theme="cyberpunk"] .video-list-item.active {
+    background: rgba(0, 240, 255, 0.15) !important;
+    border-color: #00f0ff !important;
+}
+
+/* 赛博朋克 - 播放器图标 */
+[data-theme="cyberpunk"] .music-icon,
+[data-theme="cyberpunk"] .video-icon {
+    color: #00f0ff !important;
+    filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.5)) !important;
+}
+
+/* 赛博朋克 - 关闭按钮 */
+[data-theme="cyberpunk"] .player-close {
+    color: rgba(0, 240, 255, 0.7) !important;
+}
+
+[data-theme="cyberpunk"] .player-close:hover {
+    color: #00f0ff !important;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5) !important;
+}
+
+/* ========================================
+   深色主题 - 播放器
+   ======================================== */
+
+[data-theme="dark"] .music-player,
+[data-theme="dark"] .player-content,
+[data-theme="dark"] .main-player-left,
+[data-theme="dark"] .main-player-right,
+[data-theme="dark"] .video-section,
+[data-theme="dark"] .video-player {
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(36, 36, 36, 0.95) 100%) !important;
+    border: 1px solid rgba(100, 181, 246, 0.3) !important;
+}
+
+[data-theme="dark"] .player-title,
+[data-theme="dark"] .music-title,
+[data-theme="dark"] .video-title {
+    color: #64b5f6 !important;
+}
+
+/* ========================================
+   粉色主题 - 播放器
+   ======================================== */
+
+[data-theme="pink"] .music-player,
+[data-theme="pink"] .player-content,
+[data-theme="pink"] .main-player-left,
+[data-theme="pink"] .main-player-right,
+[data-theme="pink"] .video-section,
+[data-theme="pink"] .video-player {
+    background: linear-gradient(135deg, rgba(255, 240, 245, 0.95) 0%, rgba(255, 228, 240, 0.95) 100%) !important;
+    border: 2px solid rgba(255, 105, 180, 0.3) !important;
+}
+
+[data-theme="pink"] .player-title,
+[data-theme="pink"] .music-title,
+[data-theme="pink"] .video-title {
+    color: #ff69b4 !important;
+}
+
+[data-theme="pink"] .player-toggle,
+[data-theme="pink"] .player-controls button {
+    background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%) !important;
+}
+
+/* ========================================
+   玻璃暗黑主题 - 播放器
+   ======================================== */
+
+[data-theme="glass-dark"] .music-player,
+[data-theme="glass-dark"] .player-content,
+[data-theme="glass-dark"] .main-player-left,
+[data-theme="glass-dark"] .main-player-right,
+[data-theme="glass-dark"] .video-section,
+[data-theme="glass-dark"] .video-player {
+    background: linear-gradient(135deg, rgba(20, 20, 30, 0.9) 0%, rgba(30, 30, 45, 0.9) 100%) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(100, 181, 246, 0.2) !important;
+}
+
+[data-theme="glass-dark"] .player-title,
+[data-theme="glass-dark"] .music-title,
+[data-theme="glass-dark"] .video-title {
+    color: #64b5f6 !important;
+}
+
+
+/* ========================================
+   时光轴文章日历 - 赛博朋克主题
+   ======================================== */
+
+/* 赛博朋克 - 时光轴容器 */
+[data-theme="cyberpunk"] .timeline-container,
+[data-theme="cyberpunk"] .timeline-section {
+    background: transparent !important;
+}
+
+/* 赛博朋克 - 文章日历容器 */
+[data-theme="cyberpunk"] div[style*="background: white"][style*="border-radius"],
+[data-theme="cyberpunk"] div[style*="background:white"][style*="border-radius"],
+[data-theme="cyberpunk"] .calendar-container,
+[data-theme="cyberpunk"] .article-calendar {
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.95) 0%, rgba(37, 42, 72, 0.95) 100%) !important;
+    border: 2px solid rgba(0, 240, 255, 0.5) !important;
+    box-shadow: 0 4px 20px rgba(0, 240, 255, 0.15), 0 0 40px rgba(0, 240, 255, 0.08) !important;
+}
+
+/* 赛博朋克 - 日历标题 */
+[data-theme="cyberpunk"] .calendar-header,
+[data-theme="cyberpunk"] .calendar-title {
+    background: rgba(0, 240, 255, 0.1) !important;
+    color: #00f0ff !important;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5) !important;
+    border-bottom: 2px solid rgba(0, 240, 255, 0.5) !important;
+}
+
+/* 赛博朋克 - 日历网格线条加深 */
+[data-theme="cyberpunk"] .calendar-grid,
+[data-theme="cyberpunk"] .calendar-days {
+    border-color: rgba(0, 240, 255, 0.4) !important;
+}
+
+[data-theme="cyberpunk"] .calendar-day,
+[data-theme="cyberpunk"] .day-cell {
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    color: rgba(224, 224, 224, 0.8) !important;
+}
+
+[data-theme="cyberpunk"] .calendar-day:hover,
+[data-theme="cyberpunk"] .day-cell:hover {
+    background: rgba(0, 240, 255, 0.1) !important;
+    border-color: #00f0ff !important;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.3) !important;
+}
+
+/* 赛博朋克 - 有文章的日期 */
+[data-theme="cyberpunk"] .calendar-day.has-article,
+[data-theme="cyberpunk"] .day-cell.has-article,
+[data-theme="cyberpunk"] .calendar-day.active,
+[data-theme="cyberpunk"] .day-cell.active {
+    background: rgba(0, 240, 255, 0.2) !important;
+    border: 2px solid #00f0ff !important;
+    color: #00f0ff !important;
+    font-weight: 600 !important;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.4) !important;
+}
+
+/* 赛博朋克 - 当前日期 */
+[data-theme="cyberpunk"] .calendar-day.today,
+[data-theme="cyberpunk"] .day-cell.today {
+    background: linear-gradient(135deg, #00f0ff 0%, #0099cc 100%) !important;
+    color: #1a1f3a !important;
+    border: 2px solid #00f0ff !important;
+    font-weight: 700 !important;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.5) !important;
+}
+
+/* 赛博朋克 - 星期标题 */
+[data-theme="cyberpunk"] .calendar-weekdays,
+[data-theme="cyberpunk"] .weekday-header {
+    background: rgba(0, 240, 255, 0.15) !important;
+    color: #00f0ff !important;
+    border-bottom: 2px solid rgba(0, 240, 255, 0.5) !important;
+}
+
+[data-theme="cyberpunk"] .weekday {
+    color: #00f0ff !important;
+    font-weight: 600 !important;
+}
+
+/* 赛博朋克 - 月份切换按钮 */
+[data-theme="cyberpunk"] .calendar-nav button,
+[data-theme="cyberpunk"] .month-nav button {
+    background: rgba(0, 240, 255, 0.1) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    color: #00f0ff !important;
+}
+
+[data-theme="cyberpunk"] .calendar-nav button:hover,
+[data-theme="cyberpunk"] .month-nav button:hover {
+    background: rgba(0, 240, 255, 0.2) !important;
+    border-color: #00f0ff !important;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.3) !important;
+}
+
+/* 赛博朋克 - 文章列表 */
+[data-theme="cyberpunk"] .article-list,
+[data-theme="cyberpunk"] .timeline-articles {
+    background: rgba(26, 31, 58, 0.8) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+}
+
+[data-theme="cyberpunk"] .article-item,
+[data-theme="cyberpunk"] .timeline-item {
+    background: rgba(26, 31, 58, 0.6) !important;
+    border-left: 3px solid rgba(0, 240, 255, 0.5) !important;
+    border-bottom: 1px solid rgba(0, 240, 255, 0.2) !important;
+}
+
+[data-theme="cyberpunk"] .article-item:hover,
+[data-theme="cyberpunk"] .timeline-item:hover {
+    background: rgba(0, 240, 255, 0.1) !important;
+    border-left-color: #00f0ff !important;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.2) !important;
+}
+
+[data-theme="cyberpunk"] .article-title,
+[data-theme="cyberpunk"] .timeline-title {
+    color: #00f0ff !important;
+}
+
+[data-theme="cyberpunk"] .article-date,
+[data-theme="cyberpunk"] .timeline-date {
+    color: rgba(0, 240, 255, 0.7) !important;
+}
+
+/* 赛博朋克 - 时光轴线条加深 */
+[data-theme="cyberpunk"] .timeline-line,
+[data-theme="cyberpunk"] .timeline::before {
+    background: linear-gradient(180deg, rgba(0, 240, 255, 0.6) 0%, rgba(0, 240, 255, 0.3) 100%) !important;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.3) !important;
+}
+
+[data-theme="cyberpunk"] .timeline-dot,
+[data-theme="cyberpunk"] .timeline-marker {
+    background: #00f0ff !important;
+    border: 2px solid rgba(0, 240, 255, 0.5) !important;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.5) !important;
+}
+
+/* ========================================
+   深色主题 - 时光轴
+   ======================================== */
+
+[data-theme="dark"] .calendar-container,
+[data-theme="dark"] .article-calendar {
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(36, 36, 36, 0.95) 100%) !important;
+    border: 2px solid rgba(100, 181, 246, 0.4) !important;
+}
+
+[data-theme="dark"] .calendar-day {
+    border-color: rgba(100, 181, 246, 0.3) !important;
+    color: #e0e0e0 !important;
+}
+
+[data-theme="dark"] .calendar-day.has-article {
+    background: rgba(100, 181, 246, 0.2) !important;
+    border-color: #64b5f6 !important;
+    color: #64b5f6 !important;
+}
+
+/* ========================================
+   粉色主题 - 时光轴
+   ======================================== */
+
+[data-theme="pink"] .calendar-container,
+[data-theme="pink"] .article-calendar {
+    background: linear-gradient(135deg, rgba(255, 240, 245, 0.95) 0%, rgba(255, 228, 240, 0.95) 100%) !important;
+    border: 2px solid rgba(255, 105, 180, 0.4) !important;
+}
+
+[data-theme="pink"] .calendar-day.has-article {
+    background: rgba(255, 105, 180, 0.2) !important;
+    border-color: #ff69b4 !important;
+    color: #ff69b4 !important;
+}
+
+/* ========================================
+   玻璃暗黑主题 - 时光轴
+   ======================================== */
+
+[data-theme="glass-dark"] .calendar-container,
+[data-theme="glass-dark"] .article-calendar {
+    background: linear-gradient(135deg, rgba(20, 20, 30, 0.9) 0%, rgba(30, 30, 45, 0.9) 100%) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 2px solid rgba(100, 181, 246, 0.3) !important;
+}
+
+[data-theme="glass-dark"] .calendar-day {
+    border-color: rgba(100, 181, 246, 0.3) !important;
+}
+
+[data-theme="glass-dark"] .calendar-day.has-article {
+    background: rgba(100, 181, 246, 0.2) !important;
+    border-color: #64b5f6 !important;
+}

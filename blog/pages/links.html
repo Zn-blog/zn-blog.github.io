@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>友情链接 - ℳঞ执念ꦿ的博客</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/search.css">
+    <link rel="stylesheet" href="../css/themes.css">
+    <link rel="stylesheet" href="../css/theme-adapter.css">
+    <link rel="stylesheet" href="../css/modern-nav.css?v=2">
+    <link rel="stylesheet" href="../css/video-background.css">
+</head>
+<body>
+    <nav class="modern-nav">
+        <div class="nav-left">
+            <a href="../index.html" class="nav-logo">
+                <img id="siteAvatar" class="logo-avatar" src="https://ui-avatars.com/api/?name=执念&size=200&background=4fc3f7&color=fff&bold=true" alt="头像">
+                <span class="logo-text">ℳঞ执念ꦿ的博客</span>
+            </a>
+        </div>
+        <div class="nav-center">
+            <div class="nav-indicator"></div>
+            <a href="../index.html" class="nav-item"><span class="nav-item-icon">🏠</span><span class="nav-item-text">首页</span></a>
+            <a href="tags.html" class="nav-item"><span class="nav-item-icon">🏷️</span><span class="nav-item-text">标签</span></a>
+            <a href="categories.html" class="nav-item"><span class="nav-item-icon">📂</span><span class="nav-item-text">分类</span></a>
+            <a href="timeline.html" class="nav-item"><span class="nav-item-icon">⏰</span><span class="nav-item-text">时光轴</span></a>
+            <a href="about.html" class="nav-item"><span class="nav-item-icon">👤</span><span class="nav-item-text">关于</span></a>
+            <a href="gallery.html" class="nav-item"><span class="nav-item-icon">🖼️</span><span class="nav-item-text">相册</span></a>
+            <a href="apps.html" class="nav-item"><span class="nav-item-icon">🎮</span><span class="nav-item-text">应用</span></a>
+            <a href="guestbook.html" class="nav-item"><span class="nav-item-icon">💬</span><span class="nav-item-text">留言板</span></a>
+            <a href="links.html" class="nav-item active"><span class="nav-item-icon">🔗</span><span class="nav-item-text">友链</span></a>
+        </div>
+        <div class="nav-right">
+            <div class="nav-search">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索文章..." onkeypress="handleSearchKeyPress(event)">
+            </div>
+        </div>
+        <button class="mobile-menu-btn" id="mobileMenuBtn"><span></span><span></span><span></span></button>
+    </nav>
+    <section class="main-content" style="min-height: 100vh; padding-top: 90px;">
+
+        <main class="content-area" style="padding-top: 6rem;">
+            <div class="main-content-box">
+                <h1 style="text-align: center; color: #2c5f7c; margin-bottom: 1rem;
+                border-bottom: 2px solid #f0f0f0; padding-bottom: 2rem; margin-bottom: 2rem; width: 100%;">🔗 友情链接</h1>
+                <p style="text-align: center; color: #7ba3b8; margin-bottom: 2rem;">
+                    共 <span id="linksCount">0</span> 个友情链接
+                </p>
+                
+                <!-- 分类标签 -->
+                <div id="linkCategories" style="text-align: center; margin-bottom: 2rem; display: flex; justify-content: center; flex-wrap: wrap; gap: 0.8rem;">
+                    <!-- 分类将通过 JavaScript 动态加载 -->
+                </div>
+                
+                <!-- 友情链接网格 -->
+                <div id="linksGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; padding: 2rem;">
+                    <!-- 友情链接将通过 JavaScript 动态加载 -->
+                </div>
+            </div>
+        </main>
+
+        <footer class="site-footer">
+            <div class="footer-stats">
+                <div class="stat-item"><span class="stat-icon">📝</span><div class="stat-info"><span class="stat-value" id="totalWords">0</span><span class="stat-label">总字数</span></div></div>
+                <div class="stat-item"><span class="stat-icon">👀</span><div class="stat-info"><span class="stat-value" id="totalViews">0</span><span class="stat-label">总访问量</span></div></div>
+                <div class="stat-item"><span class="stat-icon">👥</span><div class="stat-info"><span class="stat-value" id="totalVisitors">0</span><span class="stat-label">访问人数</span></div></div>
+                <div class="stat-item"><span class="stat-icon">⏱️</span><div class="stat-info"><span class="stat-value" id="runningTime">0天</span><span class="stat-label">运行时长</span></div></div>
+            </div>
+            <div class="footer-copyright"><p>&copy; 2025 ℳঞ执念ꦿ的博客. All rights reserved.</p></div>
+        </footer>
+    </section>
+    <link rel="stylesheet" href="../css/sakura.css">
+    <style>
+        /* 友情链接卡片样式 */
+        .link-card {
+            text-decoration: none;
+            display: block;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        .link-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
+
+        .link-card:hover::after {
+            opacity: 1;
+        }
+
+        .link-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            border-color: rgba(255, 255, 255, 1);
+        }
+
+        .link-card-inner {
+            padding: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .link-left {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            flex: 0 0 auto;
+        }
+
+        .link-avatar-wrapper {
+            position: relative;
+            width: 65px;
+            height: 65px;
+            flex-shrink: 0;
+        }
+
+        .link-avatar {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            object-fit: cover;
+            position: relative;
+            z-index: 2;
+            transition: all 0.4s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 3px solid rgba(255, 255, 255, 0.9);
+        }
+
+        .link-card:hover .link-avatar {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .link-avatar-glow {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(79, 195, 247, 0.4), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+            z-index: 1;
+            filter: blur(10px);
+        }
+
+        .link-card:hover .link-avatar-glow {
+            opacity: 1;
+            animation: glow-pulse 2s infinite;
+        }
+
+        @keyframes glow-pulse {
+            0%, 100% { transform: scale(1); opacity: 0.4; }
+            50% { transform: scale(1.2); opacity: 0.6; }
+        }
+
+        .link-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .link-name {
+            color: #2c5f7c;
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 700;
+            transition: all 0.3s;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .link-card:hover .link-name {
+            color: #4fc3f7;
+            transform: translateX(3px);
+        }
+
+        .link-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .link-category {
+            display: inline-block;
+            padding: 0.25rem 0.7rem;
+            background: rgba(255, 255, 255, 0.7);
+            color: #2196f3;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1.5px solid rgba(79, 195, 247, 0.3);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .link-url {
+            font-size: 0.8rem;
+            color: #a0c4d4;
+            font-family: 'Courier New', monospace;
+            opacity: 0.8;
+        }
+
+        .link-right {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            padding-left: 2rem;
+            border-left: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .link-description {
+            color: #5a7a8a;
+            font-size: 0.95rem;
+            margin: 0;
+            line-height: 1.7;
+            flex: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            font-weight: 400;
+        }
+
+        .link-arrow {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            color: #4fc3f7;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .link-card:hover .link-arrow {
+            transform: translateX(5px) rotate(-45deg);
+            background: rgba(79, 195, 247, 0.2);
+            box-shadow: 0 4px 12px rgba(79, 195, 247, 0.3);
+        }
+
+        /* 分类按钮样式 */
+        .category-btn {
+            padding: 0.6rem 1.5rem;
+            border: 2px solid #e0f2f7;
+            background: white;
+            color: #2c5f7c;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.95rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .category-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(79, 195, 247, 0.2);
+            border-color: #4fc3f7;
+            background: linear-gradient(135deg, #f0f8ff, #e8f4f8);
+        }
+
+        .category-btn.active {
+            background: linear-gradient(135deg, #4fc3f7, #2196f3);
+            color: white;
+            border-color: #4fc3f7;
+            box-shadow: 0 4px 15px rgba(79, 195, 247, 0.3);
+        }
+
+        .category-btn.active:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 195, 247, 0.4);
+        }
+
+        .category-icon {
+            font-size: 1.1rem;
+            transition: transform 0.3s;
+        }
+
+        .category-btn:hover .category-icon {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        /* 响应式 */
+        @media (max-width: 1024px) {
+            .link-card-inner {
+                gap: 1.5rem;
+            }
+
+            .link-right {
+                padding-left: 1.5rem;
+            }
+
+            .link-description {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .link-card-inner {
+                flex-direction: column;
+                padding: 1.5rem;
+                gap: 1.2rem;
+            }
+
+            .link-left {
+                width: 100%;
+                gap: 1rem;
+            }
+            
+            .link-avatar-wrapper {
+                width: 55px;
+                height: 55px;
+            }
+            
+            .link-avatar {
+                width: 55px;
+                height: 55px;
+            }
+
+            .link-right {
+                width: 100%;
+                padding-left: 0;
+                border-left: none;
+                border-top: 2px solid rgba(255, 255, 255, 0.5);
+                padding-top: 1rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .link-description {
+                font-size: 0.85rem;
+            }
+
+            .link-arrow {
+                align-self: flex-end;
+            }
+
+            .category-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+    <!-- 数据适配层 - 支持JSON文件存储 -->
+    <script src="../js/data-adapter.js"></script>
+    <script src="../js/data-store-wrapper.js"></script>
+    <script src="../js/theme-manager.js"></script>
+    <script src="../js/search.js"></script>
+    <script src="../js/sakura.js"></script>
+    <script src="../js/stats-sync.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        // 当前选中的分类
+        let currentCategory = 'all';
+
+        // 渲染友情链接（异步）
+        async function renderLinks(category = 'all') {
+            if (!window.blogDataStore) {
+                setTimeout(() => renderLinks(category), 100);
+                return;
+            }
+
+            currentCategory = category;
+            const links = category === 'all' 
+                ? await window.blogDataStore.getActiveLinks()
+                : await window.blogDataStore.getLinksByCategory(category);
+            
+            const grid = document.getElementById('linksGrid');
+            const count = document.getElementById('linksCount');
+
+            if (count) count.textContent = links.length;
+
+            if (links.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 4rem; color: #999;">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">🔗</div>
+                        <div style="font-size: 1.2rem;">暂无友情链接</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem;">请在后台管理中添加友情链接</div>
+                    </div>
+                `;
+                return;
+            }
+
+            // 淡色背景色数组
+            const bgColors = [
+                'linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%)',
+                'linear-gradient(135deg, #fff9f0 0%, #ffe8d4 100%)',
+                'linear-gradient(135deg, #fffef0 0%, #fff8d4 100%)',
+                'linear-gradient(135deg, #f0fff4 0%, #d4ffe8 100%)',
+                'linear-gradient(135deg, #f0f9ff 0%, #d4e8ff 100%)',
+                'linear-gradient(135deg, #f5f0ff 0%, #e8d4ff 100%)',
+                'linear-gradient(135deg, #fff0f9 0%, #ffd4e8 100%)',
+                'linear-gradient(135deg, #f0ffff 0%, #d4f8ff 100%)'
+            ];
+
+            grid.innerHTML = links.map((link, index) => {
+                const bgColor = bgColors[index % bgColors.length];
+                return `
+                    <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="link-card" style="background: ${bgColor};">
+                        <div class="link-card-inner">
+                            <div class="link-left">
+                                <div class="link-avatar-wrapper">
+                                    <img src="${link.avatar}" alt="${link.name}" class="link-avatar">
+                                    <div class="link-avatar-glow"></div>
+                                </div>
+                                <div class="link-info">
+                                    <h3 class="link-name">${link.name}</h3>
+                                    <div class="link-meta">
+                                        ${link.category !== '默认' ? `<span class="link-category">${link.category}</span>` : ''}
+                                        <span class="link-url">${new URL(link.url).hostname}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="link-right">
+                                <p class="link-description">${link.description || '暂无描述'}</p>
+                                <div class="link-arrow">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                `;
+            }).join('');
+        }
+
+        // 渲染分类标签
+        async function renderCategories() {
+            if (!window.blogDataStore) {
+                setTimeout(renderCategories, 100);
+                return;
+            }
+
+            const categories = await window.blogDataStore.getLinkCategories();
+            const container = document.getElementById('linkCategories');
+
+            const allButton = `
+                <button onclick="renderLinks('all')" class="category-btn ${currentCategory === 'all' ? 'active' : ''}">
+                    <span class="category-icon">📚</span>
+                    全部
+                </button>
+            `;
+
+            const categoryButtons = categories.map(category => `
+                <button onclick="renderLinks('${category}')" class="category-btn ${currentCategory === category ? 'active' : ''}">
+                    <span class="category-icon">🏷️</span>
+                    ${category}
+                </button>
+            `).join('');
+
+            container.innerHTML = allButton + categoryButtons;
+        }
+
+        // 页面加载时渲染
+        document.addEventListener('DOMContentLoaded', async () => {
+            await renderCategories();
+            await renderLinks();
+        });
+    </script>
+    <!-- 视频背景 -->
+    <script src="../js/video-background.js"></script>
+</body>
+</html>
+
+
+    <!-- JavaScript -->
+    <script src="../js/data-adapter.js"></script>
+    <script src="../js/data-store-wrapper.js"></script>
+    <script src="../js/theme-manager.js"></script>
+    <script src="../js/modern-nav.js"></script>
+    <script src="../js/video-background.js"></script>
+</body>
+</html>

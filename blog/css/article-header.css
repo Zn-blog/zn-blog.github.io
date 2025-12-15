@@ -1,0 +1,291 @@
+/* ========================================
+   文章头部专用样式 - 独立文件避免冲突
+   ======================================== */
+
+/* 文章头部容器 */
+.article-header {
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 2rem;
+    margin-bottom: 2rem;
+    width: 100% !important;
+    min-height: 200px !important; /* 固定最小高度，防止没有图片时布局变化 */
+}
+
+/* 标题 - 居中显示在最上方 */
+.article-title {
+    font-size: 2.5rem !important;
+    color: #2c5f7c !important;
+    margin-bottom: 1.5rem !important;
+    line-height: 1.3 !important;
+    font-weight: 700 !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    text-align: center !important;
+}
+
+/* 创建元数据和图片的容器 */
+.article-header::after {
+    content: "" !important;
+    display: table !important;
+    clear: both !important;
+}
+
+/* 元数据信息 - 水平排列 */
+.article-header .article-meta {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 1.5rem !important;
+    margin-bottom: 0 !important;
+    color: #666 !important;
+    font-size: 0.95rem !important;
+    align-items: center !important;
+}
+
+.article-header .meta-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+}
+
+.article-header .meta-item .icon {
+    font-size: 1.2rem !important;
+}
+
+/* 封面图片区域 - 右侧，居右对齐 - 只影响头部的图片 */
+.article-header .article-cover-section {
+    display: flex !important;
+    justify-content: flex-end !important;
+    float: right !important;
+    width: 50% !important;
+    margin-bottom: 1.5rem !important;
+    box-sizing: border-box !important;
+}
+
+.article-header .article-cover-img,
+.article-header #articleCoverImage {
+    max-width: 100% !important;
+    width: auto !important;
+    height: auto !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+    transition: all 0.3s !important;
+    object-fit: cover !important;
+    max-height: 300px !important;
+    display: block !important;
+}
+
+.article-header .article-cover-img:hover,
+.article-header #articleCoverImage:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* 标签区域 - 水平排列，居右显示 */
+.article-header .article-tags {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 0.8rem !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    margin-bottom: 0 !important;
+    margin-left: auto !important;
+}
+
+/* 元数据和标签容器 - 标签居右，添加左侧缩进 */
+.article-meta-tags-container {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+    width: 100% !important;
+    padding-left: 2rem !important;
+    box-sizing: border-box !important;
+    min-height: 40px !important; /* 固定最小高度，防止布局变化 */
+}
+
+/* 元数据区域 - 固定宽度，防止标签影响布局 */
+.article-meta-tags-container .article-meta {
+    flex: 0 0 auto !important;
+    max-width: 60% !important;
+}
+
+/* 标签区域 - 固定宽度 */
+.article-meta-tags-container .article-tags {
+    flex: 0 0 auto !important;
+    max-width: 35% !important;
+}
+
+.article-header .article-tag {
+    background: linear-gradient(135deg, #e8f4f8 0%, #d0e8f0 100%) !important;
+    color: #2c5f7c !important;
+    padding: 0.5rem 1.2rem !important;
+    border-radius: 25px !important;
+    font-size: 0.95rem !important;
+    text-decoration: none !important;
+    transition: all 0.3s !important;
+    border: 1px solid rgba(79, 195, 247, 0.2) !important;
+    font-weight: 500 !important;
+    display: inline-block !important;
+    white-space: nowrap !important;
+}
+
+.article-header .article-tag:hover {
+    background: linear-gradient(135deg, #4fc3f7 0%, #2196f3 100%) !important;
+    color: white !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(79, 195, 247, 0.3) !important;
+}
+
+/* 头部内容区域：左右布局 */
+.article-header-content {
+    display: flex !important;
+    gap: 2rem !important;
+    align-items: flex-start !important;
+    margin-top: 1.5rem !important;
+    width: 100% !important;
+}
+
+/* 左侧：元数据和标签 */
+.article-info-left {
+    flex: 1 !important;
+    min-width: 0 !important;
+}
+
+/* 元数据信息 */
+.article-meta {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 1.5rem !important;
+    margin-bottom: 0 !important;
+    color: #666 !important;
+    font-size: 0.95rem !important;
+    align-items: center !important;
+}
+
+.meta-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+}
+
+.meta-item .icon {
+    font-size: 1.2rem !important;
+}
+
+/* 标签区域 */
+.article-tags {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 0.8rem !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    margin-left: auto !important;
+}
+
+.article-tag {
+    background: linear-gradient(135deg, #e8f4f8 0%, #d0e8f0 100%) !important;
+    color: #2c5f7c !important;
+    padding: 0.6rem 1.5rem !important;
+    border-radius: 25px !important;
+    font-size: 1rem !important;
+    text-decoration: none !important;
+    transition: all 0.3s !important;
+    border: 1px solid rgba(79, 195, 247, 0.2) !important;
+    font-weight: 500 !important;
+    display: inline-block !important;
+    min-width: 120px !important;
+    text-align: center !important;
+}
+
+.article-tag:hover {
+    background: linear-gradient(135deg, #4fc3f7 0%, #2196f3 100%) !important;
+    color: white !important;
+    transform: translateX(5px) !important;
+    box-shadow: 0 4px 12px rgba(79, 195, 247, 0.3) !important;
+}
+
+/* 右侧：封面图片区域 */
+.article-cover-section {
+    flex: 0 0 400px !important;
+    max-width: 400px !important;
+}
+
+.article-cover-img {
+    width: 100% !important;
+    height: auto !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+    transition: all 0.3s !important;
+    object-fit: cover !important;
+    max-height: 300px !important;
+    display: block !important;
+}
+
+.article-cover-img:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* 响应式布局 */
+@media (max-width: 1024px) {
+    .article-cover-section {
+        flex: 0 0 320px !important;
+        max-width: 320px !important;
+    }
+    
+    .article-cover-img {
+        max-height: 240px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .article-title {
+        font-size: 2rem !important;
+    }
+    
+    .article-header-content {
+        flex-direction: column !important;
+        gap: 1.5rem !important;
+    }
+    
+    .article-cover-section {
+        flex: 1 !important;
+        max-width: 100% !important;
+    }
+    
+    .article-cover-img {
+        max-height: 250px !important;
+    }
+    
+    .article-meta-tags-container {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 1rem !important;
+        padding-left: 1rem !important;
+    }
+    
+    .article-meta {
+        gap: 0.8rem !important;
+        font-size: 0.85rem !important;
+    }
+    
+    .article-tags {
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+    }
+    
+    .article-tag {
+        min-width: auto !important;
+        padding: 0.4rem 1rem !important;
+        font-size: 0.85rem !important;
+    }
+}

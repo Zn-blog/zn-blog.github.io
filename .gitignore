@@ -1,0 +1,93 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Build outputs
+dist/
+build/
+.cache/
+
+# Logs
+logs/
+*.log
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.cache
+
+# Editor directories and files
+# .vscode/  # 注释掉，允许VS Code配置被跟踪
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# Backup files
+backup/
+# backups/  # 注释掉，允许backups文件夹被跟踪
+*.backup
+
+# Development and testing files (already cleaned)
+test-*.html
+diagnose-*.html
+debug-*.html
+fix-*.html
+verify-*.html
+clear-cache-and-test.html
+
+# Documentation files (already cleaned)
+*-FIX.md
+*-GUIDE.md
+*-SUMMARY.md
+*-COMPLETE.md
+*-FEATURE.md
+*-OPTIMIZATION.md
+*-UPDATE.md
+*-DEBUG.md
+*-TROUBLESHOOTING.md
+
+# Batch files (already cleaned, except deploy script)
+*.bat
+!deploy-to-vercel.bat
+
+# Keep important files
+!README.md
+!🚀-Vercel自动部署完整教程与优化指南.md
+
+# Data backups (keep data/ folder but ignore backups)
+data-backup*/
+backup-all-data.json
+
+# Optional: Uncomment if you don't want to commit user data
+# data/*.json

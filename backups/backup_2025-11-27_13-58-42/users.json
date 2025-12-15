@@ -1,0 +1,35 @@
+[
+  {
+    "id": "user_1763831613696",
+    "username": "admin",
+    "password": "admin123",
+    "role": "admin",
+    "email": "admin1@example.com",
+    "displayName": "管理员",
+    "status": "active",
+    "createdAt": "2025-11-22T17:13:33.696Z",
+    "updatedAt": "2025-11-22T17:47:34.484Z"
+  },
+  {
+    "id": "user_1763833309015",
+    "username": "editor",
+    "password": "editor123",
+    "role": "editor",
+    "email": "editor@example.com",
+    "displayName": "编辑者",
+    "status": "active",
+    "createdAt": "2025-11-22T17:41:49.015Z",
+    "updatedAt": "2025-11-22T17:48:06.134Z"
+  },
+  {
+    "id": "user_1763855247577",
+    "username": "admin1",
+    "password": "admin123",
+    "role": "admin",
+    "email": "admin_test@example.com",
+    "displayName": "管理员",
+    "status": "active",
+    "createdAt": "2025-11-22T23:47:27.578Z",
+    "updatedAt": "2025-11-23T17:17:59.393Z"
+  }
+]

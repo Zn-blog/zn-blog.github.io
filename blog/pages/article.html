@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="articleTitle">文章详情 - ℳঞ执念ꦿ的博客</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/search.css">
+    <link rel="stylesheet" href="../css/article.css">
+    <link rel="stylesheet" href="../css/article-header.css">
+    <link rel="stylesheet" href="../css/themes.css">
+    <link rel="stylesheet" href="../css/theme-adapter.css">
+    <link rel="stylesheet" href="../css/modern-nav.css?v=2">
+    <!-- 代码高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+    <link rel="stylesheet" href="../css/code-highlight.css">
+    <link rel="stylesheet" href="../css/video-background.css">
+</head>
+<body>
+    <nav class="modern-nav">
+        <div class="nav-left">
+            <a href="../index.html" class="nav-logo">
+                <img id="siteAvatar" class="logo-avatar" src="https://ui-avatars.com/api/?name=执念&size=200&background=4fc3f7&color=fff&bold=true" alt="头像">
+                <span class="logo-text">ℳঞ执念ꦿ的博客</span>
+            </a>
+        </div>
+        <div class="nav-center">
+            <div class="nav-indicator"></div>
+            <a href="../index.html" class="nav-item"><span class="nav-item-icon">🏠</span><span class="nav-item-text">首页</span></a>
+            <a href="tags.html" class="nav-item"><span class="nav-item-icon">🏷️</span><span class="nav-item-text">标签</span></a>
+            <a href="categories.html" class="nav-item"><span class="nav-item-icon">📂</span><span class="nav-item-text">分类</span></a>
+            <a href="timeline.html" class="nav-item"><span class="nav-item-icon">⏰</span><span class="nav-item-text">时光轴</span></a>
+            <a href="about.html" class="nav-item"><span class="nav-item-icon">👤</span><span class="nav-item-text">关于</span></a>
+            <a href="gallery.html" class="nav-item"><span class="nav-item-icon">🖼️</span><span class="nav-item-text">相册</span></a>
+            <a href="apps.html" class="nav-item"><span class="nav-item-icon">🎮</span><span class="nav-item-text">应用</span></a>
+            <a href="guestbook.html" class="nav-item"><span class="nav-item-icon">💬</span><span class="nav-item-text">留言板</span></a>
+            <a href="links.html" class="nav-item"><span class="nav-item-icon">🔗</span><span class="nav-item-text">友链</span></a>
+        </div>
+        <div class="nav-right">
+            <div class="nav-search">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索文章..." onkeypress="handleSearchKeyPress(event)">
+            </div>
+        </div>
+        <button class="mobile-menu-btn" id="mobileMenuBtn"><span></span><span></span><span></span></button>
+    </nav>
+    <section class="main-content" style="min-height: 100vh; padding-top: 90px;">
+
+        <main class="content-area" style="padding-top: 6rem;">
+            <!-- 文章目录 -->
+            <aside class="article-toc-wrapper" id="articleToc">
+                <div class="article-toc-header" onclick="toggleTocCollapse()">
+                    <div class="article-toc-title">
+                        <span>📑</span>
+                        <span>目录</span>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <button class="article-toc-collapse-btn" id="tocCollapseBtn" title="折叠/展开">
+                            ▼
+                        </button>
+                        <button class="article-toc-toggle" id="tocToggle" onclick="event.stopPropagation(); toggleToc()" title="关闭">✕</button>
+                    </div>
+                </div>
+                <nav class="article-toc-content" id="tocContent">
+                    <ul class="article-toc-list" id="tocList">
+                        <!-- 目录将通过JavaScript动态生成 -->
+                    </ul>
+                </nav>
+            </aside>
+
+            <!-- 移动端目录按钮 -->
+            <button class="article-toc-mobile-btn" id="tocMobileBtn" onclick="toggleToc()">
+                📑
+            </button>
+
+            <!-- 目录遮罩层 -->
+            <div class="article-toc-overlay" id="tocOverlay" onclick="toggleToc()"></div>
+
+            <div class="article-container">
+                <!-- 文章头部 -->
+                <article class="article-detail" id="articleDetail">
+                    <div class="article-header">
+                        <!-- 标题居中显示 -->
+                        <h1 class="article-title" id="articleTitleText">加载中...</h1>
+                    </div>
+                    <!-- 元数据和标签容器 - 水平排列，标签居右 -->
+                    <div class="article-meta-tags-container" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem; margin-bottom: 1.5rem;">
+                        <!-- 元数据信息 -->
+                        <div class="article-meta">
+                            <span class="meta-item">
+                                <span class="icon">📅</span>
+                                <span id="articleDate">2025-11-17</span>
+                            </span>
+                            <span class="meta-item">
+                                <span class="icon">📂</span>
+                                <span id="articleCategory">分类</span>
+                            </span>
+                            <span class="meta-item">
+                                <span class="icon">👤</span>
+                                <span id="articleAuthor">作者</span>
+                            </span>
+                            <span class="meta-item">
+                                <span class="icon">👁️</span>
+                                <span id="articleViews">0</span> 次阅读
+                            </span>
+                        </div>
+
+                        <!-- 标签 - 居右显示 -->
+                        <div class="article-tags" id="articleTags">
+                            <!-- 标签将在这里动态生成 -->
+                        </div>
+                    </div>
+
+                    <!-- 文章内容 -->
+                    <div class="article-content" id="articleContent">
+                        <p>加载中...</p>
+                    </div>
+
+                    <!-- 文章底部 -->
+                    <div class="article-footer">
+                        <div class="article-actions">
+                            <button class="action-btn like-btn" id="likeBtn" onclick="toggleLike()">
+                                <span class="icon">❤️</span>
+                                <span id="likeCount">0</span>
+                            </button>
+                            <button class="action-btn share-btn" onclick="shareArticle()">
+                                <span class="icon">🔗</span>
+                                <span>分享</span>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 评论区 -->
+                <div class="comments-section" id="commentsSection">
+                    <h2 class="section-title">
+                        <span class="icon">💬</span>
+                        <span>评论</span>
+                        <span class="count" id="commentCount">(0)</span>
+                    </h2>
+
+                    <!-- 评论表单 -->
+                    <div class="comment-form">
+                        <h3>发表评论</h3>
+                        <div class="form-group">
+                            <input type="text" id="commentName" placeholder="昵称 *" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="commentEmail" placeholder="邮箱（不会公开）">
+                        </div>
+                        <div class="form-group">
+                            <textarea id="commentContent" rows="5" placeholder="说点什么吧... *" required></textarea>
+                        </div>
+                        <button class="submit-btn" onclick="submitComment()">
+                            <span class="icon">💬</span>
+                            <span>发表评论</span>
+                        </button>
+                    </div>
+
+                    <!-- 评论列表 -->
+                    <div class="comments-list" id="commentsList">
+                        <!-- 评论将在这里动态生成 -->
+                    </div>
+                </div>
+
+                <!-- 相关文章 -->
+                <div class="related-articles" id="relatedArticles">
+                    <h2 class="section-title">
+                        <span class="icon">📚</span>
+                        <span>相关文章</span>
+                    </h2>
+                    <div class="related-list" id="relatedList">
+                        <!-- 相关文章将在这里动态生成 -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </section>
+
+    <link rel="stylesheet" href="../css/sakura.css">
+    
+    <!-- 代码主题管理器 - 必须最先加载 -->
+    <script src="../js/code-theme-manager.js"></script>
+    
+    <!-- 代码高亮 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <!-- 数据适配层 - 支持JSON文件存储 -->
+    <script src="../js/data-adapter.js"></script>
+    <script src="../js/data-store-wrapper.js"></script>
+    <script src="../js/theme-manager.js"></script>
+    <script src="../js/sakura.js"></script>
+    <script src="../js/search.js"></script>
+    <script src="../js/article-toc.js"></script>
+    <script src="../js/article-detail.js"></script>
+    <script src="../js/main.js"></script>
+    <!-- 视频背景 -->
+    <script src="../js/video-background.js"></script>
+</body>
+</html>
+
+    <!-- JavaScript -->
+    <script src="../js/data-adapter.js"></script>
+    <script src="../js/data-store-wrapper.js"></script>
+    <script src="../js/theme-manager.js"></script>
+    <script src="../js/modern-nav.js"></script>
+    <script src="../js/video-background.js"></script>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📹 屏幕录制工具</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="recorder-container">
+        <!-- 头部区域 -->
+        <div class="recorder-header">
+            <h1>📹 屏幕录制工具</h1>
+            <div class="status-indicator">
+                <span class="status-dot" id="statusDot"></span>
+                <span class="status-text" id="statusText">就绪</span>
+            </div>
+        </div>
+
+        <!-- 设置面板 -->
+        <div class="settings-panel">
+            <div class="setting-group">
+                <label for="qualitySelect">录制质量</label>
+                <select id="qualitySelect">
+                    <option value="4K">4K (3840×2160) - 超高清</option>
+                    <option value="1440p">1440p (2560×1440) - 高清</option>
+                    <option value="1080p" selected>1080p (1920×1080) - 推荐</option>
+                    <option value="720p">720p (1280×720) - 标准</option>
+                    <option value="480p">480p (854×480) - 节省空间</option>
+                </select>
+            </div>
+
+            <div class="setting-group">
+                <label for="framerateSelect">帧率</label>
+                <select id="framerateSelect">
+                    <option value="60">60 FPS</option>
+                    <option value="30" selected>30 FPS - 推荐</option>
+                    <option value="24">24 FPS</option>
+                    <option value="15">15 FPS</option>
+                </select>
+            </div>
+
+            <div class="setting-group">
+                <label for="formatSelect">视频格式</label>
+                <select id="formatSelect">
+                    <option value="webm" selected>WebM - 推荐</option>
+                    <option value="mp4">MP4 - 兼容性好</option>
+                    <option value="auto">自动选择</option>
+                </select>
+            </div>
+
+            <div class="setting-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="highQualityMode">
+                    <span class="checkmark"></span>
+                    高质量模式 (提升比特率)
+                </label>
+            </div>
+
+            <div class="setting-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="includeAudio">
+                    <span class="checkmark"></span>
+                    包含系统音频
+                </label>
+            </div>
+
+            <div class="setting-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="includeMicrophone">
+                    <span class="checkmark"></span>
+                    包含麦克风音频
+                </label>
+            </div>
+        </div>
+
+        <!-- 控制按钮 -->
+        <div class="control-buttons">
+            <button id="startBtn" class="btn btn-primary">
+                <span class="btn-icon">🎬</span>
+                开始录制
+            </button>
+            <button id="pauseBtn" class="btn btn-warning" disabled>
+                <span class="btn-icon">⏸️</span>
+                暂停
+            </button>
+            <button id="resumeBtn" class="btn btn-info" disabled style="display: none;">
+                <span class="btn-icon">▶️</span>
+                继续
+            </button>
+            <button id="stopBtn" class="btn btn-danger" disabled>
+                <span class="btn-icon">⏹️</span>
+                停止录制
+            </button>
+        </div>
+
+        <!-- 预览区域 -->
+        <div class="preview-area">
+            <video id="previewVideo" autoplay muted playsinline></video>
+            <div class="preview-placeholder" id="previewPlaceholder">
+                <div class="placeholder-content">
+                    <div class="placeholder-icon">📺</div>
+                    <div class="placeholder-text">点击"开始录制"选择要录制的屏幕</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 录制信息 -->
+        <div class="recording-info" id="recordingInfo" style="display: none;">
+            <div class="info-item">
+                <span class="info-label">录制时间:</span>
+                <span class="info-value" id="recordingTimer">00:00:00</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">预估大小:</span>
+                <span class="info-value" id="fileSize">0 MB</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">视频格式:</span>
+                <span class="info-value" id="currentFormat">WebM</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">录制状态:</span>
+                <span class="info-value" id="recordingStatus">准备中</span>
+            </div>
+        </div>
+
+        <!-- 下载区域 -->
+        <div class="download-area" id="downloadArea" style="display: none;">
+            <div class="download-info">
+                <h3>📥 录制完成</h3>
+                <p>您的屏幕录制已完成，点击下方按钮下载视频文件。</p>
+            </div>
+            <div class="download-buttons">
+                <button id="downloadBtn" class="btn btn-success">
+                    <span class="btn-icon">💾</span>
+                    下载视频
+                </button>
+                <button id="newRecordingBtn" class="btn btn-secondary">
+                    <span class="btn-icon">🔄</span>
+                    新建录制
+                </button>
+            </div>
+            <div class="download-preview">
+                <video id="downloadPreview" controls></video>
+            </div>
+        </div>
+
+        <!-- 错误提示 -->
+        <div class="error-message" id="errorMessage" style="display: none;">
+            <div class="error-content">
+                <span class="error-icon">⚠️</span>
+                <span class="error-text" id="errorText"></span>
+                <div class="error-actions">
+                    <button class="error-retry" id="errorRetry">🔄 重试</button>
+                    <button class="error-close" id="errorClose">×</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 帮助信息 -->
+        <div class="help-section">
+            <details>
+                <summary>📖 使用说明</summary>
+                <div class="help-content">
+                    <h4>如何使用屏幕录制工具：</h4>
+                    <ol>
+                        <li><strong>选择设置</strong>：根据需要选择录制质量、帧率、视频格式和音频选项</li>
+                        <li><strong>高质量模式</strong>：勾选可提升50%比特率，获得更清晰的录制效果</li>
+                        <li><strong>开始录制</strong>：点击"开始录制"按钮，浏览器会提示选择要录制的屏幕</li>
+                        <li><strong>选择屏幕</strong>：可以选择整个屏幕、应用程序窗口或浏览器标签页</li>
+                        <li><strong>控制录制</strong>：使用暂停/继续/停止按钮控制录制过程</li>
+                        <li><strong>下载视频</strong>：录制完成后点击下载按钮保存视频文件</li>
+                    </ol>
+                    
+                    <h4>注意事项：</h4>
+                    <ul>
+                        <li>需要使用现代浏览器（Chrome、Firefox、Edge等）</li>
+                        <li>首次使用需要授权屏幕共享权限</li>
+                        <li>录制时间过长可能导致文件较大</li>
+                        <li>建议在录制前关闭不必要的应用程序以提高性能</li>
+                    </ul>
+
+                    <h4>视频格式选择：</h4>
+                    <ul>
+                        <li><strong>WebM</strong> - 现代格式，文件小，质量高，推荐使用</li>
+                        <li><strong>MP4</strong> - 兼容性最好，支持所有播放器和设备</li>
+                        <li><strong>自动选择</strong> - 根据浏览器支持自动选择最佳格式</li>
+                    </ul>
+
+                    <h4>质量选项说明：</h4>
+                    <ul>
+                        <li><strong>4K (3840×2160)</strong> - 超高清，20 Mbps比特率</li>
+                        <li><strong>1440p (2560×1440)</strong> - 高清，12 Mbps比特率</li>
+                        <li><strong>1080p (1920×1080)</strong> - 推荐，8 Mbps比特率</li>
+                        <li><strong>720p (1280×720)</strong> - 标准，5 Mbps比特率</li>
+                        <li><strong>480p (854×480)</strong> - 节省空间，2.5 Mbps比特率</li>
+                        <li><strong>高质量模式</strong> - 提升50%比特率，更清晰画质</li>
+                    </ul>
+
+                    <h4>支持的规格：</h4>
+                    <ul>
+                        <li>视频编码：VP9、VP8、H.264</li>
+                        <li>音频编码：Opus (128 kbps)、AAC (128 kbps)</li>
+                        <li>分辨率：最高支持4K (3840×2160)</li>
+                        <li>帧率：15-60 FPS可选</li>
+                        <li>比特率：2.5-30 Mbps可选</li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/utils.js"></script>
+    <script src="js/recorder.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

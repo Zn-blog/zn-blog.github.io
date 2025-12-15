@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简历生成器</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/templates.css">
+</head>
+<body>
+    <div class="resume-builder" id="resumeBuilder">
+        <!-- 背景遮罩 -->
+        <div class="background-overlay"></div>
+        
+        <!-- 顶部工具栏 -->
+        <header class="toolbar">
+            <div class="toolbar-left">
+                <h1 class="app-title">
+                    <span class="icon">📄</span>
+                    简历生成器
+                </h1>
+            </div>
+            
+            <div class="toolbar-right">
+                <button class="btn btn-info" id="manageBtn">
+                    <span class="icon">📋</span>
+                    简历管理
+                </button>
+                <button class="btn btn-secondary" id="saveBtn">
+                    <span class="icon">💾</span>
+                    保存简历
+                </button>
+                <button class="btn btn-primary" id="exportPdfBtn">
+                    <span class="icon">📄</span>
+                    导出PDF
+                </button>
+                <button class="btn btn-success" id="exportWordBtn">
+                    <span class="icon">📄</span>
+                    导出Word
+                </button>
+            </div>
+        </header>
+
+        <!-- 主要内容区域 -->
+        <main class="main-content">
+            <!-- 左侧信息输入区 -->
+            <section class="input-section">
+                <div class="input-container">
+                    <!-- 基本信息 -->
+                    <div class="form-group">
+                        <h3 class="section-title">
+                            <span class="icon">👤</span>
+                            基本信息 <span class="required">*</span>
+                        </h3>
+                        <div class="form-row">
+                            <div class="form-field">
+                                <label for="name">姓名 <span class="required">*</span></label>
+                                <input type="text" id="name" name="name" placeholder="请输入您的姓名" required>
+                            </div>
+                            <div class="form-field">
+                                <label for="phone">联系电话 <span class="required">*</span></label>
+                                <input type="tel" id="phone" name="phone" placeholder="请输入联系电话" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-field">
+                                <label for="email">邮箱地址 <span class="required">*</span></label>
+                                <input type="email" id="email" name="email" placeholder="请输入邮箱地址" required>
+                            </div>
+                            <div class="form-field">
+                                <label for="position">求职意向 <span class="required">*</span></label>
+                                <input type="text" id="position" name="position" placeholder="请输入求职意向" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-field">
+                                <label for="age">年龄</label>
+                                <input type="number" id="age" name="age" placeholder="年龄" min="18" max="65">
+                            </div>
+                            <div class="form-field">
+                                <label for="gender">性别</label>
+                                <select id="gender" name="gender">
+                                    <option value="">请选择</option>
+                                    <option value="男">男</option>
+                                    <option value="女">女</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-field full-width">
+                                <label for="address">居住地址</label>
+                                <input type="text" id="address" name="address" placeholder="请输入居住地址">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 教育背景 -->
+                    <div class="form-group">
+                        <h3 class="section-title">
+                            <span class="icon">🎓</span>
+                            教育背景
+                            <button class="btn-add" id="addEducation">
+                                <span class="icon">➕</span>
+                                添加
+                            </button>
+                        </h3>
+                        <div id="educationList" class="dynamic-list">
+                            <!-- 教育背景项目将在这里动态添加 -->
+                        </div>
+                    </div>
+
+                    <!-- 工作经历 -->
+                    <div class="form-group">
+                        <h3 class="section-title">
+                            <span class="icon">💼</span>
+                            工作经历
+                            <button class="btn-add" id="addExperience">
+                                <span class="icon">➕</span>
+                                添加
+                            </button>
+                        </h3>
+                        <div id="experienceList" class="dynamic-list">
+                            <!-- 工作经历项目将在这里动态添加 -->
+                        </div>
+                    </div>
+
+                    <!-- 项目经验 -->
+                    <div class="form-group">
+                        <h3 class="section-title">
+                            <span class="icon">🚀</span>
+                            项目经验
+                            <button class="btn-add" id="addProject">
+                                <span class="icon">➕</span>
+                                添加
+                            </button>
+                        </h3>
+                        <div id="projectList" class="dynamic-list">
+                            <!-- 项目经验将在这里动态添加 -->
+                        </div>
+                    </div>
+
+                    <!-- 技能特长 -->
+                    <div class="form-group">
+                        <h3 class="section-title">
+                            <span class="icon">⚡</span>
+                            技能特长
+                        </h3>
+                        <div class="form-field">
+                            <textarea id="skills" name="skills" placeholder="请输入您的技能特长，用逗号分隔，如：JavaScript, Python, React, Node.js" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- 自我评价 -->
+                    <div class="form-group">
+                        <h3 class="section-title">
+                            <span class="icon">💭</span>
+                            自我评价
+                        </h3>
+                        <div class="form-field">
+                            <textarea id="evaluation" name="evaluation" placeholder="请简要描述您的个人特点、优势和职业目标" rows="4"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 右侧预览区 -->
+            <section class="preview-section">
+                <div class="preview-container">
+                    <div class="preview-header">
+                        <h3>实时预览</h3>
+                        <div class="zoom-controls">
+                            <button class="btn-zoom" id="zoomOut">🔍-</button>
+                            <span class="zoom-level" id="zoomLevel">100%</span>
+                            <button class="btn-zoom" id="zoomIn">🔍+</button>
+                        </div>
+                    </div>
+                    
+                    <div class="preview-area" id="previewArea">
+                        <div class="resume-preview" id="resumePreview">
+                            <!-- 简历预览内容将在这里动态生成 -->
+                            <div class="preview-placeholder">
+                                <div class="placeholder-icon">📄</div>
+                                <p>请填写基本信息以查看简历预览</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- 底部模板选择区 -->
+        <footer class="template-section">
+            <h3 class="section-title">
+                <span class="icon">🎨</span>
+                选择模板
+            </h3>
+            <div class="template-grid" id="templateGrid">
+                <div class="template-card active" data-template="classic">
+                    <div class="template-preview">
+                        <div class="template-thumbnail classic-thumb"></div>
+                    </div>
+                    <div class="template-info">
+                        <h4>经典商务</h4>
+                        <p>传统正式，适合商务岗位</p>
+                    </div>
+                </div>
+                
+                <div class="template-card" data-template="modern">
+                    <div class="template-preview">
+                        <div class="template-thumbnail modern-thumb"></div>
+                    </div>
+                    <div class="template-info">
+                        <h4>现代简约</h4>
+                        <p>简洁时尚，适合创意岗位</p>
+                    </div>
+                </div>
+                
+                <div class="template-card" data-template="creative">
+                    <div class="template-preview">
+                        <div class="template-thumbnail creative-thumb"></div>
+                    </div>
+                    <div class="template-info">
+                        <h4>创意设计</h4>
+                        <p>个性创新，适合设计师</p>
+                    </div>
+                </div>
+                
+                <div class="template-card" data-template="tech">
+                    <div class="template-preview">
+                        <div class="template-thumbnail tech-thumb"></div>
+                    </div>
+                    <div class="template-info">
+                        <h4>技术极客</h4>
+                        <p>科技感强，适合程序员</p>
+                    </div>
+                </div>
+                
+                <div class="template-card" data-template="academic">
+                    <div class="template-preview">
+                        <div class="template-thumbnail academic-thumb"></div>
+                    </div>
+                    <div class="template-info">
+                        <h4>学术研究</h4>
+                        <p>严谨专业，适合研究员</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 简历管理模态框 -->
+    <div class="modal-overlay" id="resumeManagerModal" style="display: none;">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>简历管理</h3>
+                <button class="modal-close" id="closeManagerModal">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="resume-list-section">
+                    <div class="section-header">
+                        <h4>已保存的简历</h4>
+                        <button class="btn btn-primary btn-sm" id="newResumeBtn">
+                            <span class="icon">➕</span>
+                            新建简历
+                        </button>
+                    </div>
+                    
+                    <div class="resume-list" id="resumeList">
+                        <!-- 简历列表将在这里动态生成 -->
+                        <div class="empty-state" id="emptyState">
+                            <div class="empty-icon">📄</div>
+                            <p>还没有保存的简历</p>
+                            <p class="empty-hint">点击"新建简历"开始创建您的第一份简历</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 保存简历模态框 -->
+    <div class="modal-overlay" id="saveResumeModal" style="display: none;">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>保存简历</h3>
+                <button class="modal-close" id="closeSaveModal">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="resumeName">简历名称 <span class="required">*</span></label>
+                    <input type="text" id="resumeName" placeholder="请输入简历名称，如：前端工程师简历" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="resumeDescription">简历描述</label>
+                    <textarea id="resumeDescription" placeholder="简要描述这份简历的用途或特点" rows="3"></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn btn-secondary" id="cancelSaveBtn">取消</button>
+                    <button class="btn btn-primary" id="confirmSaveBtn">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 加载提示 -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">正在处理...</p>
+        </div>
+    </div>
+
+    <!-- 引入第三方库 -->
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    
+    <!-- 引入应用脚本 -->
+    <script src="js/utils.js"></script>
+    <script src="js/form-handler.js"></script>
+    <script src="js/template-engine.js"></script>
+    <script src="js/export-manager.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

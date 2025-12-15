@@ -1,0 +1,307 @@
+/* ========================================
+   樱花飘落特效样式
+   ======================================== */
+
+/* 樱花容器 */
+.sakura-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    overflow: hidden;
+}
+
+/* 樱花花瓣 */
+.sakura-petal {
+    position: absolute;
+    top: -20px;
+    width: 15px;
+    height: 15px;
+    background: radial-gradient(circle at 30% 30%, #ffb7d5, #ffc0e0);
+    border-radius: 50% 0 50% 0;
+    opacity: 0.8;
+    pointer-events: none;
+    animation: sakura-fall linear infinite;
+    transform-origin: center;
+    box-shadow: 0 2px 4px rgba(255, 182, 213, 0.3);
+}
+
+/* 樱花花瓣变体 - 不同颜色 */
+.sakura-petal.variant-1 {
+    background: radial-gradient(circle at 30% 30%, #ffc0e0, #ffd0eb);
+}
+
+.sakura-petal.variant-2 {
+    background: radial-gradient(circle at 30% 30%, #ffaad5, #ffb7e0);
+}
+
+.sakura-petal.variant-3 {
+    background: radial-gradient(circle at 30% 30%, #ff9dc8, #ffadd8);
+}
+
+/* 樱花花瓣大小变体 */
+.sakura-petal.size-small {
+    width: 10px;
+    height: 10px;
+}
+
+.sakura-petal.size-medium {
+    width: 15px;
+    height: 15px;
+}
+
+.sakura-petal.size-large {
+    width: 20px;
+    height: 20px;
+}
+
+/* 樱花飘落动画 - 向左30度，速度加倍 */
+@keyframes sakura-fall {
+    0% {
+        transform: translateY(0) translateX(0) rotate(0deg) scale(1);
+        opacity: 0;
+    }
+    
+    10% {
+        opacity: 0.8;
+    }
+    
+    20% {
+        transform: translateY(20vh) translateX(-12vw) rotate(90deg) scale(1.1);
+    }
+    
+    40% {
+        transform: translateY(40vh) translateX(-24vw) rotate(180deg) scale(0.9);
+    }
+    
+    60% {
+        transform: translateY(60vh) translateX(-36vw) rotate(270deg) scale(1.05);
+    }
+    
+    80% {
+        transform: translateY(80vh) translateX(-48vw) rotate(360deg) scale(0.95);
+        opacity: 0.6;
+    }
+    
+    100% {
+        transform: translateY(100vh) translateX(-60vw) rotate(450deg) scale(0.8);
+        opacity: 0;
+    }
+}
+
+/* 樱花飘落动画变体 - 左摆加强 */
+@keyframes sakura-fall-left {
+    0% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+        opacity: 0;
+    }
+    
+    10% {
+        opacity: 0.8;
+    }
+    
+    25% {
+        transform: translateY(25vh) translateX(-18vw) rotate(120deg);
+    }
+    
+    50% {
+        transform: translateY(50vh) translateX(-36vw) rotate(240deg);
+    }
+    
+    75% {
+        transform: translateY(75vh) translateX(-54vw) rotate(360deg);
+        opacity: 0.6;
+    }
+    
+    100% {
+        transform: translateY(100vh) translateX(-72vw) rotate(480deg);
+        opacity: 0;
+    }
+}
+
+/* 樱花飘落动画变体 - 轻微右摆（主要还是向左） */
+@keyframes sakura-fall-right {
+    0% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+        opacity: 0;
+    }
+    
+    10% {
+        opacity: 0.8;
+    }
+    
+    25% {
+        transform: translateY(25vh) translateX(-8vw) rotate(-120deg);
+    }
+    
+    50% {
+        transform: translateY(50vh) translateX(-16vw) rotate(-240deg);
+    }
+    
+    75% {
+        transform: translateY(75vh) translateX(-24vw) rotate(-360deg);
+        opacity: 0.6;
+    }
+    
+    100% {
+        transform: translateY(100vh) translateX(-32vw) rotate(-480deg);
+        opacity: 0;
+    }
+}
+
+/* 樱花飘落动画变体 - 螺旋向左 */
+@keyframes sakura-fall-spiral {
+    0% {
+        transform: translateY(0) translateX(0) rotate(0deg) scale(1);
+        opacity: 0;
+    }
+    
+    10% {
+        opacity: 0.8;
+    }
+    
+    20% {
+        transform: translateY(20vh) translateX(-10vw) rotate(144deg) scale(1.1);
+    }
+    
+    40% {
+        transform: translateY(40vh) translateX(-20vw) rotate(288deg) scale(0.9);
+    }
+    
+    60% {
+        transform: translateY(60vh) translateX(-30vw) rotate(432deg) scale(1.05);
+    }
+    
+    80% {
+        transform: translateY(80vh) translateX(-40vw) rotate(576deg) scale(0.95);
+        opacity: 0.6;
+    }
+    
+    100% {
+        transform: translateY(100vh) translateX(-50vw) rotate(720deg) scale(0.8);
+        opacity: 0;
+    }
+}
+
+/* 应用不同的动画 */
+.sakura-petal.anim-left {
+    animation-name: sakura-fall-left;
+}
+
+.sakura-petal.anim-right {
+    animation-name: sakura-fall-right;
+}
+
+.sakura-petal.anim-spiral {
+    animation-name: sakura-fall-spiral;
+}
+
+/* 樱花控制按钮 */
+.sakura-toggle {
+    position: fixed;
+    bottom: 140px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #ffb7d5 0%, #ffc0e0 100%);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10000;
+    box-shadow: 0 4px 12px rgba(255, 182, 213, 0.4);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.sakura-toggle:hover {
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: 0 6px 16px rgba(255, 182, 213, 0.6);
+}
+
+.sakura-toggle:active {
+    transform: translateY(-1px) scale(1.05);
+}
+
+.sakura-toggle.disabled {
+    background: linear-gradient(135deg, #ccc 0%, #ddd 100%);
+    opacity: 0.6;
+}
+
+/* 樱花数量指示器 */
+.sakura-counter {
+    position: fixed;
+    bottom: 200px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    color: #ff69b4;
+    font-weight: 600;
+    z-index: 10000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    display: none;
+}
+
+.sakura-counter.show {
+    display: block;
+    animation: fade-in 0.3s ease;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .sakura-petal {
+        width: 12px;
+        height: 12px;
+    }
+    
+    .sakura-petal.size-small {
+        width: 8px;
+        height: 8px;
+    }
+    
+    .sakura-petal.size-large {
+        width: 16px;
+        height: 16px;
+    }
+    
+    .sakura-toggle {
+        width: 45px;
+        height: 45px;
+        bottom: 120px;
+        right: 15px;
+        font-size: 20px;
+    }
+    
+    .sakura-counter {
+        bottom: 170px;
+        right: 15px;
+        font-size: 11px;
+        padding: 6px 10px;
+    }
+}
+
+/* 性能优化 - 减少重绘 */
+.sakura-petal {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}

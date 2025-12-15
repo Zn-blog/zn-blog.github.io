@@ -1,0 +1,48 @@
+/* 退出按钮修复样式 */
+/* 确保退出按钮正确显示，不干扰布局 */
+
+/* 用户信息区域 */
+.user-info {
+    display: flex !important;
+    align-items: center !important;
+    gap: 1rem !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+}
+
+.username {
+    font-size: 0.95rem !important;
+    font-weight: 500 !important;
+    display: inline-block !important;
+}
+
+/* 退出按钮样式 */
+.btn-logout {
+    padding: 0.5rem 1.2rem !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    transition: all 0.3s !important;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    line-height: 1.5 !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+}
+
+.btn-logout:hover {
+    background: rgba(255, 255, 255, 0.3) !important;
+    border-color: rgba(255, 255, 255, 0.5) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+.btn-logout:active {
+    transform: translateY(0) !important;
+}

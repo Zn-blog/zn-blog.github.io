@@ -1,0 +1,128 @@
+# Vercel 部署忽略文件
+
+# 开发和测试文件
+test-*.html
+diagnose-*.html
+debug-*.html
+check-data.html
+fix-*.html
+verify-*.html
+admin-ui-preview.html
+clear-cache-and-test.html
+reset-hotlist-config.html
+
+# 文档文件（保留重要文档）
+*-FIX.md
+*-GUIDE.md
+*-SUMMARY.md
+*-COMPLETE.md
+*-FEATURE.md
+*-OPTIMIZATION.md
+*-UPDATE.md
+*-DEBUG.md
+*-TROUBLESHOOTING.md
+SESSION-SUMMARY.md
+DATA-SYNC.md
+DEPLOYMENT-GUIDE.md
+GITEE-DEPLOYMENT.md
+AutoGLM详细说明与可行性分析报告.md
+Markdown格式测试文档.md
+
+# 保留这些重要文档
+!README.md
+!🚀-Vercel自动部署完整教程与优化指南.md
+
+# 服务器文件（Vercel不需要）
+upload-server.js
+api-server.js
+unified-server.js
+start-*.bat
+restart-server.bat
+stop-*.bat
+*.bat
+
+# 备份文件
+backups/
+*.backup
+*.bak
+backup-data.bat
+migrate-data.bat
+restore-data.bat
+
+# 临时文件和脚本
+*.tmp
+*.temp
+*.log
+fix-*.js
+sync-*.js
+export-*.html
+
+# 编辑器配置
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 系统文件
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Git 文件
+.git/
+
+# 中文文档和说明
+启动服务器.txt
+快速部署指南.txt
+开始使用.txt
+完成报告.md
+修复总结.md
+数据迁移-README.md
+系统架构说明.txt
+重要-请先阅读.txt
+⚠️-*.md
+⚡-*.md
+⚡-*.txt
+✅-*.md
+✨-*.txt
+🆘-*.md
+🌐-*.md
+🌸-*.txt
+🎉-*.md
+🎉-*.txt
+🎬-*.md
+🎯-*.md
+👉-*.md
+👉-*.txt
+💾-*.md
+📊-*.txt
+📋-*.md
+📍-*.md
+📍-*.txt
+📝-*.md
+📦-*.txt
+📱-*.md
+🔄-*.md
+🔄-*.txt
+🔍-*.md
+🔍-*.txt
+🔥-*.md
+🔥-*.txt
+🔧-*.md
+🖤-*.txt
+🚀-*.bat
+🚀-*.txt
+🚨-*.txt
+🛑-*.bat
+🤖-*.txt
+🧪-*.md
+
+# 大文件和不必要的资源
+*.zip
+*.rar
+*.7z

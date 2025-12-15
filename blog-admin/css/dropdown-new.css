@@ -1,0 +1,183 @@
+/* ========================================
+   全新下拉框系统 - 简洁可靠
+   覆盖所有旧样式 - 使用最高优先级
+   ======================================== */
+
+/* 重置所有旧的下拉框样式 */
+.user-dropdown,
+[data-theme] .user-dropdown {
+    position: relative !important;
+    z-index: 100 !important;
+}
+
+/* 下拉按钮 - 覆盖所有主题样式 */
+.user-dropdown-toggle,
+[data-theme] .user-dropdown-toggle,
+[data-theme] .top-bar .user-dropdown-toggle {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    padding: 0.8rem 1.2rem !important;
+    background: transparent !important;
+    border: 2px solid rgba(255, 255, 255, 0.5) !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    font-size: 1rem !important;
+    color: white !important;
+    font-weight: 600 !important;
+    box-shadow: none !important;
+}
+
+.user-dropdown-toggle:hover,
+[data-theme] .user-dropdown-toggle:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: white !important;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2) !important;
+}
+
+/* 箭头样式 */
+.dropdown-arrow,
+[data-theme] .dropdown-arrow,
+.user-dropdown-toggle .dropdown-arrow,
+[data-theme] .user-dropdown-toggle .dropdown-arrow {
+    font-size: 0.75rem !important;
+    transition: transform 0.2s ease !important;
+    color: white !important;
+    font-weight: bold !important;
+}
+
+/* 用户名样式 */
+.user-dropdown-toggle .username,
+[data-theme] .user-dropdown-toggle .username,
+[data-theme] .top-bar .username {
+    color: #ffffff !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+}
+
+/* 下拉菜单容器 - 覆盖所有主题样式 */
+.user-dropdown-menu,
+[data-theme] .user-dropdown-menu {
+    position: absolute !important;
+    top: calc(100% + 8px) !important;
+    right: 0 !important;
+    min-width: 200px !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(5px) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
+    overflow: hidden !important;
+    
+    /* 默认隐藏状态 */
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: translateY(-8px) scale(0.95) !important;
+    transform-origin: top right !important;
+    
+    /* 过渡动画 */
+    transition: opacity 0.2s ease,
+                visibility 0.2s ease,
+                transform 0.2s ease !important;
+    
+    /* 确保在最顶层 */
+    z-index: 200 !important;
+    
+    /* 防止被裁剪 */
+    pointer-events: none !important;
+}
+
+/* 显示状态 - 同时支持 show 和 active 类 */
+.user-dropdown-menu.show,
+.user-dropdown-menu.active,
+[data-theme] .user-dropdown-menu.show,
+[data-theme] .user-dropdown-menu.active {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) scale(1) !important;
+    pointer-events: auto !important;
+    display: block !important;
+}
+
+/* 箭头旋转 - 同时支持 open 和 active 类 */
+.user-dropdown.open .dropdown-arrow,
+.user-dropdown.active .dropdown-arrow,
+[data-theme] .user-dropdown.open .dropdown-arrow,
+[data-theme] .user-dropdown.active .dropdown-arrow {
+    transform: rotate(180deg) !important;
+}
+
+/* 下拉菜单项 */
+.dropdown-item,
+[data-theme] .dropdown-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 1rem !important;
+    padding: 1rem 1.5rem !important;
+    cursor: pointer !important;
+    transition: background-color 0.15s ease !important;
+    color: #2c5f7c !important;
+    font-size: 0.95rem !important;
+    font-weight: 500 !important;
+    background: transparent !important;
+    border: none !important;
+    width: 100% !important;
+    text-align: left !important;
+}
+
+.dropdown-item:hover,
+[data-theme] .dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.3) !important;
+    color: #1976d2 !important;
+}
+
+.dropdown-item.logout-item,
+[data-theme] .dropdown-item.logout-item {
+    color: #d32f2f !important;
+}
+
+.dropdown-item.logout-item:hover,
+[data-theme] .dropdown-item.logout-item:hover {
+    background: rgba(255, 235, 238, 0.5) !important;
+    color: #c62828 !important;
+}
+
+.dropdown-icon,
+[data-theme] .dropdown-icon {
+    font-size: 1.2rem !important;
+    min-width: 20px !important;
+    text-align: center !important;
+}
+
+.dropdown-divider,
+[data-theme] .dropdown-divider {
+    height: 1px !important;
+    background: linear-gradient(90deg, transparent, #e0e0e0, transparent) !important;
+    margin: 0.5rem 0 !important;
+}
+
+/* 确保顶部栏不裁剪下拉菜单 */
+.top-bar,
+[data-theme] .top-bar {
+    overflow: visible !important;
+}
+
+.user-info,
+[data-theme] .user-info {
+    overflow: visible !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* 防止任何父元素裁剪下拉菜单 - 但不影响背景 */
+.main-content,
+[data-theme] .main-content {
+    /* 不设置overflow，让其他样式控制 */
+}
+
+/* 修复可能的层级问题 */
+.user-dropdown *,
+[data-theme] .user-dropdown * {
+    box-sizing: border-box !important;
+}

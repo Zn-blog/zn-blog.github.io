@@ -1,0 +1,1334 @@
+/* ========================================
+   主题适配层 - 将现有样式适配到主题系统
+   不修改原有CSS，只覆盖关键颜色
+   ======================================== */
+
+/* 全局背景和文字 - 不覆盖背景图片 */
+body {
+    color: var(--text-primary) !important;
+}
+
+/* 保护背景图片不被覆盖 */
+.welcome-section,
+.home-page,
+[style*="background-image"],
+.has-background-image {
+    background-color: transparent !important;
+}
+
+/* 导航栏 - 强制覆盖 */
+.navbar,
+.site-header,
+.site-header .navbar,
+header.site-header,
+header.site-header nav,
+nav.navbar {
+    background: var(--gradient-primary) !important;
+    background-color: var(--primary-color) !important;
+}
+
+/* 导航栏所有文字 */
+.nav-menu a,
+.navbar a,
+.site-header a,
+.navbar .nav-menu li a,
+header nav a {
+    color: white !important;
+}
+
+/* 导航栏悬停效果 - 与激活状态保持一致 */
+.nav-menu a:hover,
+.navbar a:hover,
+.nav-menu li:hover a,
+.site-header a:hover,
+header nav a:hover {
+    background: transparent !important;
+    border: 2px solid rgba(255,255,255,0.6) !important;
+    border-radius: 6px !important;
+    transition: all 0.3s ease !important;
+    padding: 6px 14px !important;
+}
+
+/* 导航栏激活状态 - 半透明边框 */
+.nav-menu li a.active,
+.nav-menu .active a,
+.navbar a.active,
+.site-header a.active,
+header nav a.active,
+.nav-menu li.active a {
+    background: transparent !important;
+    border: 2px solid rgba(255,255,255,0.8) !important;
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+    position: relative !important;
+    padding: 6px 14px !important;
+}
+
+/* Logo区域 */
+.logo,
+.navbar .logo,
+.site-header .logo {
+    color: white !important;
+}
+
+.logo span,
+.logo *,
+.navbar .logo span {
+    color: white !important;
+}
+
+/* 确保导航栏内所有元素都是白色 */
+.navbar *:not(img),
+.site-header *:not(img) {
+    color: white !important;
+}
+
+/* 按钮 */
+.btn-primary,
+.submit-btn,
+.action-btn {
+    background: var(--gradient-primary) !important;
+    border-color: var(--primary-color) !important;
+}
+
+.btn-primary:hover,
+.submit-btn:hover {
+    opacity: 0.9 !important;
+}
+
+/* 卡片 - 白色不透明 */
+.card,
+.article-card,
+.message-item,
+.comment-item {
+    background: white !important;
+    border-color: var(--border-color) !important;
+    box-shadow: var(--shadow-sm) !important;
+}
+
+.card:hover,
+.article-card:hover {
+    box-shadow: var(--shadow-lg) !important;
+}
+
+/* 标题颜色 */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--primary-dark) !important;
+}
+
+.article-title,
+.section-title {
+    color: var(--primary-color) !important;
+}
+
+/* 链接 */
+a {
+    color: var(--primary-color) !important;
+}
+
+a:hover {
+    color: var(--primary-dark) !important;
+}
+
+/* 标签 */
+.tag,
+.article-tag {
+    background: var(--primary-light) !important;
+    color: var(--primary-dark) !important;
+    border-color: var(--primary-color) !important;
+}
+
+.tag:hover,
+.article-tag:hover {
+    background: var(--gradient-primary) !important;
+    color: white !important;
+}
+
+/* 输入框 */
+input,
+textarea,
+select {
+    background: var(--bg-color) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-primary) !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--primary-color) !important;
+}
+
+/* 搜索框 */
+.search-box input {
+    background: rgba(255,255,255,0.9) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-primary) !important;
+}
+
+.search-box input::placeholder {
+    color: var(--text-tertiary) !important;
+}
+
+.search-btn {
+    background: var(--primary-color) !important;
+}
+
+/* 分页 */
+.pagination .page-link {
+    color: var(--primary-color) !important;
+    border-color: var(--border-color) !important;
+}
+
+.pagination .page-link.active {
+    background: var(--gradient-primary) !important;
+    color: white !important;
+}
+
+/* 侧边栏 - 白色不透明 */
+.sidebar {
+    background: #ffffff !important;
+}
+
+/* 页脚 - 使用中等深度的渐变，与导航栏统一但稍浅 */
+.footer,
+footer,
+.site-footer,
+.footer-stats {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 50%, var(--primary-color) 100%) !important;
+    opacity: 0.92 !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.footer *,
+footer *,
+.site-footer * {
+    color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.footer a,
+footer a,
+.site-footer a {
+    color: rgba(255, 255, 255, 0.95) !important;
+    text-decoration: underline !important;
+}
+
+.footer a:hover,
+footer a:hover,
+.site-footer a:hover {
+    color: white !important;
+    text-decoration: none !important;
+}
+
+/* 页脚统计信息 */
+.footer-stats,
+.stats-container {
+    background: rgba(0, 0, 0, 0.1) !important;
+    padding: 2rem 0 !important;
+}
+
+.stat-item,
+.footer-stat {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+.stat-item:hover,
+.footer-stat:hover {
+    background: rgba(255, 255, 255, 0.25) !important;
+    transform: translateY(-3px) !important;
+}
+
+.stat-number,
+.stat-value {
+    color: white !important;
+    font-weight: 600 !important;
+}
+
+.stat-label {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* 页脚版权信息 */
+.footer-copyright,
+.copyright {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* 页脚社交链接 */
+.footer-social,
+.social-links {
+    color: white !important;
+}
+
+.footer-social a,
+.social-links a {
+    color: white !important;
+    opacity: 0.9 !important;
+}
+
+.footer-social a:hover,
+.social-links a:hover {
+    opacity: 1 !important;
+}
+
+/* 模态框 */
+.modal-content {
+    background: var(--bg-color) !important;
+    border-color: var(--border-color) !important;
+}
+
+/* 表格 */
+table {
+    border-color: var(--border-color) !important;
+}
+
+thead {
+    background: var(--bg-secondary) !important;
+}
+
+tbody tr:hover {
+    background: var(--bg-tertiary) !important;
+}
+
+/* 进度条 */
+.progress-bar {
+    background: var(--gradient-primary) !important;
+}
+
+/* 徽章 */
+.badge {
+    background: var(--primary-color) !important;
+}
+
+/* 警告框 */
+.alert-success {
+    background: var(--success-color) !important;
+    border-color: var(--success-color) !important;
+}
+
+.alert-warning {
+    background: var(--warning-color) !important;
+    border-color: var(--warning-color) !important;
+}
+
+.alert-error {
+    background: var(--error-color) !important;
+    border-color: var(--error-color) !important;
+}
+
+.alert-info {
+    background: var(--info-color) !important;
+    border-color: var(--info-color) !important;
+}
+
+/* 评论区 - 白色不透明 */
+.comments-section {
+    background: #ffffff !important;
+}
+
+.comment-form {
+    background: #ffffff !important;
+}
+
+/* 文章内容区 */
+.article-content {
+    color: var(--text-primary) !important;
+}
+
+.article-content h2,
+.article-content h3 {
+    color: var(--primary-dark) !important;
+}
+
+.article-content a {
+    color: var(--primary-color) !important;
+}
+
+.article-content blockquote {
+    border-left-color: var(--primary-color) !important;
+    background: var(--bg-secondary) !important;
+}
+
+.article-content code {
+    background: var(--bg-tertiary) !important;
+    color: var(--text-primary) !important;
+}
+
+/* 时间轴 */
+.timeline-item {
+    border-left-color: var(--primary-color) !important;
+}
+
+.timeline-dot {
+    background: var(--primary-color) !important;
+}
+
+/* 相册 */
+.gallery-item {
+    border-color: var(--border-color) !important;
+}
+
+.gallery-item:hover {
+    border-color: var(--primary-color) !important;
+}
+
+/* 音乐播放器 */
+.player {
+    background: var(--bg-secondary) !important;
+    border-color: var(--border-color) !important;
+}
+
+.player-controls button {
+    color: var(--primary-color) !important;
+}
+
+.player-controls button:hover {
+    color: var(--primary-dark) !important;
+}
+
+/* 加载动画 */
+.loading {
+    color: var(--primary-color) !important;
+}
+
+/* 全局隐式滚动条 - 0px宽度 */
+* {
+    scrollbar-width: none !important;
+    scrollbar-color: rgba(102, 126, 234, 0.5) transparent !important;
+}
+
+*::-webkit-scrollbar {
+    width: 0px !important;
+    height: 0px !important;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent !important;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%) !important;
+}
+
+/* 选中文本 */
+::selection {
+    background: var(--primary-color) !important;
+    color: white !important;
+}
+
+::-moz-selection {
+    background: var(--primary-color) !important;
+    color: white !important;
+}
+
+/* 额外的导航栏覆盖 - 针对可能的内联样式 */
+header[style],
+nav[style],
+.navbar[style] {
+    background: var(--gradient-primary) !important;
+}
+
+/* 额外的页脚覆盖 - 针对可能的内联样式 */
+footer[style],
+.footer[style] {
+    background: var(--bg-secondary) !important;
+}
+
+/* 欢迎页面特殊处理 - 保留背景图片 */
+.welcome-section,
+.welcome-section *,
+section[style*="background"],
+.slide-background,
+.background-slider {
+    background-color: transparent !important;
+}
+
+/* 确保背景图片容器保持透明 */
+[data-background],
+.bg-wrapper,
+.background-container {
+    background-color: transparent !important;
+}
+
+/* 侧边栏卡片 - 白色不透明 */
+.sidebar-card,
+.widget {
+    background: #ffffff !important;
+    border-color: var(--border-color) !important;
+}
+
+/* 统计卡片 - 白色不透明 */
+.stats-card,
+.info-card {
+    background: #ffffff !important;
+    border-color: var(--border-color) !important;
+}
+
+.stats-card:hover,
+.info-card:hover {
+    box-shadow: var(--shadow-md) !important;
+}
+
+
+/* ========================================
+   时光轴文章日历 - 赛博朋克主题适配
+   ======================================== */
+
+/* 赛博朋克 - 日历容器（覆盖内联样式） */
+[data-theme="cyberpunk"] div[id*="calendar"],
+[data-theme="cyberpunk"] div[class*="calendar"],
+[data-theme="cyberpunk"] section[style*="background: white"],
+[data-theme="cyberpunk"] div[style*="background: white"][style*="padding"],
+[data-theme="cyberpunk"] div[style*="background:white"][style*="padding"] {
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.50) 0%, rgba(37, 42, 72, 0.50) 100%) !important;
+    /* border: 2px solid rgba(0, 240, 255, 0.8) !important; */
+    /* box-shadow: 0 4px 20px rgba(0, 240, 255, 0.8), 0 0 40px rgba(0, 240, 255, 0.08) !important; */
+}
+
+/* 赛博朋克 - 日历标题区域 */
+[data-theme="cyberpunk"] div[style*="text-align: center"][style*="color"],
+[data-theme="cyberpunk"] h3[style*="color"],
+[data-theme="cyberpunk"] h2[style*="color"] {
+    color: #00f0ff !important;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5) !important;
+    background: rgba(0, 240, 255, 0.1) !important;
+    border-bottom: 2px solid rgba(0, 240, 255, 0.5) !important;
+}
+
+/* 赛博朋克 - 日历网格和单元格 */
+[data-theme="cyberpunk"] div[style*="display: grid"],
+[data-theme="cyberpunk"] div[style*="border: 1px solid"],
+[data-theme="cyberpunk"] div[style*="border:1px solid"] {
+    border-color: rgba(0, 240, 255, 0.4) !important;
+}
+
+/* 赛博朋克 - 日期单元格 */
+[data-theme="cyberpunk"] div[style*="min-height"][style*="border"] {
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    color: rgba(224, 224, 224, 0.8) !important;
+    background: transparent !important;
+}
+
+[data-theme="cyberpunk"] div[style*="min-height"][style*="border"]:hover {
+    background: rgba(0, 240, 255, 0.1) !important;
+    border-color: #00f0ff !important;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.3) !important;
+}
+
+/* 赛博朋克 - 有文章的日期（通常有特殊背景色） */
+[data-theme="cyberpunk"] div[style*="background: #e3f2fd"],
+[data-theme="cyberpunk"] div[style*="background:#e3f2fd"],
+[data-theme="cyberpunk"] div[style*="background: #bbdefb"],
+[data-theme="cyberpunk"] div[style*="background:#bbdefb"] {
+    background: rgba(0, 240, 255, 0.2) !important;
+    border: 2px solid #00f0ff !important;
+    color: #00f0ff !important;
+    font-weight: 600 !important;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.4) !important;
+}
+
+/* 赛博朋克 - 时光轴线条加深 */
+[data-theme="cyberpunk"] .timeline::before,
+[data-theme="cyberpunk"] .timeline-line {
+    background: linear-gradient(180deg, rgba(0, 240, 255, 0.6) 0%, rgba(0, 240, 255, 0.3) 100%) !important;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.3) !important;
+    width: 3px !important;
+}
+
+[data-theme="cyberpunk"] .timeline-dot {
+    background: #00f0ff !important;
+    border: 3px solid rgba(0, 240, 255, 0.5) !important;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.5) !important;
+    width: 16px !important;
+    height: 16px !important;
+}
+
+/* 赛博朋克 - 时光轴文章项 */
+[data-theme="cyberpunk"] .timeline-item {
+    background: rgba(26, 31, 58, 0.6) !important;
+    border-left: 3px solid rgba(0, 240, 255, 0.5) !important;
+    border-bottom: 1px solid rgba(0, 240, 255, 0.2) !important;
+}
+
+[data-theme="cyberpunk"] .timeline-item:hover {
+    background: rgba(0, 240, 255, 0.1) !important;
+    border-left-color: #00f0ff !important;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.2) !important;
+}
+
+[data-theme="cyberpunk"] .timeline-item h3,
+[data-theme="cyberpunk"] .timeline-item .article-title {
+    color: #00f0ff !important;
+}
+
+[data-theme="cyberpunk"] .timeline-item .article-date,
+[data-theme="cyberpunk"] .timeline-item time {
+    color: rgba(0, 240, 255, 0.7) !important;
+}
+
+/* ========================================
+   四种原始主题白色背景适配 🎨
+   参考粉色主题的实现方式
+   ======================================== */
+
+/* ========================================
+   蓝色海洋主题 - 白色背景适配
+   ======================================== */
+
+/* 模态框和设置页面 */
+[data-theme="ocean"] .settings-form,
+[data-theme="ocean"] .table-container,
+[data-theme="ocean"] .tag-card,
+[data-theme="ocean"] .media-item,
+[data-theme="ocean"] .effect-card,
+[data-theme="ocean"] .theme-card,
+[data-theme="ocean"] .app-manage-card,
+[data-theme="ocean"] .modal-content,
+[data-theme="ocean"] #linkModal > div {
+    background: linear-gradient(135deg, rgba(232, 244, 249, 0.95) 0%, rgba(225, 240, 248, 0.95) 100%) !important;
+    border: 2px solid rgba(129, 196, 232, 0.4) !important;
+    box-shadow: 0 4px 20px rgba(129, 196, 232, 0.15) !important;
+}
+
+/* 表单控件 */
+[data-theme="ocean"] .form-control,
+[data-theme="ocean"] .modal-content input,
+[data-theme="ocean"] .modal-content textarea,
+[data-theme="ocean"] .modal-content select,
+[data-theme="ocean"] #linkModal input,
+[data-theme="ocean"] #linkModal textarea,
+[data-theme="ocean"] #linkModal select {
+    background: rgba(248, 252, 255, 0.9) !important;
+    border: 1px solid rgba(129, 196, 232, 0.4) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="ocean"] .form-control:focus,
+[data-theme="ocean"] .modal-content input:focus,
+[data-theme="ocean"] .modal-content textarea:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 10px rgba(129, 196, 232, 0.3) !important;
+}
+
+/* 按钮 */
+[data-theme="ocean"] .btn-primary,
+[data-theme="ocean"] .modal-content .btn-primary {
+    background: var(--gradient-primary) !important;
+    border: none !important;
+    color: white !important;
+}
+
+/* 白色背景元素覆盖 */
+[data-theme="ocean"] div[style*="background: white"],
+[data-theme="ocean"] div[style*="background:white"],
+[data-theme="ocean"] div[style*="background: #fff"],
+[data-theme="ocean"] div[style*="background:#fff"],
+[data-theme="ocean"] div[style*="background: #f5f5f5"],
+[data-theme="ocean"] div[style*="background:#f5f5f5"],
+[data-theme="ocean"] div[style*="background: #f8f9fa"],
+[data-theme="ocean"] div[style*="background:#f8f9fa"] {
+    background: rgba(232, 244, 249, 0.8) !important;
+}
+
+/* 播放器 */
+[data-theme="ocean"] .music-player,
+[data-theme="ocean"] .video-player,
+[data-theme="ocean"] .player-content {
+    background: linear-gradient(135deg, rgba(232, 244, 249, 0.95) 0%, rgba(225, 240, 248, 0.95) 100%) !important;
+    border: 2px solid rgba(129, 196, 232, 0.4) !important;
+}
+
+/* 时光轴日历 */
+[data-theme="ocean"] .calendar-container,
+[data-theme="ocean"] .article-calendar,
+[data-theme="ocean"] div[style*="background: white"][style*="border-radius"] {
+    background: linear-gradient(135deg, rgba(232, 244, 249, 0.95) 0%, rgba(225, 240, 248, 0.95) 100%) !important;
+    border: 2px solid rgba(129, 196, 232, 0.5) !important;
+}
+
+[data-theme="ocean"] .calendar-day {
+    border: 1px solid rgba(129, 196, 232, 0.3) !important;
+}
+
+[data-theme="ocean"] .calendar-day.has-article,
+[data-theme="ocean"] div[style*="background: #e3f2fd"],
+[data-theme="ocean"] div[style*="background:#e3f2fd"] {
+    background: rgba(129, 196, 232, 0.3) !important;
+    border-color: var(--primary-color) !important;
+    color: var(--primary-dark) !important;
+}
+
+/* ========================================
+   紫色梦幻主题 - 白色背景适配
+   ======================================== */
+
+/* 模态框和设置页面 */
+[data-theme="purple"] .settings-form,
+[data-theme="purple"] .table-container,
+[data-theme="purple"] .tag-card,
+[data-theme="purple"] .media-item,
+[data-theme="purple"] .effect-card,
+[data-theme="purple"] .theme-card,
+[data-theme="purple"] .app-manage-card,
+[data-theme="purple"] .modal-content,
+[data-theme="purple"] #linkModal > div {
+    background: linear-gradient(135deg, rgba(243, 229, 245, 0.95) 0%, rgba(240, 220, 243, 0.95) 100%) !important;
+    border: 2px solid rgba(186, 104, 200, 0.4) !important;
+    box-shadow: 0 4px 20px rgba(186, 104, 200, 0.15) !important;
+}
+
+/* 表单控件 */
+[data-theme="purple"] .form-control,
+[data-theme="purple"] .modal-content input,
+[data-theme="purple"] .modal-content textarea,
+[data-theme="purple"] .modal-content select,
+[data-theme="purple"] #linkModal input,
+[data-theme="purple"] #linkModal textarea,
+[data-theme="purple"] #linkModal select {
+    background: rgba(250, 248, 252, 0.9) !important;
+    border: 1px solid rgba(186, 104, 200, 0.4) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="purple"] .form-control:focus,
+[data-theme="purple"] .modal-content input:focus,
+[data-theme="purple"] .modal-content textarea:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 10px rgba(186, 104, 200, 0.3) !important;
+}
+
+/* 按钮 */
+[data-theme="purple"] .btn-primary,
+[data-theme="purple"] .modal-content .btn-primary {
+    background: var(--gradient-primary) !important;
+    border: none !important;
+    color: white !important;
+}
+
+/* 白色背景元素覆盖 */
+[data-theme="purple"] div[style*="background: white"],
+[data-theme="purple"] div[style*="background:white"],
+[data-theme="purple"] div[style*="background: #fff"],
+[data-theme="purple"] div[style*="background:#fff"],
+[data-theme="purple"] div[style*="background: #f5f5f5"],
+[data-theme="purple"] div[style*="background:#f5f5f5"],
+[data-theme="purple"] div[style*="background: #f8f9fa"],
+[data-theme="purple"] div[style*="background:#f8f9fa"] {
+    background: rgba(243, 229, 245, 0.8) !important;
+}
+
+/* 播放器 */
+[data-theme="purple"] .music-player,
+[data-theme="purple"] .video-player,
+[data-theme="purple"] .player-content {
+    background: linear-gradient(135deg, rgba(243, 229, 245, 0.95) 0%, rgba(240, 220, 243, 0.95) 100%) !important;
+    border: 2px solid rgba(186, 104, 200, 0.4) !important;
+}
+
+/* 时光轴日历 */
+[data-theme="purple"] .calendar-container,
+[data-theme="purple"] .article-calendar,
+[data-theme="purple"] div[style*="background: white"][style*="border-radius"] {
+    background: linear-gradient(135deg, rgba(243, 229, 245, 0.95) 0%, rgba(240, 220, 243, 0.95) 100%) !important;
+    border: 2px solid rgba(186, 104, 200, 0.5) !important;
+}
+
+[data-theme="purple"] .calendar-day {
+    border: 1px solid rgba(186, 104, 200, 0.3) !important;
+}
+
+[data-theme="purple"] .calendar-day.has-article,
+[data-theme="purple"] div[style*="background: #e3f2fd"],
+[data-theme="purple"] div[style*="background:#e3f2fd"] {
+    background: rgba(186, 104, 200, 0.3) !important;
+    border-color: var(--primary-color) !important;
+    color: var(--primary-dark) !important;
+}
+
+/* ========================================
+   绿色自然主题 - 白色背景适配
+   ======================================== */
+
+/* 模态框和设置页面 */
+[data-theme="green"] .settings-form,
+[data-theme="green"] .table-container,
+[data-theme="green"] .tag-card,
+[data-theme="green"] .media-item,
+[data-theme="green"] .effect-card,
+[data-theme="green"] .theme-card,
+[data-theme="green"] .app-manage-card,
+[data-theme="green"] .modal-content,
+[data-theme="green"] #linkModal > div {
+    background: linear-gradient(135deg, rgba(232, 245, 233, 0.95) 0%, rgba(225, 242, 227, 0.95) 100%) !important;
+    border: 2px solid rgba(129, 199, 132, 0.4) !important;
+    box-shadow: 0 4px 20px rgba(129, 199, 132, 0.15) !important;
+}
+
+/* 表单控件 */
+[data-theme="green"] .form-control,
+[data-theme="green"] .modal-content input,
+[data-theme="green"] .modal-content textarea,
+[data-theme="green"] .modal-content select,
+[data-theme="green"] #linkModal input,
+[data-theme="green"] #linkModal textarea,
+[data-theme="green"] #linkModal select {
+    background: rgba(249, 253, 249, 0.9) !important;
+    border: 1px solid rgba(129, 199, 132, 0.4) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="green"] .form-control:focus,
+[data-theme="green"] .modal-content input:focus,
+[data-theme="green"] .modal-content textarea:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 10px rgba(129, 199, 132, 0.3) !important;
+}
+
+/* 按钮 */
+[data-theme="green"] .btn-primary,
+[data-theme="green"] .modal-content .btn-primary {
+    background: var(--gradient-primary) !important;
+    border: none !important;
+    color: white !important;
+}
+
+/* 白色背景元素覆盖 */
+[data-theme="green"] div[style*="background: white"],
+[data-theme="green"] div[style*="background:white"],
+[data-theme="green"] div[style*="background: #fff"],
+[data-theme="green"] div[style*="background:#fff"],
+[data-theme="green"] div[style*="background: #f5f5f5"],
+[data-theme="green"] div[style*="background:#f5f5f5"],
+[data-theme="green"] div[style*="background: #f8f9fa"],
+[data-theme="green"] div[style*="background:#f8f9fa"] {
+    background: rgba(232, 245, 233, 0.8) !important;
+}
+
+/* 播放器 */
+[data-theme="green"] .music-player,
+[data-theme="green"] .video-player,
+[data-theme="green"] .player-content {
+    background: linear-gradient(135deg, rgba(232, 245, 233, 0.95) 0%, rgba(225, 242, 227, 0.95) 100%) !important;
+    border: 2px solid rgba(129, 199, 132, 0.4) !important;
+}
+
+/* 时光轴日历 */
+[data-theme="green"] .calendar-container,
+[data-theme="green"] .article-calendar,
+[data-theme="green"] div[style*="background: white"][style*="border-radius"] {
+    background: linear-gradient(135deg, rgba(232, 245, 233, 0.95) 0%, rgba(225, 242, 227, 0.95) 100%) !important;
+    border: 2px solid rgba(129, 199, 132, 0.5) !important;
+}
+
+[data-theme="green"] .calendar-day {
+    border: 1px solid rgba(129, 199, 132, 0.3) !important;
+}
+
+[data-theme="green"] .calendar-day.has-article,
+[data-theme="green"] div[style*="background: #e3f2fd"],
+[data-theme="green"] div[style*="background:#e3f2fd"] {
+    background: rgba(129, 199, 132, 0.3) !important;
+    border-color: var(--primary-color) !important;
+    color: var(--primary-dark) !important;
+}
+
+/* ========================================
+   橙色活力主题 - 白色背景适配
+   ======================================== */
+
+/* 模态框和设置页面 */
+[data-theme="orange"] .settings-form,
+[data-theme="orange"] .table-container,
+[data-theme="orange"] .tag-card,
+[data-theme="orange"] .media-item,
+[data-theme="orange"] .effect-card,
+[data-theme="orange"] .theme-card,
+[data-theme="orange"] .app-manage-card,
+[data-theme="orange"] .modal-content,
+[data-theme="orange"] #linkModal > div {
+    background: linear-gradient(135deg, rgba(255, 243, 224, 0.95) 0%, rgba(255, 238, 215, 0.95) 100%) !important;
+    border: 2px solid rgba(255, 183, 77, 0.4) !important;
+    box-shadow: 0 4px 20px rgba(255, 183, 77, 0.15) !important;
+}
+
+/* 表单控件 */
+[data-theme="orange"] .form-control,
+[data-theme="orange"] .modal-content input,
+[data-theme="orange"] .modal-content textarea,
+[data-theme="orange"] .modal-content select,
+[data-theme="orange"] #linkModal input,
+[data-theme="orange"] #linkModal textarea,
+[data-theme="orange"] #linkModal select {
+    background: rgba(255, 250, 245, 0.9) !important;
+    border: 1px solid rgba(255, 183, 77, 0.4) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="orange"] .form-control:focus,
+[data-theme="orange"] .modal-content input:focus,
+[data-theme="orange"] .modal-content textarea:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 10px rgba(255, 183, 77, 0.3) !important;
+}
+
+/* 按钮 */
+[data-theme="orange"] .btn-primary,
+[data-theme="orange"] .modal-content .btn-primary {
+    background: var(--gradient-primary) !important;
+    border: none !important;
+    color: white !important;
+}
+
+/* 白色背景元素覆盖 */
+[data-theme="orange"] div[style*="background: white"],
+[data-theme="orange"] div[style*="background:white"],
+[data-theme="orange"] div[style*="background: #fff"],
+[data-theme="orange"] div[style*="background:#fff"],
+[data-theme="orange"] div[style*="background: #f5f5f5"],
+[data-theme="orange"] div[style*="background:#f5f5f5"],
+[data-theme="orange"] div[style*="background: #f8f9fa"],
+[data-theme="orange"] div[style*="background:#f8f9fa"] {
+    background: rgba(255, 243, 224, 0.8) !important;
+}
+
+/* 播放器 */
+[data-theme="orange"] .music-player,
+[data-theme="orange"] .video-player,
+[data-theme="orange"] .player-content {
+    background: linear-gradient(135deg, rgba(255, 243, 224, 0.95) 0%, rgba(255, 238, 215, 0.95) 100%) !important;
+    border: 2px solid rgba(255, 183, 77, 0.4) !important;
+}
+
+/* 时光轴日历 */
+[data-theme="orange"] .calendar-container,
+[data-theme="orange"] .article-calendar,
+[data-theme="orange"] div[style*="background: white"][style*="border-radius"] {
+    background: linear-gradient(135deg, rgba(255, 243, 224, 0.95) 0%, rgba(255, 238, 215, 0.95) 100%) !important;
+    border: 2px solid rgba(255, 183, 77, 0.5) !important;
+}
+
+[data-theme="orange"] .calendar-day {
+    border: 1px solid rgba(255, 183, 77, 0.3) !important;
+}
+
+[data-theme="orange"] .calendar-day.has-article,
+[data-theme="orange"] div[style*="background: #e3f2fd"],
+[data-theme="orange"] div[style*="background:#e3f2fd"] {
+    background: rgba(255, 183, 77, 0.3) !important;
+    border-color: var(--primary-color) !important;
+    color: var(--primary-dark) !important;
+}
+
+/* ========================================
+   四种原始主题 - 完整模态框背景适配
+   ======================================== */
+
+/* ========================================
+   蓝色海洋主题 - 模态框完整适配
+   ======================================== */
+
+/* 模态框遮罩层 */
+[data-theme="ocean"] .modal {
+    background: rgba(0, 0, 0, 0.5) !important;
+}
+
+/* 模态框对话框 */
+[data-theme="ocean"] .modal-dialog {
+    background: transparent !important;
+}
+
+/* 模态框内容容器 */
+[data-theme="ocean"] .modal-content {
+    background: linear-gradient(135deg, rgba(232, 244, 249, 0.98) 0%, rgba(225, 240, 248, 0.98) 100%) !important;
+    border: 2px solid rgba(129, 196, 232, 0.5) !important;
+    box-shadow: 0 8px 32px rgba(129, 196, 232, 0.2) !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+/* 模态框头部 */
+[data-theme="ocean"] .modal-header {
+    background: linear-gradient(135deg, rgba(129, 196, 232, 0.15) 0%, rgba(129, 196, 232, 0.1) 100%) !important;
+    border-bottom: 2px solid rgba(129, 196, 232, 0.3) !important;
+    color: var(--primary-dark) !important;
+}
+
+[data-theme="ocean"] .modal-title {
+    color: var(--primary-color) !important;
+    font-weight: 600 !important;
+}
+
+/* 模态框主体 */
+[data-theme="ocean"] .modal-body {
+    background: transparent !important;
+    color: var(--text-primary) !important;
+}
+
+/* 模态框底部 */
+[data-theme="ocean"] .modal-footer {
+    background: linear-gradient(135deg, rgba(129, 196, 232, 0.1) 0%, rgba(129, 196, 232, 0.05) 100%) !important;
+    border-top: 1px solid rgba(129, 196, 232, 0.2) !important;
+}
+
+/* 关闭按钮 */
+[data-theme="ocean"] .modal-header .close,
+[data-theme="ocean"] .modal-header .btn-close {
+    color: var(--primary-color) !important;
+    opacity: 0.8 !important;
+}
+
+[data-theme="ocean"] .modal-header .close:hover,
+[data-theme="ocean"] .modal-header .btn-close:hover {
+    color: var(--primary-dark) !important;
+    opacity: 1 !important;
+}
+
+/* ========================================
+   紫色梦幻主题 - 模态框完整适配
+   ======================================== */
+
+/* 模态框遮罩层 */
+[data-theme="purple"] .modal {
+    background: rgba(0, 0, 0, 0.5) !important;
+}
+
+/* 模态框对话框 */
+[data-theme="purple"] .modal-dialog {
+    background: transparent !important;
+}
+
+/* 模态框内容容器 */
+[data-theme="purple"] .modal-content {
+    background: linear-gradient(135deg, rgba(243, 229, 245, 0.98) 0%, rgba(240, 220, 243, 0.98) 100%) !important;
+    border: 2px solid rgba(186, 104, 200, 0.5) !important;
+    box-shadow: 0 8px 32px rgba(186, 104, 200, 0.2) !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+/* 模态框头部 */
+[data-theme="purple"] .modal-header {
+    background: linear-gradient(135deg, rgba(186, 104, 200, 0.15) 0%, rgba(186, 104, 200, 0.1) 100%) !important;
+    border-bottom: 2px solid rgba(186, 104, 200, 0.3) !important;
+    color: var(--primary-dark) !important;
+}
+
+[data-theme="purple"] .modal-title {
+    color: var(--primary-color) !important;
+    font-weight: 600 !important;
+}
+
+/* 模态框主体 */
+[data-theme="purple"] .modal-body {
+    background: transparent !important;
+    color: var(--text-primary) !important;
+}
+
+/* 模态框底部 */
+[data-theme="purple"] .modal-footer {
+    background: linear-gradient(135deg, rgba(186, 104, 200, 0.1) 0%, rgba(186, 104, 200, 0.05) 100%) !important;
+    border-top: 1px solid rgba(186, 104, 200, 0.2) !important;
+}
+
+/* 关闭按钮 */
+[data-theme="purple"] .modal-header .close,
+[data-theme="purple"] .modal-header .btn-close {
+    color: var(--primary-color) !important;
+    opacity: 0.8 !important;
+}
+
+[data-theme="purple"] .modal-header .close:hover,
+[data-theme="purple"] .modal-header .btn-close:hover {
+    color: var(--primary-dark) !important;
+    opacity: 1 !important;
+}
+
+/* ========================================
+   绿色自然主题 - 模态框完整适配
+   ======================================== */
+
+/* 模态框遮罩层 */
+[data-theme="green"] .modal {
+    background: rgba(0, 0, 0, 0.5) !important;
+}
+
+/* 模态框对话框 */
+[data-theme="green"] .modal-dialog {
+    background: transparent !important;
+}
+
+/* 模态框内容容器 */
+[data-theme="green"] .modal-content {
+    background: linear-gradient(135deg, rgba(232, 245, 233, 0.98) 0%, rgba(225, 242, 227, 0.98) 100%) !important;
+    border: 2px solid rgba(129, 199, 132, 0.5) !important;
+    box-shadow: 0 8px 32px rgba(129, 199, 132, 0.2) !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+/* 模态框头部 */
+[data-theme="green"] .modal-header {
+    background: linear-gradient(135deg, rgba(129, 199, 132, 0.15) 0%, rgba(129, 199, 132, 0.1) 100%) !important;
+    border-bottom: 2px solid rgba(129, 199, 132, 0.3) !important;
+    color: var(--primary-dark) !important;
+}
+
+[data-theme="green"] .modal-title {
+    color: var(--primary-color) !important;
+    font-weight: 600 !important;
+}
+
+/* 模态框主体 */
+[data-theme="green"] .modal-body {
+    background: transparent !important;
+    color: var(--text-primary) !important;
+}
+
+/* 模态框底部 */
+[data-theme="green"] .modal-footer {
+    background: linear-gradient(135deg, rgba(129, 199, 132, 0.1) 0%, rgba(129, 199, 132, 0.05) 100%) !important;
+    border-top: 1px solid rgba(129, 199, 132, 0.2) !important;
+}
+
+/* 关闭按钮 */
+[data-theme="green"] .modal-header .close,
+[data-theme="green"] .modal-header .btn-close {
+    color: var(--primary-color) !important;
+    opacity: 0.8 !important;
+}
+
+[data-theme="green"] .modal-header .close:hover,
+[data-theme="green"] .modal-header .btn-close:hover {
+    color: var(--primary-dark) !important;
+    opacity: 1 !important;
+}
+
+/* ========================================
+   橙色活力主题 - 模态框完整适配
+   ======================================== */
+
+/* 模态框遮罩层 */
+[data-theme="orange"] .modal {
+    background: rgba(0, 0, 0, 0.5) !important;
+}
+
+/* 模态框对话框 */
+[data-theme="orange"] .modal-dialog {
+    background: transparent !important;
+}
+
+/* 模态框内容容器 */
+[data-theme="orange"] .modal-content {
+    background: linear-gradient(135deg, rgba(255, 243, 224, 0.98) 0%, rgba(255, 238, 215, 0.98) 100%) !important;
+    border: 2px solid rgba(255, 183, 77, 0.5) !important;
+    box-shadow: 0 8px 32px rgba(255, 183, 77, 0.2) !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+/* 模态框头部 */
+[data-theme="orange"] .modal-header {
+    background: linear-gradient(135deg, rgba(255, 183, 77, 0.15) 0%, rgba(255, 183, 77, 0.1) 100%) !important;
+    border-bottom: 2px solid rgba(255, 183, 77, 0.3) !important;
+    color: var(--primary-dark) !important;
+}
+
+[data-theme="orange"] .modal-title {
+    color: var(--primary-color) !important;
+    font-weight: 600 !important;
+}
+
+/* 模态框主体 */
+[data-theme="orange"] .modal-body {
+    background: transparent !important;
+    color: var(--text-primary) !important;
+}
+
+/* 模态框底部 */
+[data-theme="orange"] .modal-footer {
+    background: linear-gradient(135deg, rgba(255, 183, 77, 0.1) 0%, rgba(255, 183, 77, 0.05) 100%) !important;
+    border-top: 1px solid rgba(255, 183, 77, 0.2) !important;
+}
+
+/* 关闭按钮 */
+[data-theme="orange"] .modal-header .close,
+[data-theme="orange"] .modal-header .btn-close {
+    color: var(--primary-color) !important;
+    opacity: 0.8 !important;
+}
+
+[data-theme="orange"] .modal-header .close:hover,
+[data-theme="orange"] .modal-header .btn-close:hover {
+    color: var(--primary-dark) !important;
+    opacity: 1 !important;
+}
+
+/* ========================================
+   四种原始主题 - 提示框和信息框适配
+   ======================================== */
+
+/* 蓝色海洋主题 - 提示框 */
+[data-theme="ocean"] .info-box,
+[data-theme="ocean"] .modal-body .info-box,
+[data-theme="ocean"] .settings-form .info-box {
+    background: rgba(129, 196, 232, 0.1) !important;
+    border: 1px solid rgba(129, 196, 232, 0.3) !important;
+    border-left: 4px solid var(--primary-color) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="ocean"] .info-box h4,
+[data-theme="ocean"] .modal-body .info-box h4 {
+    color: var(--primary-color) !important;
+}
+
+/* 紫色梦幻主题 - 提示框 */
+[data-theme="purple"] .info-box,
+[data-theme="purple"] .modal-body .info-box,
+[data-theme="purple"] .settings-form .info-box {
+    background: rgba(186, 104, 200, 0.1) !important;
+    border: 1px solid rgba(186, 104, 200, 0.3) !important;
+    border-left: 4px solid var(--primary-color) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="purple"] .info-box h4,
+[data-theme="purple"] .modal-body .info-box h4 {
+    color: var(--primary-color) !important;
+}
+
+/* 绿色自然主题 - 提示框 */
+[data-theme="green"] .info-box,
+[data-theme="green"] .modal-body .info-box,
+[data-theme="green"] .settings-form .info-box {
+    background: rgba(129, 199, 132, 0.1) !important;
+    border: 1px solid rgba(129, 199, 132, 0.3) !important;
+    border-left: 4px solid var(--primary-color) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="green"] .info-box h4,
+[data-theme="green"] .modal-body .info-box h4 {
+    color: var(--primary-color) !important;
+}
+
+/* 橙色活力主题 - 提示框 */
+[data-theme="orange"] .info-box,
+[data-theme="orange"] .modal-body .info-box,
+[data-theme="orange"] .settings-form .info-box {
+    background: rgba(255, 183, 77, 0.1) !important;
+    border: 1px solid rgba(255, 183, 77, 0.3) !important;
+    border-left: 4px solid var(--primary-color) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="orange"] .info-box h4,
+[data-theme="orange"] .modal-body .info-box h4 {
+    color: var(--primary-color) !important;
+}
+
+/* ========================================
+   通用白色背景元素强制覆盖
+   ======================================== */
+
+/* 四种原始主题的通用白色背景覆盖 */
+[data-theme="ocean"] div[style*="background-color: white"],
+[data-theme="ocean"] div[style*="background-color:white"],
+[data-theme="ocean"] div[style*="background-color: #fff"],
+[data-theme="ocean"] div[style*="background-color:#fff"],
+[data-theme="purple"] div[style*="background-color: white"],
+[data-theme="purple"] div[style*="background-color:white"],
+[data-theme="purple"] div[style*="background-color: #fff"],
+[data-theme="purple"] div[style*="background-color:#fff"],
+[data-theme="green"] div[style*="background-color: white"],
+[data-theme="green"] div[style*="background-color:white"],
+[data-theme="green"] div[style*="background-color: #fff"],
+[data-theme="green"] div[style*="background-color:#fff"],
+[data-theme="orange"] div[style*="background-color: white"],
+[data-theme="orange"] div[style*="background-color:white"],
+[data-theme="orange"] div[style*="background-color: #fff"],
+[data-theme="orange"] div[style*="background-color:#fff"] {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+/* 表单组背景透明化 */
+[data-theme="ocean"] .form-group,
+[data-theme="purple"] .form-group,
+[data-theme="green"] .form-group,
+[data-theme="orange"] .form-group {
+    background: transparent !important;
+}
+
+/* 提示框适配 */
+[data-theme="ocean"] .info-box {
+    background: rgba(129, 196, 232, 0.1) !important;
+    border-left: 4px solid var(--primary-color) !important;
+}
+
+[data-theme="purple"] .info-box {
+    background: rgba(186, 104, 200, 0.1) !important;
+    border-left: 4px solid var(--primary-color) !important;
+}
+
+[data-theme="green"] .info-box {
+    background: rgba(129, 199, 132, 0.1) !important;
+    border-left: 4px solid var(--primary-color) !important;
+}
+
+[data-theme="orange"] .info-box {
+    background: rgba(255, 183, 77, 0.1) !important;
+    border-left: 4px solid var(--primary-color) !important;
+}
+
+/* 标签页适配 */
+[data-theme="ocean"] .tab,
+[data-theme="ocean"] .nav-tabs .nav-link {
+    background: rgba(232, 244, 249, 0.5) !important;
+    border: 1px solid rgba(129, 196, 232, 0.3) !important;
+}
+
+[data-theme="ocean"] .tab.active,
+[data-theme="ocean"] .nav-tabs .nav-link.active {
+    background: rgba(129, 196, 232, 0.2) !important;
+    border-color: var(--primary-color) !important;
+}
+
+[data-theme="purple"] .tab,
+[data-theme="purple"] .nav-tabs .nav-link {
+    background: rgba(243, 229, 245, 0.5) !important;
+    border: 1px solid rgba(186, 104, 200, 0.3) !important;
+}
+
+[data-theme="purple"] .tab.active,
+[data-theme="purple"] .nav-tabs .nav-link.active {
+    background: rgba(186, 104, 200, 0.2) !important;
+    border-color: var(--primary-color) !important;
+}
+
+[data-theme="green"] .tab,
+[data-theme="green"] .nav-tabs .nav-link {
+    background: rgba(232, 245, 233, 0.5) !important;
+    border: 1px solid rgba(129, 199, 132, 0.3) !important;
+}
+
+[data-theme="green"] .tab.active,
+[data-theme="green"] .nav-tabs .nav-link.active {
+    background: rgba(129, 199, 132, 0.2) !important;
+    border-color: var(--primary-color) !important;
+}
+
+[data-theme="orange"] .tab,
+[data-theme="orange"] .nav-tabs .nav-link {
+    background: rgba(255, 243, 224, 0.5) !important;
+    border: 1px solid rgba(255, 183, 77, 0.3) !important;
+}
+
+[data-theme="orange"] .tab.active,
+[data-theme="orange"] .nav-tabs .nav-link.active {
+    background: rgba(255, 183, 77, 0.2) !important;
+    border-color: var(--primary-color) !important;
+}

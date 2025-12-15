@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频编辑器调试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #1a1a1a;
+            color: white;
+        }
+        .debug-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #444;
+            border-radius: 8px;
+            background: #2d2d2d;
+        }
+        .debug-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .debug-button:hover {
+            background: #0056b3;
+        }
+        .debug-log {
+            background: #000;
+            color: #0f0;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            max-height: 200px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>视频编辑器调试工具</h1>
+    
+    <div class="debug-section">
+        <h3>浏览器支持检测</h3>
+        <button class="debug-button" onclick="checkBrowserSupport()">检查浏览器支持</button>
+        <div id="browserSupport"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h3>类加载检测</h3>
+        <button class="debug-button" onclick="checkClasses()">检查类是否加载</button>
+        <div id="classStatus"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h3>DOM元素检测</h3>
+        <button class="debug-button" onclick="checkDOMElements()">检查DOM元素</button>
+        <div id="domStatus"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h3>视频编辑器测试</h3>
+        <button class="debug-button" onclick="testVideoEditor()">测试视频编辑器初始化</button>
+        <div id="editorStatus"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h3>调试日志</h3>
+        <button class="debug-button" onclick="clearLog()">清空日志</button>
+        <div id="debugLog" class="debug-log"></div>
+    </div>
+
+    <!-- 加载视频编辑器脚本 -->
+    <script src="js/utils.js"></script>
+    <script src="js/media-manager.js"></script>
+    <script src="js/timeline.js"></script>
+    <script src="js/audio-mixer.js"></script>
+    <script src="js/text-renderer.js"></script>
+    <script src="js/export-manager.js"></script>
+    <script src="js/ui-controller.js"></script>
+    <script src="js/video-editor.js"></script>
+
+    <script>
+        let debugLog = '';
+        
+        function log(message) {
+            debugLog += new Date().toLocaleTimeString() + ': ' + message + '\n';
+            document.getElementById('debugLog').textContent = debugLog;
+        }
+        
+        function clearLog() {
+            debugLog = '';
+            document.getElementById('debugLog').textContent = '';
+        }
+        
+        function checkBrowserSupport() {
+            try {
+                if (typeof VideoEditorUtils !== 'undefined') {
+                    const support = VideoEditorUtils.checkBrowserSupport();
+                    const browserInfo = VideoEditorUtils.getBrowserInfo();
+                    
+                    let html = '<h4>浏览器信息:</h4>';
+                    html += `<p>浏览器: ${browserInfo.isChrome ? 'Chrome' : browserInfo.isFirefox ? 'Firefox' : browserInfo.isSafari ? 'Safari' : browserInfo.isEdge ? 'Edge' : 'Unknown'} ${browserInfo.version}</p>`;
+                    html += `<p>HTTPS: ${VideoEditorUtils.isHTTPS() ? '是' : '否'}</p>`;
+                    
+                    html += '<h4>API支持:</h4>';
+                    html += `<p>Canvas API: ${support.canvas ? '✅' : '❌'}</p>`;
+                    html += `<p>Web Audio API: ${support.webAudio ? '✅' : '❌'}</p>`;
+                    html += `<p>MediaRecorder API: ${support.mediaRecorder ? '✅' : '❌'}</p>`;
+                    html += `<p>File API: ${support.fileAPI ? '✅' : '❌'}</p>`;
+                    html += `<p>完整支持: ${support.fullSupport ? '✅' : '❌'}</p>`;
+                    
+                    document.getElementById('browserSupport').innerHTML = html;
+                    log('浏览器支持检测完成');
+                } else {
+                    document.getElementById('browserSupport').innerHTML = '<p style="color: red;">VideoEditorUtils 未加载</p>';
+                    log('错误: VideoEditorUtils 未加载');
+                }
+            } catch (error) {
+                document.getElementById('browserSupport').innerHTML = `<p style="color: red;">错误: ${error.message}</p>`;
+                log('浏览器支持检测错误: ' + error.message);
+            }
+        }
+        
+        function checkClasses() {
+            const classes = [
+                'VideoEditorUtils',
+                'MediaManager', 
+                'Timeline',
+                'AudioMixer',
+                'TextRenderer',
+                'ExportManager',
+                'UIController',
+                'VideoEditor'
+            ];
+            
+            let html = '<h4>类加载状态:</h4>';
+            let allLoaded = true;
+            
+            classes.forEach(className => {
+                const isLoaded = typeof window[className] !== 'undefined';
+                html += `<p>${className}: ${isLoaded ? '✅' : '❌'}</p>`;
+                if (!isLoaded) allLoaded = false;
+            });
+            
+            html += `<p><strong>所有类已加载: ${allLoaded ? '✅' : '❌'}</strong></p>`;
+            
+            document.getElementById('classStatus').innerHTML = html;
+            log('类加载检测完成，所有类' + (allLoaded ? '已' : '未') + '加载');
+        }
+        
+        function checkDOMElements() {
+            const elements = [
+                'videoEditor',
+                'previewContainer',
+                'timelineRuler',
+                'timelineTracks',
+                'importVideo',
+                'playBtn',
+                'pauseBtn',
+                'stopBtn'
+            ];
+            
+            let html = '<h4>DOM元素状态:</h4>';
+            html += '<p><em>注意：调试页面本身不包含视频编辑器DOM结构</em></p>';
+            let allFound = true;
+            
+            elements.forEach(elementId => {
+                const element = document.getElementById(elementId);
+                html += `<p>#${elementId}: ${element ? '✅' : '❌ (正常，调试页面无此元素)'}</p>`;
+                if (!element) allFound = false;
+            });
+            
+            html += `<p><strong>状态: 调试页面正常，请在主页面测试DOM元素</strong></p>`;
+            html += `<p><a href="index.html" target="_blank" style="color: #007bff;">打开主视频编辑器页面</a></p>`;
+            
+            document.getElementById('domStatus').innerHTML = html;
+            log('DOM元素检测完成 - 调试页面正常');
+        }
+        
+        function testVideoEditor() {
+            try {
+                // 创建一个临时容器
+                const container = document.createElement('div');
+                container.id = 'testVideoEditor';
+                document.body.appendChild(container);
+                
+                // 创建必要的子元素
+                container.innerHTML = `
+                    <div id="testPreviewContainer"></div>
+                    <div id="testTimelineRuler"></div>
+                    <div id="testTimelineTracks"></div>
+                `;
+                
+                if (typeof VideoEditor !== 'undefined') {
+                    const editor = new VideoEditor(container);
+                    
+                    let html = '<h4>视频编辑器测试:</h4>';
+                    html += '<p>初始化: ✅</p>';
+                    html += `<p>画布: ${editor.canvas ? '✅' : '❌'}</p>`;
+                    html += `<p>上下文: ${editor.ctx ? '✅' : '❌'}</p>`;
+                    html += `<p>媒体管理器: ${editor.mediaManager ? '✅' : '❌'}</p>`;
+                    html += `<p>时间轴: ${editor.timeline ? '✅' : '❌'}</p>`;
+                    
+                    document.getElementById('editorStatus').innerHTML = html;
+                    log('视频编辑器测试成功');
+                    
+                    // 清理测试容器
+                    setTimeout(() => {
+                        editor.cleanup();
+                        document.body.removeChild(container);
+                    }, 1000);
+                } else {
+                    document.getElementById('editorStatus').innerHTML = '<p style="color: red;">VideoEditor 类未加载</p>';
+                    log('错误: VideoEditor 类未加载');
+                }
+            } catch (error) {
+                document.getElementById('editorStatus').innerHTML = `<p style="color: red;">错误: ${error.message}</p>`;
+                log('视频编辑器测试错误: ' + error.message);
+                console.error('VideoEditor test error:', error);
+            }
+        }
+        
+        // 页面加载完成后自动运行检测
+        window.addEventListener('load', () => {
+            log('调试页面加载完成');
+            setTimeout(() => {
+                checkBrowserSupport();
+                checkClasses();
+            }, 500);
+        });
+        
+        // 捕获全局错误
+        window.addEventListener('error', (e) => {
+            log('全局错误: ' + e.message + ' 在 ' + e.filename + ':' + e.lineno);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+{
+  "name": "personal-blog-system",
+  "version": "2.0.0",
+  "description": "个人博客系统 - 支持多主题、应用中心、飞书导入等功能的现代化博客平台",
+  "main": "unified-server.js",
+  "scripts": {
+    "start": "node start.js",
+    "server": "node unified-server.js",
+    "dev": "nodemon unified-server.js",
+    "build": "echo 'Static site - no build needed'",
+    "deploy": "deploy-to-vercel.bat",
+    "test": "echo 'No tests specified'"
+  },
+  "keywords": [
+    "blog",
+    "personal-website",
+    "cms",
+    "static-site",
+    "vercel",
+    "multi-theme",
+    "feishu-import",
+    "applications",
+    "responsive"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/personal-blog-system.git"
+  },
+  "homepage": "https://yourusername.github.io/personal-blog-system",
+  "bugs": {
+    "url": "https://github.com/yourusername/personal-blog-system/issues"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

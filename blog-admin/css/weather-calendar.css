@@ -1,0 +1,973 @@
+/* 天气和日历模块样式 */
+
+/* 天气模块 */
+.weather-widget {
+    position: relative;
+    overflow: hidden;
+}
+
+/* 让天气背景铺满整个卡片 */
+.weather-widget .weather-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+}
+
+/* 天气动态背景 */
+.weather-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+/* 晴天背景 */
+.weather-bg-sunny {
+    background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+}
+
+/* 多云背景 */
+.weather-bg-cloudy {
+    background: linear-gradient(135deg, #bdc3c7 0%, #2c3e50 100%);
+}
+
+/* 雨天背景 */
+.weather-bg-rainy {
+    background: linear-gradient(135deg, #4b79a1 0%, #283e51 100%);
+}
+
+/* 雪天背景 */
+.weather-bg-snowy {
+    background: linear-gradient(135deg, #e6dada 0%, #274046 100%);
+}
+
+/* 雨滴效果 */
+.rain-drop {
+    position: absolute;
+    width: 2px;
+    height: 20px;
+    background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.6));
+    animation: rainFall linear infinite;
+}
+
+@keyframes rainFall {
+    0% {
+        transform: translateY(-100px);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(400px);
+        opacity: 0;
+    }
+}
+
+/* 雪花效果 */
+.snow-flake {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: white;
+    border-radius: 50%;
+    animation: snowFall linear infinite;
+    opacity: 0.8;
+}
+
+@keyframes snowFall {
+    0% {
+        transform: translateY(-100px) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(400px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* 云朵效果 */
+.cloud {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 100px;
+    animation: cloudMove linear infinite;
+}
+
+.cloud::before,
+.cloud::after {
+    content: '';
+    position: absolute;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 100px;
+}
+
+.cloud::before {
+    width: 50px;
+    height: 50px;
+    top: -25px;
+    left: 10px;
+}
+
+.cloud::after {
+    width: 60px;
+    height: 60px;
+    top: -30px;
+    right: 10px;
+}
+
+@keyframes cloudMove {
+    0% {
+        transform: translateX(-100px);
+    }
+    100% {
+        transform: translateX(calc(100% + 100px));
+    }
+}
+
+/* 太阳光线效果 */
+.sun-rays {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 80px;
+    height: 80px;
+    animation: sunRotate 20s linear infinite;
+}
+
+.sun-ray {
+    position: absolute;
+    width: 4px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.4);
+    top: 50%;
+    left: 50%;
+    transform-origin: 0 0;
+}
+
+@keyframes sunRotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.weather-content {
+    padding: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.weather-main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.weather-icon {
+    font-size: 2.5rem;
+    margin-right: 0.6rem;
+}
+
+.weather-temp {
+    font-size: 2rem;
+    font-weight: bold;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.weather-info {
+    flex: 1;
+}
+
+.weather-city {
+    font-size: 1.2rem;
+    color: rgba(255,255,255,0.95);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.weather-city-name {
+    cursor: pointer;
+    padding: 0.3rem 0.8rem;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    transition: all 0.3s;
+    backdrop-filter: blur(5px);
+}
+
+.weather-city-name:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.city-selector {
+    position: relative;
+    display: inline-block;
+}
+
+.city-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 0.5rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    padding: 0.5rem;
+    min-width: 200px;
+    z-index: 1000;
+    display: none;
+}
+
+.city-dropdown.show {
+    display: block;
+}
+
+.city-search {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.city-list {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.city-item {
+    padding: 0.6rem 0.8rem;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+}
+
+.city-item:hover {
+    background: rgba(102, 126, 234, 0.1);
+}
+
+.city-item.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.weather-desc {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.85);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.weather-details {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(255,255,255,0.2);
+}
+
+.weather-detail-item {
+    text-align: center;
+}
+
+.weather-detail-label {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 0.2rem;
+}
+
+.weather-detail-value {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.95);
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+/* 24小时天气图表 */
+.weather-chart {
+    margin-top: 0.8rem;
+    margin-bottom: 0;
+    padding-top: 0.8rem;
+    padding-bottom: 0;
+    border-top: 1px solid rgba(255,255,255,0.2);
+}
+
+.weather-chart-title {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.weather-chart-container {
+    position: relative;
+    height: 100px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.6rem;
+    padding-bottom: 0.4rem;
+    margin-bottom: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.weather-chart-title {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.6rem;
+    font-weight: 500;
+}
+
+.weather-chart-container {
+    position: relative;
+    height: 120px;
+    background: rgba(102, 126, 234, 0.05);
+    border-radius: 8px;
+    padding: 0.8rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.weather-chart-canvas {
+    position: relative;
+    height: 100%;
+    min-width: 600px;
+}
+
+.weather-chart-line {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    height: 80px;
+}
+
+.weather-chart-point {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.weather-chart-point:hover {
+    width: 12px;
+    height: 12px;
+    box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+}
+
+.weather-chart-point::after {
+    content: attr(data-temp);
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.75rem;
+    color: #667eea;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.weather-chart-labels {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.weather-chart-label {
+    font-size: 0.7rem;
+    color: #999;
+    text-align: center;
+    flex: 1;
+}
+
+.weather-chart-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.weather-chart-path {
+    fill: none;
+    stroke: url(#tempGradient);
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
+/* 日历模块 */
+.calendar-widget {
+}
+
+.calendar-content {
+    padding: 0;
+    transform: scale(0.9);
+    transform-origin: top center;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.3rem;
+    padding: 0 0.2rem;
+}
+
+.calendar-month {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.calendar-nav {
+    display: flex;
+    gap: 0.2rem;
+}
+
+.calendar-nav button {
+    background: rgba(102, 126, 234, 0.1);
+    border: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.3s;
+}
+
+.calendar-nav button:hover {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.05rem;
+}
+
+.calendar-day-header {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #999;
+    padding: 0.2rem 0;
+    font-weight: 500;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.calendar-day:hover {
+    background: rgba(102, 126, 234, 0.1);
+    transform: scale(1.05);
+}
+
+.calendar-day.other-month {
+    color: #ccc;
+}
+
+.calendar-day.today {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-weight: bold;
+}
+
+.calendar-day.selected {
+    background: rgba(102, 126, 234, 0.2);
+    border: 2px solid #667eea;
+}
+
+.calendar-info {
+    margin-top: 0.3rem;
+    margin-bottom: 0;
+    padding: 0.4rem;
+    background: rgba(102, 126, 234, 0.08);
+    border-radius: 6px;
+    text-align: center;
+}
+
+.calendar-date-info {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.calendar-lunar {
+    font-size: 0.75rem;
+    color: #999;
+    margin-top: 0.15rem;
+}
+
+/* 重要事项模块 - 独立卡片 */
+.events-widget {
+    min-height: 200px;
+}
+
+/* 事项头部优化 */
+.calendar-events-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+}
+
+.calendar-events-title {
+    font-size: 1rem;
+    color: #2c3e50;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.calendar-events-title::before {
+    content: '📋';
+    font-size: 1.2rem;
+}
+
+/* 添加事项按钮优化 */
+.btn-add-event {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.2rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.btn-add-event::before {
+    content: '+';
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.btn-add-event:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
+.btn-add-event:active {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+}
+
+.events-list-container {
+    position: relative;
+    max-height: 350px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    padding-right: 0.3rem;
+}
+
+.events-list-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.events-list-container::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.05);
+    border-radius: 3px;
+}
+
+.events-list-container::-webkit-scrollbar-thumb {
+    background: rgba(102, 126, 234, 0.3);
+    border-radius: 3px;
+}
+
+.events-list-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(102, 126, 234, 0.5);
+}
+
+/* 主题适配 - 已在events-unified.css中定义，这里的样式会被覆盖 */
+
+.events-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+/* 优化的事项卡片样式 */
+.event-item {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 1rem;
+    border-left: 5px solid #667eea;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
+}
+
+.event-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.3), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.event-item:hover::before {
+    opacity: 1;
+}
+
+.event-item:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(248, 250, 255, 1) 100%);
+    transform: translateX(8px) translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.15);
+}
+
+.event-item.priority-high {
+    border-left-color: #ff4757;
+}
+
+.event-item.priority-high::before {
+    background: linear-gradient(90deg, transparent, rgba(255, 71, 87, 0.3), transparent);
+}
+
+.event-item.priority-medium {
+    border-left-color: #ffa502;
+}
+
+.event-item.priority-medium::before {
+    background: linear-gradient(90deg, transparent, rgba(255, 165, 2, 0.3), transparent);
+}
+
+.event-item.priority-low {
+    border-left-color: #667eea;
+}
+
+.event-item.completed {
+    opacity: 0.5;
+    background: linear-gradient(135deg, rgba(240, 240, 240, 0.95) 0%, rgba(235, 235, 235, 0.85) 100%);
+}
+
+.event-item.completed .event-title {
+    text-decoration: line-through;
+    color: #999;
+}
+
+/* 事项头部 - 标题和优先级 */
+.event-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+    gap: 0.75rem;
+}
+
+.event-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2c3e50;
+    flex: 1;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+.event-priority {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.7rem;
+    border-radius: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.event-priority.high {
+    background: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%);
+    color: white;
+}
+
+.event-priority.medium {
+    background: linear-gradient(135deg, #ffa502 0%, #ffb84d 100%);
+    color: white;
+}
+
+.event-priority.low {
+    background: linear-gradient(135deg, #667eea 0%, #8b9aee 100%);
+    color: white;
+}
+
+/* 事项描述 */
+.event-body {
+    font-size: 0.85rem;
+    color: #5a6c7d;
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+    padding-left: 0.5rem;
+    border-left: 2px solid rgba(102, 126, 234, 0.2);
+}
+
+/* 事项底部 - 倒计时和操作按钮 */
+.event-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.event-countdown {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #667eea;
+    padding: 0.3rem 0.7rem;
+    background: rgba(102, 126, 234, 0.1);
+    border-radius: 8px;
+}
+
+.event-countdown::before {
+    content: '⏰';
+    font-size: 1rem;
+}
+
+.event-countdown.urgent {
+    color: #ff4757;
+    background: rgba(255, 71, 87, 0.1);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.event-countdown.urgent::before {
+    content: '🔥';
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* 操作按钮组 */
+.event-actions {
+    display: flex;
+    gap: 0.4rem;
+}
+
+.event-action-btn {
+    background: rgba(102, 126, 234, 0.1);
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #667eea;
+}
+
+.event-action-btn:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);
+    background: rgba(102, 126, 234, 0.2);
+}
+
+.event-action-btn:active {
+    transform: translateY(0) scale(0.95);
+}
+
+/* 完成按钮 */
+.event-action-btn.complete-btn {
+    color: #4caf50;
+    background: rgba(76, 175, 80, 0.1);
+}
+
+.event-action-btn.complete-btn:hover {
+    background: rgba(76, 175, 80, 0.2);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.25);
+}
+
+/* 删除按钮 */
+.event-action-btn.delete-btn {
+    color: #ff4757;
+    background: rgba(255, 71, 87, 0.1);
+}
+
+.event-action-btn.delete-btn:hover {
+    background: rgba(255, 71, 87, 0.2);
+    box-shadow: 0 4px 12px rgba(255, 71, 87, 0.25);
+}
+
+/* 编辑按钮 */
+.event-action-btn.edit-btn {
+    color: #ffa502;
+    background: rgba(255, 165, 2, 0.1);
+}
+
+.event-action-btn.edit-btn:hover {
+    background: rgba(255, 165, 2, 0.2);
+    box-shadow: 0 4px 12px rgba(255, 165, 2, 0.25);
+}
+
+/* 移除滚动按钮样式，改用自动滚动 */
+
+/* 添加事项模态框 */
+.event-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.event-modal.show {
+    display: flex;
+}
+
+.event-modal-content {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.event-modal-header {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.event-form-group {
+    margin-bottom: 1rem;
+}
+
+.event-form-label {
+    display: block;
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.event-form-input,
+.event-form-textarea,
+.event-form-select {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.event-form-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.event-modal-footer {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.btn-modal {
+    flex: 1;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+}
+
+.btn-modal-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-modal-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-modal-secondary {
+    background: #f0f0f0;
+    color: #666;
+}
+
+.btn-modal-secondary:hover {
+    background: #e0e0e0;
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+    .weather-main {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .weather-icon {
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+    
+    .weather-details {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .calendar-day {
+        font-size: 0.8rem;
+    }
+}

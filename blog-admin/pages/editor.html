@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文章编辑器 - 博客后台管理系统</title>
+    
+    <!-- ⚡ 主题和背景预加载 - 避免闪烁，必须在CSS之前 -->
+    <script>
+        (function() {
+            // === 主题预加载 ===
+            try {
+                var theme = localStorage.getItem('admin_theme');
+                if (!theme) {
+                    try {
+                        var blogData = localStorage.getItem('blogData');
+                        if (blogData) {
+                            var data = JSON.parse(blogData);
+                            theme = (data.settings && (data.settings.backendTheme || data.settings.adminTheme)) || null;
+                        }
+                    } catch (e) {}
+                }
+                var validThemes = ['ocean', 'purple', 'green', 'orange', 'dark'];
+                if (!theme || validThemes.indexOf(theme) === -1) {
+                    theme = 'ocean';
+                }
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('admin_theme', theme);
+                console.log('⚡ 编辑器主题预加载:', theme);
+            } catch (error) {
+                console.error('主题预加载失败:', error);
+                document.documentElement.setAttribute('data-theme', 'ocean');
+            }
+            
+            // === 背景预加载 ===
+            try {
+                var lastBackground = localStorage.getItem('admin_current_background');
+                if (lastBackground) {
+                    var style = document.createElement('style');
+                    style.textContent = 
+                        '.admin-background-layer{' +
+                        'position:fixed!important;' +
+                        'top:0;left:0;right:0;bottom:0;' +
+                        'background-image:url(' + lastBackground + ');' +
+                        'background-size:cover;' +
+                        'background-position:center;' +
+                        'background-repeat:no-repeat;' +
+                        'z-index:-2!important;' +
+                        'pointer-events:none;' +
+                        '}' +
+                        '.admin-background-overlay{' +
+                        'position:fixed!important;' +
+                        'top:0;left:0;right:0;bottom:0;' +
+                        'background:rgba(255,255,255,0.85);' +
+                        'backdrop-filter:blur(10px);' +
+                        'z-index:-1!important;' +
+                        'pointer-events:none;' +
+                        '}';
+                    document.head.appendChild(style);
+                    
+                    document.addEventListener('DOMContentLoaded', function() {
+                        if (!document.querySelector('.admin-background-layer')) {
+                            var bgLayer = document.createElement('div');
+                            bgLayer.className = 'admin-background-layer';
+                            document.body.insertBefore(bgLayer, document.body.firstChild);
+                            
+                            var overlay = document.createElement('div');
+                            overlay.className = 'admin-background-overlay';
+                            document.body.insertBefore(overlay, document.body.firstChild);
+                        }
+                    });
+                    
+                    console.log('⚡ 编辑器背景预加载:', lastBackground);
+                }
+            } catch (error) {
+                console.error('背景预加载失败:', error);
+            }
+        })();
+    </script>
+    
+    <link rel="stylesheet" href="../css/admin.css">
+    <!-- 编辑器专用布局 -->
+    <link rel="stylesheet" href="../css/editor-layout.css">
+    <!-- 主题系统 -->
+    <link rel="stylesheet" href="../../blog/css/themes.css">
+    <link rel="stylesheet" href="../css/admin-theme-adapter.css">
+</head>
+<body class="editor-page">
+    <aside class="sidebar">
+        <div class="logo">
+            <h2>📝 博客管理</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="../index.html" class="nav-item">
+                <span class="icon">📊</span>
+                <span>返回仪表盘</span>
+            </a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-bar">
+            <div class="breadcrumb">
+                <span>文章编辑器</span>
+            </div>
+            <div class="user-info">
+                <span class="username">管理员</span>
+            </div>
+        </header>
+
+        <div class="content-area">
+            <div class="editor-container">
+                <div class="editor-main">
+                    <input type="text" class="editor-title" placeholder="请输入文章标题..." value="">
+                    
+                    <div class="editor-content">
+                        <div class="editor-toolbar">
+                            <button class="toolbar-btn" title="加粗">B</button>
+                            <button class="toolbar-btn" title="斜体">I</button>
+                            <button class="toolbar-btn" title="标题">H</button>
+                            <button class="toolbar-btn" title="引用">""</button>
+                            <button class="toolbar-btn" title="代码">{ }</button>
+                            <button class="toolbar-btn" title="链接">🔗</button>
+                            <button class="toolbar-btn" title="图片">🖼️</button>
+                            <button class="toolbar-btn" title="列表">📋</button>
+                        </div>
+                        <textarea class="editor-textarea" placeholder="开始写作...支持 Markdown 语法"></textarea>
+                    </div>
+                </div>
+
+                <div class="editor-sidebar">
+                    <div class="sidebar-section">
+                        <h3>发布</h3>
+                        <div class="sidebar-actions">
+                            <button class="btn-full btn-publish">发布文章</button>
+                            <button class="btn-full btn-draft">保存草稿</button>
+                            <button class="btn-full btn-preview">预览</button>
+                            <button class="btn-full btn-download-feishu-images" style="background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%); color: white; margin-top: 0.5rem;">📥 下载飞书图片</button>
+                        </div>
+                        <div style="background: #e3f2fd; padding: 0.75rem; border-radius: 8px; margin-top: 1rem; font-size: 0.85rem; color: #1976d2; line-height: 1.6;">
+                            💡 <strong>提示：</strong>编辑器显示 Markdown 源代码。点击"预览"按钮查看图片和格式效果。
+                        </div>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <label for="categorySelect">
+                            <h3>分类</h3>
+                        </label>
+                        <div class="select-group">
+                            <select id="categorySelect" 
+                                    name="category"
+                                    aria-label="选择文章分类"
+                                    title="选择文章分类">
+                                <option>选择分类</option>
+                                <option>技术</option>
+                                <option>生活</option>
+                                <option>设计</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <label for="tagSelect">
+                            <h3>标签</h3>
+                        </label>
+                        <div class="select-group">
+                            <select id="tagSelect" 
+                                    name="tags"
+                                    class="form-control"
+                                    aria-label="选择文章标签"
+                                    title="选择文章标签">
+                                <option value="">-- 选择标签 --</option>
+                            </select>
+                        </div>
+                        <div class="tags-display" id="tagsDisplay">
+                            <!-- 已选标签将显示在这里 -->
+                        </div>
+                        <div class="select-group" style="margin-top: 1rem;">
+                            <label for="newTagInput">或输入新标签</label>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <input type="text" 
+                                       id="newTagInput"
+                                       name="newTag"
+                                       class="form-control" 
+                                       placeholder="输入新标签名称"
+                                       aria-label="输入新标签名称"
+                                       title="输入新标签名称">
+                                <button type="button" 
+                                        class="btn-secondary" 
+                                        onclick="editor.addNewTag()" 
+                                        aria-label="添加新标签"
+                                        style="white-space: nowrap; padding: 0.6rem 1rem;">添加</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <label for="publishTime">
+                            <h3>发布时间</h3>
+                        </label>
+                        <div class="select-group">
+                            <input type="datetime-local" 
+                                   id="publishTime"
+                                   name="publishTime"
+                                   aria-label="设置发布时间"
+                                   title="设置发布时间">
+                        </div>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <h3>特色图片</h3>
+                        <div class="featured-image" id="featuredImage">
+                            <div class="upload-placeholder">
+                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">📷</div>
+                                <div>点击上传图片</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <h3>摘要</h3>
+                        <div class="select-group">
+                            <textarea rows="4" placeholder="文章摘要（可选）"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/file-uploader.js?v=20241123"></script>
+    <!-- 数据适配层 - 支持JSON文件存储 -->
+    <script src="../js/data-adapter.js?v=20241123"></script>
+    <script src="../js/data-store-wrapper.js?v=20241123"></script>
+    <script src="../js/feishu-image-downloader.js?v=20241123"></script>
+    <script src="../js/admin-theme-manager.js?v=20241123"></script>
+    <script src="../js/editor.js?v=20241123"></script>
+</body>
+</html>

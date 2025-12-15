@@ -1,0 +1,525 @@
+/* 相册特效样式 */
+
+/* 基础网格布局 */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    padding: 2rem;
+}
+
+@media (max-width: 1024px) {
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 3D 旋转相册 - 简化版本 */
+.carousel-3d-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto 4rem;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-3d-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.carousel-3d-header h2 {
+    font-size: 2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+}
+
+.carousel-3d-scene {
+    width: 100%;
+    height: 550px;
+    perspective: 2000px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-3d-wrapper {
+    position: relative;
+    width: 280px;
+    height: 420px;
+    transform-style: preserve-3d;
+    animation: rotate3d 30s linear infinite;
+}
+
+.carousel-3d-wrapper.paused {
+    animation-play-state: paused;
+}
+
+@keyframes rotate3d {
+    from {
+        transform: rotateY(0deg);
+    }
+    to {
+        transform: rotateY(360deg);
+    }
+}
+
+.carousel-3d-item {
+    position: absolute;
+    width: 280px;
+    height: 420px;
+    left: 0;
+    top: 0;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s;
+    cursor: pointer;
+    backface-visibility: hidden;
+}
+
+.carousel-3d-item:hover {
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+}
+
+.carousel-3d-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.carousel-controls {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.carousel-controls button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin: 0 0.5rem;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.carousel-controls button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+/* 瀑布流特效 */
+.gallery-waterfall {
+    display: block !important;
+    column-count: 3;
+    column-gap: 1.5rem;
+    padding: 2rem;
+}
+
+.gallery-waterfall .gallery-item {
+    break-inside: avoid;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s;
+    display: inline-block;
+    width: 100%;
+}
+
+.gallery-waterfall .gallery-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 1024px) {
+    .gallery-waterfall {
+        column-count: 2;
+    }
+}
+
+@media (max-width: 768px) {
+    .gallery-waterfall {
+        column-count: 1;
+    }
+    
+    .carousel-3d-scene {
+        height: 350px;
+    }
+    
+    .carousel-3d-wrapper {
+        width: 150px;
+        height: 220px;
+    }
+    
+    .carousel-3d-item {
+        width: 150px;
+        height: 220px;
+    }
+}
+
+/* 卡片翻转特效 */
+.gallery-flip .gallery-item {
+    perspective: 1000px;
+    height: 320px;
+}
+
+.gallery-flip .flip-card {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.gallery-flip .gallery-item:hover .flip-card {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+}
+
+.flip-card-front {
+    z-index: 2;
+}
+
+.flip-card-front img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.flip-card-back {
+    transform: rotateY(180deg);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    padding: 2rem;
+    text-align: center;
+}
+
+.flip-card-back h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.flip-card-back p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    opacity: 0.95;
+}
+
+.flip-card-back button {
+    transition: all 0.3s;
+}
+
+.flip-card-back button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+/* 缩放动画特效 */
+.gallery-zoom .gallery-item {
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.gallery-zoom .gallery-item img {
+    transition: transform 0.5s ease;
+}
+
+.gallery-zoom .gallery-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.gallery-zoom .gallery-item:hover img {
+    transform: scale(1.15);
+}
+
+/* 淡入淡出特效 */
+.gallery-fade .gallery-item {
+    animation: fadeInUp 0.8s ease-out;
+    animation-fill-mode: both;
+    opacity: 0;
+}
+
+.gallery-fade .gallery-item:nth-child(1) { animation-delay: 0.1s; }
+.gallery-fade .gallery-item:nth-child(2) { animation-delay: 0.2s; }
+.gallery-fade .gallery-item:nth-child(3) { animation-delay: 0.3s; }
+.gallery-fade .gallery-item:nth-child(4) { animation-delay: 0.4s; }
+.gallery-fade .gallery-item:nth-child(5) { animation-delay: 0.5s; }
+.gallery-fade .gallery-item:nth-child(6) { animation-delay: 0.6s; }
+.gallery-fade .gallery-item:nth-child(7) { animation-delay: 0.7s; }
+.gallery-fade .gallery-item:nth-child(8) { animation-delay: 0.8s; }
+.gallery-fade .gallery-item:nth-child(9) { animation-delay: 0.9s; }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+/* ========================================
+   赛博朋克主题 - 3D旋转相册专属样式 🤖
+   ======================================== */
+
+/* 赛博朋克 - 相册容器 */
+ :root[data-theme="cyberpunk"] .carousel-3d-container {
+    background: linear-gradient(135deg, rgba(10, 14, 39, 0.95) 0%, rgba(26, 31, 58, 0.95) 100%);
+    border: 2px solid rgba(0, 240, 255, 0.4);
+    box-shadow: 
+        0 10px 40px rgba(0, 240, 255, 0.3),
+        inset 0 0 30px rgba(0, 240, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+} 
+
+/* 赛博朋克 - 容器扫描线效果 */
+:root[data-theme="cyberpunk"] .carousel-3d-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 240, 255, 0.03) 0px,
+        rgba(0, 240, 255, 0.03) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* 赛博朋克 - 容器动态边框光效 */
+ :root[data-theme="cyberpunk"] .carousel-3d-container::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, 
+        #00f0ff 0%, 
+        #ff006e 25%, 
+        #ffbe0b 50%, 
+        #00ff9f 75%, 
+        #00f0ff 100%
+    );
+    background-size: 400% 400%;
+    animation: cyberpunkBorderGlow 4s ease infinite;
+    border-radius: 20px;
+    z-index: -1;
+    opacity: 0.6;
+}
+
+ @keyframes cyberpunkBorderGlow {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+/* 赛博朋克 - 标题 */
+:root[data-theme="cyberpunk"] .carousel-3d-header h2 {
+    background: linear-gradient(135deg, #00f0ff 0%, #ff006e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+}
+
+/* 赛博朋克 - 副标题 */
+:root[data-theme="cyberpunk"] .carousel-3d-header p {
+    color: #b8c5d6;
+    position: relative;
+    z-index: 1;
+}
+
+/* 赛博朋克 - 3D场景 */
+:root[data-theme="cyberpunk"] .carousel-3d-scene {
+    position: relative;
+    z-index: 1;
+}
+
+/* 赛博朋克 - 图片项 */
+:root[data-theme="cyberpunk"] .carousel-3d-item {
+    border: 2px solid rgba(0, 240, 255, 0.5);
+    box-shadow: 
+        0 10px 30px rgba(0, 240, 255, 0.4),
+        0 0 20px rgba(0, 240, 255, 0.3),
+        inset 0 0 20px rgba(0, 240, 255, 0.1);
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+/* 赛博朋克 - 图片项扫描线 */
+ :root[data-theme="cyberpunk"] .carousel-3d-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 240, 255, 0.05) 0px,
+        rgba(0, 240, 255, 0.05) 1px,
+        transparent 1px,
+        transparent 3px
+    );
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* 赛博朋克 - 图片项光效动画 */
+:root[data-theme="cyberpunk"] .carousel-3d-item::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent 30%,
+        rgba(0, 240, 255, 0.1) 50%,
+        transparent 70%
+    );
+    animation: cyberpunkShine 3s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 2;
+}
+
+@keyframes cyberpunkShine {
+    0%, 100% {
+        transform: translate(-100%, -100%) rotate(45deg);
+    }
+    50% {
+        transform: translate(100%, 100%) rotate(45deg);
+    }
+}
+
+/* 赛博朋克 - 图片悬停效果 */
+:root[data-theme="cyberpunk"] .carousel-3d-item:hover {
+    border-color: #00f0ff;
+    box-shadow: 
+        0 15px 40px rgba(0, 240, 255, 0.6),
+        0 0 30px rgba(255, 0, 110, 0.4),
+        inset 0 0 30px rgba(0, 240, 255, 0.2);
+    /* 移除transform以保持3D变换 */
+}
+
+/* 赛博朋克 - 图片本身 */
+:root[data-theme="cyberpunk"] .carousel-3d-item img {
+    filter: brightness(0.9) contrast(1.1);
+    transition: all 0.3s;
+}
+
+:root[data-theme="cyberpunk"] .carousel-3d-item:hover img {
+    filter: brightness(1.1) contrast(1.2) saturate(1.2);
+}
+
+/* 赛博朋克 - 控制按钮 */
+:root[data-theme="cyberpunk"] .carousel-controls button {
+    background: linear-gradient(135deg, #00f0ff 0%, #0099cc 100%);
+    color: #0a0e27;
+    border: 2px solid #00f0ff;
+    box-shadow: 
+        0 0 15px rgba(0, 240, 255, 0.5),
+        inset 0 0 10px rgba(255, 255, 255, 0.2);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 赛博朋克 - 按钮光效 */
+:root[data-theme="cyberpunk"] .carousel-controls button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+:root[data-theme="cyberpunk"] .carousel-controls button:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* 赛博朋克 - 按钮悬停效果 */
+:root[data-theme="cyberpunk"] .carousel-controls button:hover {
+    background: linear-gradient(135deg, #ff006e 0%, #ffbe0b 100%);
+    border-color: #ff006e;
+    box-shadow: 
+        0 0 25px rgba(255, 0, 110, 0.7),
+        inset 0 0 15px rgba(255, 255, 255, 0.3);
+    transform: translateY(-3px);
+}
+
+/* 赛博朋克 - 按钮激活效果 */
+:root[data-theme="cyberpunk"] .carousel-controls button:active {
+    transform: translateY(-1px);
+    box-shadow: 
+        0 0 15px rgba(255, 0, 110, 0.5),
+        inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+/* 赛博朋克 - 旋转包装器霓虹效果 */
+/* 移除filter以保持3D变换性能 */
+/* :root[data-theme="cyberpunk"] .carousel-3d-wrapper {
+    filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.3));
+} */
+
+/* 赛博朋克 - 暂停状态 */
+/* 移除filter以保持3D变换性能 */
+/* :root[data-theme="cyberpunk"] .carousel-3d-wrapper.paused {
+    filter: drop-shadow(0 0 30px rgba(255, 0, 110, 0.5));
+} */

@@ -1,0 +1,90 @@
+/* 全局隐式滚动条覆盖 - 最高优先级 - 0px宽度 */
+* {
+    scrollbar-width: none !important;
+    scrollbar-color: rgba(102, 126, 234, 0.5) transparent !important;
+}
+
+*::-webkit-scrollbar {
+    width: 0px !important;
+    height: 0px !important;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent !important;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%) !important;
+}
+
+/* 页面级滚动条 - 使用 :root 确保最高优先级 */
+:root {
+    scrollbar-width: none !important;
+    scrollbar-color: rgba(102, 126, 234, 0.5) transparent !important;
+}
+
+:root::-webkit-scrollbar {
+    width: 0px !important;
+    height: 0px !important;
+}
+
+:root::-webkit-scrollbar-track {
+    background: transparent !important;
+}
+
+:root::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+}
+
+:root::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%) !important;
+}
+
+/* 页面级滚动条 - 专门针对 html 和 body */
+html {
+    scrollbar-width: none !important;
+    scrollbar-color: rgba(102, 126, 234, 0.5) transparent !important;
+}
+
+html::-webkit-scrollbar {
+    width: 0px !important;
+    height: 0px !important;
+}
+
+html::-webkit-scrollbar-track {
+    background: transparent !important;
+}
+
+html::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+}
+
+html::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%) !important;
+}
+
+body {
+    scrollbar-width: none !important;
+    scrollbar-color: rgba(102, 126, 234, 0.5) transparent !important;
+}
+
+body::-webkit-scrollbar {
+    width: 0px !important;
+    height: 0px !important;
+}
+
+body::-webkit-scrollbar-track {
+    background: transparent !important;
+}
+
+body::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%) !important;
+}

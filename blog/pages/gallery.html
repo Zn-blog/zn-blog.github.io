@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>相册 - ℳঞ执念ꦿ的博客</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/search.css">
+    <link rel="stylesheet" href="../css/gallery-effects.css">
+    <link rel="stylesheet" href="../css/themes.css">
+    <link rel="stylesheet" href="../css/theme-adapter.css">
+    <link rel="stylesheet" href="../css/modern-nav.css?v=2">
+    <link rel="stylesheet" href="../css/video-background.css">
+</head>
+<body>
+    <nav class="modern-nav">
+        <div class="nav-left">
+            <a href="../index.html" class="nav-logo">
+                <img id="siteAvatar" class="logo-avatar" src="https://ui-avatars.com/api/?name=执念&size=200&background=4fc3f7&color=fff&bold=true" alt="头像">
+                <span class="logo-text">ℳঞ执念ꦿ的博客</span>
+            </a>
+        </div>
+        <div class="nav-center">
+            <div class="nav-indicator"></div>
+            <a href="../index.html" class="nav-item"><span class="nav-item-icon">🏠</span><span class="nav-item-text">首页</span></a>
+            <a href="tags.html" class="nav-item"><span class="nav-item-icon">🏷️</span><span class="nav-item-text">标签</span></a>
+            <a href="categories.html" class="nav-item"><span class="nav-item-icon">📂</span><span class="nav-item-text">分类</span></a>
+            <a href="timeline.html" class="nav-item"><span class="nav-item-icon">⏰</span><span class="nav-item-text">时光轴</span></a>
+            <a href="about.html" class="nav-item"><span class="nav-item-icon">👤</span><span class="nav-item-text">关于</span></a>
+            <a href="gallery.html" class="nav-item active"><span class="nav-item-icon">🖼️</span><span class="nav-item-text">相册</span></a>
+            <a href="apps.html" class="nav-item"><span class="nav-item-icon">🎮</span><span class="nav-item-text">应用</span></a>
+            <a href="guestbook.html" class="nav-item"><span class="nav-item-icon">💬</span><span class="nav-item-text">留言板</span></a>
+            <a href="links.html" class="nav-item"><span class="nav-item-icon">🔗</span><span class="nav-item-text">友链</span></a>
+        </div>
+        <div class="nav-right">
+            <div class="nav-search">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索文章..." onkeypress="handleSearchKeyPress(event)">
+            </div>
+        </div>
+        <button class="mobile-menu-btn" id="mobileMenuBtn"><span></span><span></span><span></span></button>
+    </nav>
+    <section class="main-content" style="min-height: 100vh; padding-top: 90px;">
+
+        <main class="content-area" style="padding-top: 6rem;">
+            <div class="main-content-box">
+                <!-- 3D 旋转相册 -->
+                <div id="carousel3DContainer"></div>
+                
+                <h1 style="text-align: center; color: #2c5f7c; margin-bottom: 1rem;">📷 相册</h1>
+                <p style="text-align: center; color: #7ba3b8; margin-bottom: 2rem;">
+                    共 <span id="galleryCount">0</span> 张照片
+                </p>
+                <div id="galleryGrid" class="gallery-grid">
+                    <!-- 照片将通过 JavaScript 动态加载 -->
+                </div>
+            </div>
+        </main>
+
+        <!-- 图片预览模态框 -->
+        <div id="imageModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 9999; padding: 2rem;">
+            <div style="position: relative; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <button onclick="closeImageModal()" style="position: absolute; top: 1rem; right: 1rem; background: rgba(255,255,255,0.2); color: white; border: none; font-size: 2rem; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; transition: all 0.3s;">×</button>
+                <img id="modalImage" src="" alt="" style="max-width: 90%; max-height: 80vh; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+                <div id="modalInfo" style="margin-top: 1.5rem; text-align: center; color: white; max-width: 600px;">
+                    <h3 id="modalTitle" style="font-size: 1.3rem; margin-bottom: 0.5rem;"></h3>
+                    <p id="modalDesc" style="font-size: 1rem; color: rgba(255,255,255,0.8);"></p>
+                </div>
+                <div style="position: absolute; left: 2rem; top: 50%; transform: translateY(-50%);">
+                    <button onclick="prevImage()" style="background: rgba(255,255,255,0.2); color: white; border: none; font-size: 2rem; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; transition: all 0.3s;">‹</button>
+                </div>
+                <div style="position: absolute; right: 2rem; top: 50%; transform: translateY(-50%);">
+                    <button onclick="nextImage()" style="background: rgba(255,255,255,0.2); color: white; border: none; font-size: 2rem; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; transition: all 0.3s;">›</button>
+                </div>
+            </div>
+        </div>
+
+        <footer class="site-footer">
+            <div class="footer-stats">
+                <div class="stat-item"><span class="stat-icon">📝</span><div class="stat-info"><span class="stat-value" id="totalWords">0</span><span class="stat-label">总字数</span></div></div>
+                <div class="stat-item"><span class="stat-icon">👀</span><div class="stat-info"><span class="stat-value" id="totalViews">0</span><span class="stat-label">总访问量</span></div></div>
+                <div class="stat-item"><span class="stat-icon">👥</span><div class="stat-info"><span class="stat-value" id="totalVisitors">0</span><span class="stat-label">访问人数</span></div></div>
+                <div class="stat-item"><span class="stat-icon">⏱️</span><div class="stat-info"><span class="stat-value" id="runningTime">0天</span><span class="stat-label">运行时长</span></div></div>
+            </div>
+            <div class="footer-copyright"><p>&copy; 2025 ℳঞ执念ꦿ的博客. All rights reserved.</p></div>
+        </footer>
+    </section>
+    <link rel="stylesheet" href="../css/sakura.css">
+    <!-- 数据适配层 - 支持JSON文件存储 -->
+    <script src="../js/data-adapter.js"></script>
+    <script src="../js/data-store-wrapper.js"></script>
+    <script src="../js/theme-manager.js"></script>
+    <script src="../js/search.js"></script>
+    <script src="../js/sakura.js"></script>
+    <script src="../js/stats-sync.js"></script>
+    <script src="../js/gallery-effects.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        // 相册数据和当前索引
+        let galleryImages = [];
+        let currentImageIndex = 0;
+
+        // 渲染相册（异步）
+        async function renderGallery() {
+            if (!window.blogDataStore) {
+                setTimeout(renderGallery, 100);
+                return;
+            }
+
+            galleryImages = await window.blogDataStore.getImages();
+            const grid = document.getElementById('galleryGrid');
+            const count = document.getElementById('galleryCount');
+
+            if (count) count.textContent = galleryImages.length;
+
+            if (galleryImages.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 4rem; color: #999;">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">📷</div>
+                        <div style="font-size: 1.2rem;">暂无照片</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem;">请在后台管理中上传图片</div>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = galleryImages.map((image, index) => `
+                <div class="gallery-item" onclick="openImageModal(${index})" style="position: relative; cursor: pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1); transition: all 0.3s;">
+                    <img src="${image.thumbnail || image.url}" alt="${image.name}" style="width: 100%; height: 280px; object-fit: cover; display: block;">
+                    <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent); padding: 1.5rem 1rem 1rem; color: white;">
+                        <div style="font-size: 0.95rem; font-weight: 500; margin-bottom: 0.3rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${image.name}</div>
+                        ${image.description ? `<div style="font-size: 0.85rem; opacity: 0.9; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${image.description}</div>` : ''}
+                    </div>
+                </div>
+            `).join('');
+
+            // 添加悬停效果
+            document.querySelectorAll('.gallery-item').forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)';
+                });
+                item.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+                });
+            });
+        }
+
+        // 打开图片预览
+        function openImageModal(index) {
+            currentImageIndex = index;
+            showCurrentImage();
+            document.getElementById('imageModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // 关闭图片预览
+        function closeImageModal() {
+            document.getElementById('imageModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // 显示当前图片
+        function showCurrentImage() {
+            const image = galleryImages[currentImageIndex];
+            if (!image) return;
+
+            document.getElementById('modalImage').src = image.url;
+            document.getElementById('modalTitle').textContent = image.name;
+            document.getElementById('modalDesc').textContent = image.description || '暂无描述';
+        }
+
+        // 上一张
+        function prevImage() {
+            currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+            showCurrentImage();
+        }
+
+        // 下一张
+        function nextImage() {
+            currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+            showCurrentImage();
+        }
+
+        // 键盘导航
+        document.addEventListener('keydown', function(e) {
+            const modal = document.getElementById('imageModal');
+            if (modal.style.display === 'block') {
+                if (e.key === 'Escape') closeImageModal();
+                else if (e.key === 'ArrowLeft') prevImage();
+                else if (e.key === 'ArrowRight') nextImage();
+            }
+        });
+
+        // 点击背景关闭
+        document.getElementById('imageModal')?.addEventListener('click', function(e) {
+            if (e.target === this) closeImageModal();
+        });
+
+        // 页面加载时渲染
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('📄 页面加载完成，开始初始化...');
+            
+            // 先渲染相册
+            await renderGallery();
+            console.log('✅ 相册网格渲染完成');
+            
+            // 等待galleryEffects初始化完成
+            async function waitForGalleryEffects() {
+                if (!window.galleryEffects) {
+                    console.log('⏳ 等待 galleryEffects...');
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                    return waitForGalleryEffects();
+                }
+                
+                // 等待初始化完成
+                if (!window.galleryEffects.initialized) {
+                    console.log('⏳ 等待 galleryEffects 初始化...');
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                    return waitForGalleryEffects();
+                }
+                
+                console.log('✅ GalleryEffects已就绪');
+                console.log('📊 图片数量:', window.galleryEffects.images.length);
+                
+                // 如果图片数据为空，重新加载
+                if (window.galleryEffects.images.length === 0) {
+                    console.log('⚠️ 图片数据为空，重新加载...');
+                    await window.galleryEffects.loadImages();
+                    console.log('📊 重新加载后图片数量:', window.galleryEffects.images.length);
+                }
+                
+                // 渲染3D旋转相册
+                console.log('🎨 开始渲染3D旋转相册...');
+                window.galleryEffects.render3DCarousel();
+                
+                // 再延迟应用特效，确保图片已经渲染
+                setTimeout(() => {
+                    console.log('🎨 应用相册特效...');
+                    window.galleryEffects.applyEffect();
+                }, 100);
+            }
+            
+            // 延迟执行，确保DOM已渲染
+            setTimeout(() => waitForGalleryEffects(), 300);
+        });
+    </script>
+    <!-- 视频背景 -->
+    <script src="../js/video-background.js"></script>
+</body>
+</html>
+
+
+    <!-- JavaScript -->
+    <script src="../js/data-adapter.js"></script>
+    <script src="../js/data-store-wrapper.js"></script>
+    <script src="../js/theme-manager.js"></script>
+    <script src="../js/modern-nav.js"></script>
+    <script src="../js/video-background.js"></script>
+</body>
+</html>

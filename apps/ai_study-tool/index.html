@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI编程学习平台</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Prism.js 语法高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- 侧边栏导航 -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1><i class="fas fa-robot"></i> AI编程学习</h1>
+                <p class="subtitle">从零开始，循序渐进</p>
+            </div>
+            
+            <div class="progress-section">
+                <div class="progress-info">
+                    <span>学习进度</span>
+                    <span id="progressPercent">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+
+            <nav class="course-nav">
+                <ul id="courseList"></ul>
+            </nav>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <div class="content-header">
+                <h2 id="courseTitle">欢迎来到AI编程学习平台</h2>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" id="prevBtn" disabled>
+                        <i class="fas fa-chevron-left"></i> 上一课
+                    </button>
+                    <button class="btn btn-primary" id="nextBtn">
+                        下一课 <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="content-body" id="contentBody">
+                <div class="welcome-screen">
+                    <div class="welcome-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h2>开始你的AI编程之旅</h2>
+                    <p>本平台将带你从基础概念开始，逐步学习AI编程的各个方面。</p>
+                    <div class="features">
+                        <div class="feature-card">
+                            <i class="fas fa-book"></i>
+                            <h3>系统化课程</h3>
+                            <p>精心设计的课程体系</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-code"></i>
+                            <h3>实践练习</h3>
+                            <p>每个知识点都有代码示例</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-chart-line"></i>
+                            <h3>进度跟踪</h3>
+                            <p>实时记录你的学习进度</p>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-large" id="startLearningBtn">
+                        <i class="fas fa-play"></i> 开始学习
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 代码测试面板 -->
+    <div class="code-test-panel collapsed" id="codeTestPanel">
+        <div class="code-test-header">
+            <h3><i class="fas fa-code"></i> 代码测试</h3>
+            <div class="code-test-controls">
+                <select id="codeLanguage" class="language-select">
+                    <option value="python">Python</option>
+                    <option value="javascript">JavaScript</option>
+                </select>
+                <button class="btn btn-primary btn-sm" id="runCodeBtn">
+                    <i class="fas fa-play"></i> 运行
+                </button>
+                <button class="btn btn-secondary btn-sm" id="clearCodeBtn">
+                    <i class="fas fa-trash"></i> 清空
+                </button>
+                <button class="btn btn-secondary btn-sm" id="toggleCodePanelBtn">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+        </div>
+        <div class="code-test-body" id="codeTestBody">
+            <div class="code-editor-container">
+                <div class="editor-wrapper">
+                    <pre id="codeEditorHighlight" class="code-editor-highlight"></pre>
+                    <textarea id="codeEditor" class="code-editor" placeholder="在这里编写你的代码...&#10;&#10;Python示例：&#10;print('Hello, World!')&#10;for i in range(5):&#10;    print(f'数字: {i}')&#10;&#10;JavaScript示例：&#10;console.log('Hello, World!');&#10;for (let i = 0; i < 5; i++) {&#10;    console.log(`数字: ${i}`);&#10;}&#10;&#10;提示：点击代码块中的"复制到编辑器"按钮可以快速复制代码"></textarea>
+                </div>
+            </div>
+            <div class="code-resizer" id="codeResizer"></div>
+            <div class="code-output-container">
+                <div class="output-header">
+                    <span>输出</span>
+                    <button class="btn btn-secondary btn-xs" id="clearOutputBtn">
+                        <i class="fas fa-times"></i> 清空输出
+                    </button>
+                </div>
+                <div id="codeOutput" class="code-output"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 加载Pyodide用于Python代码执行 -->
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    <script src="courses.js"></script>
+    <script src="app.js"></script>
+    <script src="codeRunner.js"></script>
+</body>
+</html>
+

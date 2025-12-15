@@ -1,0 +1,247 @@
+/* 视频播放器样式 */
+.video-section {
+    margin-bottom: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.video-section > * {
+    width: 70%;
+    max-width: 900px;
+}
+
+/* 视频标题艺术字 */
+.video-title {
+    font-size: 3rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    color: #000000;
+    letter-spacing: 0.3rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    animation: videoTitleFloat 3s ease-in-out infinite;
+    font-family: 'Arial Black', 'Impact', sans-serif;
+}
+
+.video-title::before {
+    content: '🎬 VIDEO';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(0, 0, 0, 0.1);
+    filter: blur(8px);
+    z-index: -1;
+}
+
+@keyframes videoTitleFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+.video-player-container {
+    background: linear-gradient(135deg, #f0f8ff 0%, #e8f4f8 100%);
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(135, 206, 235, 0.2);
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+}
+
+/* 视频主区域 */
+.video-main {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.video-wrapper {
+    width: 100%;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    padding-top: 56.25%; /* 16:9 宽高比 */
+}
+
+.video-element {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.video-info {
+    background: white;
+    padding: 1.2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.video-name {
+    font-size: 1.2rem;
+    color: #2c5f7c;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.video-description {
+    font-size: 0.9rem;
+    color: #7ba3b8;
+    line-height: 1.6;
+}
+
+/* 视频列表 */
+.video-playlist {
+    background: white;
+    border-radius: 12px;
+    padding: 1.2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* 使用父容器的全部高度 */
+    max-height: 400px; /* 设置最大高度 */
+}
+
+.video-playlist-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid #e8f4f8;
+}
+
+.video-playlist-header h3 {
+    font-size: 1.1rem;
+    color: #2c5f7c;
+    margin: 0;
+}
+
+.video-count {
+    font-size: 0.85rem;
+    color: #7ba3b8;
+}
+
+.video-list-container {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden; /* 隐藏横向滚动条 */
+    /* 不设置max-height，让它自动填充父容器剩余空间 */
+}
+
+.video-list-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.video-list-container::-webkit-scrollbar-track {
+    background: #f0f8ff;
+    border-radius: 3px;
+}
+
+.video-list-container::-webkit-scrollbar-thumb {
+    background: #98D8C8;
+    border-radius: 3px;
+}
+
+.video-item {
+    padding: 0.8rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 0.6rem;
+    display: flex;
+    gap: 0.8rem;
+}
+
+.video-item:hover {
+    background: #f0f8ff;
+}
+
+.video-item.active {
+    background: linear-gradient(135deg, #e8f4f8 0%, #d0e8f0 100%);
+}
+
+.video-item-thumbnail {
+    width: 80px;
+    height: 45px;
+    border-radius: 6px;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: #e8f4f8;
+}
+
+.video-item-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.video-item-title {
+    font-size: 0.9rem;
+    color: #2c5f7c;
+    margin-bottom: 0.2rem;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.video-item-duration {
+    font-size: 0.75rem;
+    color: #7ba3b8;
+}
+
+.video-item.active .video-item-title {
+    color: #4a90a4;
+    font-weight: 600;
+}
+
+/* 响应式设计 */
+@media (max-width: 1024px) {
+    .video-section > * {
+        width: 85%;
+    }
+    
+    .video-player-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .video-list-container {
+        max-height: 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    .video-section > * {
+        width: 95%;
+    }
+    
+    .video-title {
+        font-size: 2.5rem;
+        letter-spacing: 0.2rem;
+    }
+    
+    .video-player-container {
+        padding: 1rem;
+    }
+    
+    .video-item-thumbnail {
+        width: 60px;
+        height: 34px;
+    }
+    
+    .video-item-title {
+        font-size: 0.85rem;
+    }
+}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于 - ℳঞ执念ꦿ的博客</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/search.css">
+    <link rel="stylesheet" href="../css/themes.css">
+    <link rel="stylesheet" href="../css/theme-adapter.css">
+    <link rel="stylesheet" href="../css/modern-nav.css?v=2">
+    <link rel="stylesheet" href="../css/video-background.css">
+</head>
+<body>
+    <nav class="modern-nav">
+        <div class="nav-left">
+            <a href="../index.html" class="nav-logo">
+                <img id="siteAvatar" class="logo-avatar" src="https://ui-avatars.com/api/?name=执念&size=200&background=4fc3f7&color=fff&bold=true" alt="头像">
+                <span class="logo-text">ℳঞ执念ꦿ的博客</span>
+            </a>
+        </div>
+        <div class="nav-center">
+            <div class="nav-indicator"></div>
+            <a href="../index.html" class="nav-item"><span class="nav-item-icon">🏠</span><span class="nav-item-text">首页</span></a>
+            <a href="tags.html" class="nav-item"><span class="nav-item-icon">🏷️</span><span class="nav-item-text">标签</span></a>
+            <a href="categories.html" class="nav-item"><span class="nav-item-icon">📂</span><span class="nav-item-text">分类</span></a>
+            <a href="timeline.html" class="nav-item"><span class="nav-item-icon">⏰</span><span class="nav-item-text">时光轴</span></a>
+            <a href="about.html" class="nav-item active"><span class="nav-item-icon">👤</span><span class="nav-item-text">关于</span></a>
+            <a href="gallery.html" class="nav-item"><span class="nav-item-icon">🖼️</span><span class="nav-item-text">相册</span></a>
+            <a href="apps.html" class="nav-item"><span class="nav-item-icon">🎮</span><span class="nav-item-text">应用</span></a>
+            <a href="guestbook.html" class="nav-item"><span class="nav-item-icon">💬</span><span class="nav-item-text">留言板</span></a>
+            <a href="links.html" class="nav-item"><span class="nav-item-icon">🔗</span><span class="nav-item-text">友链</span></a>
+        </div>
+        <div class="nav-right">
+            <div class="nav-search">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索文章..." onkeypress="handleSearchKeyPress(event)">
+            </div>
+        </div>
+        <button class="mobile-menu-btn" id="mobileMenuBtn"><span></span><span></span><span></span></button>
+    </nav>
+    <section class="main-content" style="min-height: 100vh; padding-top: 90px;">
+
+        <main class="content-area" style="padding-top: 6rem;">
+            <div class="main-content-box">
+                <!-- 内容将通过JavaScript动态加载 -->
+                <div class="loading-placeholder" style="text-align: center; padding: 4rem; color: #999;">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">⏳</div>
+                    <p>正在加载内容...</p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="site-footer">
+            <div class="footer-stats">
+                <div class="stat-item"><span class="stat-icon">📝</span><div class="stat-info"><span class="stat-value" id="totalWords">0</span><span class="stat-label">总字数</span></div></div>
+                <div class="stat-item"><span class="stat-icon">👀</span><div class="stat-info"><span class="stat-value" id="totalViews">0</span><span class="stat-label">总访问量</span></div></div>
+                <div class="stat-item"><span class="stat-icon">👥</span><div class="stat-info"><span class="stat-value" id="totalVisitors">0</span><span class="stat-label">访问人数</span></div></div>
+                <div class="stat-item"><span class="stat-icon">⏱️</span><div class="stat-info"><span class="stat-value" id="runningTime">0天</span><span class="stat-label">运行时长</span></div></div>
+            </div>
+            <div class="footer-copyright"><p>&copy; 2025 ℳঞ执念ꦿ的博客. All rights reserved.</p></div>
+        </footer>
+    </section>
+    <link rel="stylesheet" href="../css/sakura.css">
+    <!-- 数据适配层 - 支持JSON文件存储 -->
+    <script src="../js/data-adapter.js"></script>
+    <script src="../js/data-store-wrapper.js"></script>
+    <script src="../js/theme-manager.js"></script>
+    <script src="../js/search.js"></script>
+    <script src="../js/sakura.js"></script>
+    <script src="../js/stats-sync.js"></script>
+    <script src="../js/main.js"></script>
+    <!-- 关于我页面脚本 -->
+    <script src="../js/about.js"></script>
+    <!-- 视频背景 -->
+    <script src="../js/video-background.js"></script>
+</body>
+</html>
+
+
+

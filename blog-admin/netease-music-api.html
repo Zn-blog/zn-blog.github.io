@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网易云音乐导入工具（API版本）- 博客管理后台</title>
+    <link rel="stylesheet" href="css/admin.css">
+    <style>
+        .netease-tool {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+
+        .tool-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .tool-header h1 {
+            color: #2c5f7c;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-header p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .api-config {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .api-config h3 {
+            color: #856404;
+            margin-bottom: 1rem;
+        }
+
+        .api-config input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+        }
+
+        .api-config small {
+            color: #856404;
+            font-size: 0.85rem;
+        }
+
+        .input-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .input-section h2 {
+            color: #333;
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .input-methods {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-method {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s;
+        }
+
+        .input-method:hover {
+            border-color: #4fc3f7;
+            box-shadow: 0 2px 8px rgba(79, 195, 247, 0.2);
+        }
+
+        .input-method h3 {
+            color: #333;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .input-method input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .input-method button {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #4fc3f7 0%, #2c5f7c 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .input-method button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(79, 195, 247, 0.3);
+        }
+
+        .input-method button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .help-text {
+            color: #666;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .preview-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .preview-section.show {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .music-preview {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .preview-cover {
+            width: 200px;
+            height: 200px;
+            border-radius: 12px;
+            object-fit: cover;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .preview-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .preview-info h3 {
+            font-size: 1.5rem;
+            color: #333;
+            margin: 0;
+        }
+
+        .preview-info .artist {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .preview-info .album {
+            color: #999;
+            font-size: 0.95rem;
+        }
+
+        .preview-info .duration {
+            color: #4fc3f7;
+            font-weight: 500;
+        }
+
+        .preview-audio audio {
+            width: 100%;
+            max-width: 400px;
+            margin-top: 1rem;
+        }
+
+        .lyrics-preview {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 1.5rem;
+        }
+
+        .lyrics-preview h4 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .lyrics-preview pre {
+            margin: 0;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .action-buttons button {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+            color: white;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn-cancel {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        .btn-cancel:hover {
+            background: #e0e0e0;
+        }
+
+        .status-message {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .status-message.show {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .status-message.success {
+            background: #d4edda;
+            color: #155724;
+            border-left: 4px solid #28a745;
+        }
+
+        .status-message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 4px solid #dc3545;
+        }
+
+        .status-message.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border-left: 4px solid #17a2b8;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: #4fc3f7;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .saved-list {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .saved-list h2 {
+            color: #333;
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .saved-item {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s;
+        }
+
+        .saved-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .saved-item img {
+            width: 60px;
+            height: 60px;
+            border-radius: 6px;
+            object-fit: cover;
+        }
+
+        .saved-item-info {
+            flex: 1;
+        }
+
+        .saved-item-info h4 {
+            margin: 0 0 0.25rem 0;
+            color: #333;
+        }
+
+        .saved-item-info p {
+            margin: 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="netease-tool">
+        <a href="index.html" class="back-link">← 返回后台管理</a>
+
+        <div class="tool-header">
+            <h1>🎵 网易云音乐导入工具（增强版）</h1>
+            <p>通过歌曲ID或链接快速导入完整的歌曲信息</p>
+        </div>
+
+        <!-- API配置 -->
+        <div class="api-config">
+            <h3>⚙️ API配置（可选）</h3>
+            <input 
+                type="text" 
+                id="apiEndpoint" 
+                placeholder="API端点（留空使用默认）"
+                value="https://netease-cloud-music-api-psi-ten-82.vercel.app"
+            >
+            <small>
+                💡 提示：如果默认API不可用，可以部署自己的 
+                <a href="https://github.com/Binaryify/NeteaseCloudMusicApi" target="_blank" style="color: #856404;">网易云音乐API</a>
+            </small>
+        </div>
+
+        <div id="statusMessage" class="status-message"></div>
+
+        <!-- 输入区域 -->
+        <div class="input-section">
+            <h2>📝 选择导入方式</h2>
+            <div class="input-methods">
+                <!-- 方式1：歌曲ID -->
+                <div class="input-method">
+                    <h3>方式1：歌曲ID</h3>
+                    <input 
+                        type="text" 
+                        id="musicId" 
+                        placeholder="例如：1868553"
+                        onkeypress="if(event.key==='Enter') fetchById()"
+                    >
+                    <button onclick="fetchById()" id="fetchIdBtn">
+                        🔍 获取信息
+                    </button>
+                    <div class="help-text">
+                        输入纯数字ID，如：1868553
+                    </div>
+                </div>
+
+                <!-- 方式2：歌曲链接 -->
+                <div class="input-method">
+                    <h3>方式2：歌曲链接</h3>
+                    <input 
+                        type="text" 
+                        id="musicUrl" 
+                        placeholder="粘贴网易云音乐链接"
+                        onkeypress="if(event.key==='Enter') fetchByUrl()"
+                    >
+                    <button onclick="fetchByUrl()" id="fetchUrlBtn">
+                        🔍 解析链接
+                    </button>
+                    <div class="help-text">
+                        支持完整链接或分享链接
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: #e3f2fd; padding: 1rem; border-radius: 8px; font-size: 0.9rem;">
+                <strong>💡 如何获取？</strong><br>
+                • <strong>方式1</strong>：打开网易云音乐网页版，从URL中复制数字ID<br>
+                • <strong>方式2</strong>：在网易云APP中点击分享，复制链接直接粘贴
+            </div>
+        </div>
+
+        <!-- 预览区域 -->
+        <div id="previewSection" class="preview-section"></div>
+
+        <!-- 已保存列表 -->
+        <div class="saved-list">
+            <h2>📚 最近导入的歌曲</h2>
+            <div id="savedList"></div>
+        </div>
+    </div>
+
+    <script src="js/data-store.js"></script>
+    <script>
+        let currentMusicData = null;
+
+        // 显示状态消息
+        function showStatus(message, type = 'info') {
+            const statusEl = document.getElementById('statusMessage');
+            statusEl.textContent = message;
+            statusEl.className = `status-message ${type} show`;
+            
+            setTimeout(() => {
+                statusEl.classList.remove('show');
+            }, 5000);
+        }
+
+        // 通过ID获取
+        async function fetchById() {
+            const musicId = document.getElementById('musicId').value.trim();
+            
+            if (!musicId) {
+                showStatus('❌ 请输入歌曲ID', 'error');
+                return;
+            }
+
+            if (!/^\d+$/.test(musicId)) {
+                showStatus('❌ 歌曲ID必须是纯数字', 'error');
+                return;
+            }
+
+            await fetchMusicInfo(musicId);
+        }
+
+        // 通过URL获取
+        async function fetchByUrl() {
+            const url = document.getElementById('musicUrl').value.trim();
+            
+            if (!url) {
+                showStatus('❌ 请输入歌曲链接', 'error');
+                return;
+            }
+
+            // 从URL中提取ID
+            const idMatch = url.match(/id=(\d+)/);
+            if (idMatch) {
+                await fetchMusicInfo(idMatch[1]);
+            } else {
+                showStatus('❌ 无法从链接中提取歌曲ID', 'error');
+            }
+        }
+
+        // 获取音乐信息
+        async function fetchMusicInfo(musicId) {
+            const fetchIdBtn = document.getElementById('fetchIdBtn');
+            const fetchUrlBtn = document.getElementById('fetchUrlBtn');
+            
+            fetchIdBtn.disabled = true;
+            fetchUrlBtn.disabled = true;
+            fetchIdBtn.textContent = '⏳ 获取中...';
+            fetchUrlBtn.textContent = '⏳ 获取中...';
+
+            try {
+                showStatus('🔍 正在获取歌曲信息...', 'info');
+
+                const apiEndpoint = document.getElementById('apiEndpoint').value.trim() || 
+                                  'https://netease-cloud-music-api-psi-ten-82.vercel.app';
+
+                console.log('使用API端点:', apiEndpoint);
+                console.log('歌曲ID:', musicId);
+
+                // 测试API连接
+                try {
+                    const testResponse = await fetch(`${apiEndpoint}/`, { method: 'HEAD' });
+                    console.log('API连接测试:', testResponse.ok ? '成功' : '失败');
+                } catch (e) {
+                    console.warn('API连接测试失败:', e);
+                }
+
+                // 获取歌曲详情
+                const detailUrl = `${apiEndpoint}/song/detail?ids=${musicId}`;
+                console.log('请求URL:', detailUrl);
+                
+                const detailResponse = await fetch(detailUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                console.log('响应状态:', detailResponse.status);
+                
+                if (!detailResponse.ok) {
+                    throw new Error(`API返回错误: ${detailResponse.status} ${detailResponse.statusText}`);
+                }
+                
+                const detailData = await detailResponse.json();
+                console.log('歌曲详情数据:', detailData);
+
+                if (!detailData.songs || detailData.songs.length === 0) {
+                    throw new Error('未找到歌曲信息，请检查歌曲ID是否正确');
+                }
+
+                const song = detailData.songs[0];
+                console.log('歌曲信息:', song);
+
+                // 获取歌词
+                let lyrics = '';
+                try {
+                    const lyricUrl = `${apiEndpoint}/lyric?id=${musicId}`;
+                    console.log('歌词请求URL:', lyricUrl);
+                    
+                    const lyricResponse = await fetch(lyricUrl);
+                    if (lyricResponse.ok) {
+                        const lyricData = await lyricResponse.json();
+                        console.log('歌词数据:', lyricData);
+                        lyrics = lyricData.lrc?.lyric || '';
+                    }
+                } catch (e) {
+                    console.warn('歌词获取失败:', e);
+                    lyrics = '[00:00.00]歌词获取失败，请手动添加';
+                }
+
+                // 整理数据
+                const musicData = {
+                    id: musicId,
+                    name: song.name,
+                    artist: song.ar.map(a => a.name).join('/'),
+                    album: song.al.name,
+                    cover: song.al.picUrl,
+                    url: musicId,
+                    duration: Math.floor(song.dt / 1000),
+                    lrc: lyrics,
+                    description: ''
+                };
+
+                console.log('整理后的数据:', musicData);
+
+                currentMusicData = musicData;
+                displayPreview(musicData);
+                showStatus('✅ 歌曲信息获取成功！', 'success');
+
+            } catch (error) {
+                console.error('获取失败详情:', error);
+                
+                // 显示详细错误信息
+                let errorMsg = '获取失败: ' + error.message;
+                
+                if (error.message.includes('Failed to fetch')) {
+                    errorMsg += '\n\n可能的原因：\n1. API服务器不可用\n2. 网络连接问题\n3. CORS跨域限制\n\n建议：\n• 尝试更换API端点\n• 检查网络连接\n• 使用基础版手动输入';
+                }
+                
+                showStatus('❌ ' + errorMsg, 'error');
+                
+                // 提供手动输入选项
+                if (confirm('自动获取失败，是否使用手动输入模式？')) {
+                    showManualInput(musicId);
+                }
+            } finally {
+                fetchIdBtn.disabled = false;
+                fetchUrlBtn.disabled = false;
+                fetchIdBtn.textContent = '🔍 获取信息';
+                fetchUrlBtn.textContent = '🔍 解析链接';
+            }
+        }
+
+        // 手动输入模式
+        function showManualInput(musicId) {
+            const musicData = {
+                id: musicId,
+                name: '请输入歌曲名称',
+                artist: '请输入歌手名称',
+                album: '请输入专辑名称',
+                cover: 'https://p1.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg',
+                url: musicId,
+                duration: 240,
+                lrc: '[00:00.00]请输入歌词',
+                description: ''
+            };
+
+            currentMusicData = musicData;
+            displayPreview(musicData, true); // true 表示可编辑模式
+        }
+
+        // 显示预览
+        function displayPreview(data, editable = false) {
+            const previewSection = document.getElementById('previewSection');
+            const audioUrl = `https://music.163.com/song/media/outer/url?id=${data.id}.mp3`;
+
+            const editableAttr = editable ? 'contenteditable="true"' : '';
+            const editableStyle = editable ? 'style="background: #fff3cd; padding: 0.25rem; border-radius: 4px; cursor: text;"' : '';
+
+            previewSection.innerHTML = `
+                <h2>🎵 歌曲预览${editable ? ' <span style="color: #e74c3c; font-size: 0.9rem;">(可编辑模式)</span>' : ''}</h2>
+                ${editable ? '<div style="background: #fff3cd; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid #ffc107;"><strong>⚠️ 提示：</strong> 点击蓝色区域可以编辑内容</div>' : ''}
+                <div class="music-preview">
+                    <img src="${data.cover}" alt="${data.name}" class="preview-cover" 
+                         onerror="this.src='https://via.placeholder.com/200x200/4fc3f7/ffffff?text=🎵'">
+                    <div class="preview-info">
+                        <h3 ${editableAttr} ${editableStyle} id="editName">${data.name}</h3>
+                        <div class="artist">🎤 <span ${editableAttr} ${editableStyle} id="editArtist">${data.artist}</span></div>
+                        <div class="album">💿 <span ${editableAttr} ${editableStyle} id="editAlbum">${data.album}</span></div>
+                        <div class="duration">⏱️ 时长: <span ${editableAttr} ${editableStyle} id="editDuration">${data.duration}</span> 秒</div>
+                        <div class="preview-audio">
+                            <audio controls>
+                                <source src="${audioUrl}" type="audio/mpeg">
+                                您的浏览器不支持音频播放
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lyrics-preview">
+                    <h4>📜 歌词${editable ? '（可编辑）' : ''}</h4>
+                    <pre ${editableAttr} ${editableStyle} id="editLyrics">${data.lrc || '[00:00.00]暂无歌词'}</pre>
+                </div>
+
+                <div style="background: #fff3cd; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <strong>💬 添加描述（可选）</strong><br>
+                    <textarea id="editDescription" style="width: 100%; margin-top: 0.5rem; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px; min-height: 60px;" placeholder="添加歌曲描述、推荐理由等..."></textarea>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn-save" onclick="saveToBlog()">
+                        💾 保存到博客
+                    </button>
+                    <button class="btn-cancel" onclick="cancelPreview()">
+                        ❌ 取消
+                    </button>
+                </div>
+            `;
+
+            previewSection.classList.add('show');
+            previewSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // 保存到博客
+        function saveToBlog() {
+            if (!currentMusicData) return;
+
+            // 获取可能被编辑的数据
+            const editName = document.getElementById('editName');
+            const editArtist = document.getElementById('editArtist');
+            const editAlbum = document.getElementById('editAlbum');
+            const editDuration = document.getElementById('editDuration');
+            const editLyrics = document.getElementById('editLyrics');
+
+            const musicData = {
+                ...currentMusicData,
+                name: editName ? editName.textContent.trim() : currentMusicData.name,
+                artist: editArtist ? editArtist.textContent.trim() : currentMusicData.artist,
+                album: editAlbum ? editAlbum.textContent.trim() : currentMusicData.album,
+                duration: editDuration ? parseInt(editDuration.textContent.trim()) : currentMusicData.duration,
+                lrc: editLyrics ? editLyrics.textContent.trim() : currentMusicData.lrc,
+                description: document.getElementById('editDescription')?.value.trim() || ''
+            };
+
+            // 验证必填项
+            if (!musicData.name || musicData.name === '请输入歌曲名称') {
+                showStatus('❌ 请输入歌曲名称', 'error');
+                editName?.focus();
+                return;
+            }
+            if (!musicData.artist || musicData.artist === '请输入歌手名称') {
+                showStatus('❌ 请输入歌手名称', 'error');
+                editArtist?.focus();
+                return;
+            }
+            if (!musicData.duration || isNaN(musicData.duration) || musicData.duration <= 0) {
+                showStatus('❌ 请输入有效的时长（秒）', 'error');
+                editDuration?.focus();
+                return;
+            }
+
+            try {
+                window.blogDataStore.addMusic(musicData);
+                showStatus(`✅ 保存成功！歌曲《${musicData.name}》已添加到博客`, 'success');
+                
+                // 清空输入
+                document.getElementById('musicId').value = '';
+                document.getElementById('musicUrl').value = '';
+                
+                // 隐藏预览
+                document.getElementById('previewSection').classList.remove('show');
+                
+                // 更新列表
+                updateSavedList();
+                
+                // 滚动到顶部
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } catch (error) {
+                console.error('保存失败:', error);
+                showStatus('❌ 保存失败: ' + error.message, 'error');
+            }
+        }
+
+        // 取消预览
+        function cancelPreview() {
+            document.getElementById('previewSection').classList.remove('show');
+            currentMusicData = null;
+        }
+
+        // 更新已保存列表
+        function updateSavedList() {
+            const savedList = document.getElementById('savedList');
+            const music = window.blogDataStore.getMusic();
+
+            if (music.length === 0) {
+                savedList.innerHTML = '<p style="color: #999; text-align: center; padding: 2rem;">暂无导入的歌曲</p>';
+                return;
+            }
+
+            const recentMusic = music.slice(0, 5);
+            
+            savedList.innerHTML = recentMusic.map(m => `
+                <div class="saved-item">
+                    <img src="${m.cover}" alt="${m.name}" 
+                         onerror="this.src='https://via.placeholder.com/60x60/4fc3f7/ffffff?text=🎵'">
+                    <div class="saved-item-info">
+                        <h4>${m.name}</h4>
+                        <p>🎤 ${m.artist} | 💿 ${m.album || '未知专辑'} | ⏱️ ${formatDuration(m.duration)}</p>
+                    </div>
+                    <button onclick="window.open('../blog/index.html', '_blank')" 
+                            style="padding: 0.5rem 1rem; background: #4fc3f7; color: white; border: none; border-radius: 6px; cursor: pointer;">
+                        查看前台
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // 格式化时长
+        function formatDuration(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // 页面加载时更新列表
+        window.addEventListener('load', function() {
+            updateSavedList();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - 博客后台管理系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* 动态背景粒子 */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float 15s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0) scale(1);
+                opacity: 0.3;
+            }
+            50% {
+                transform: translateY(-100px) translateX(50px) scale(1.2);
+                opacity: 0.6;
+            }
+        }
+        
+        /* 背景遮罩层 */
+        .login-background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.1);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* 玻璃拟态登录容器 */
+        .login-container {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border-radius: 28px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37),
+                        0 0 0 1px rgba(255, 255, 255, 0.2) inset,
+                        0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 480px;
+            padding: 3rem 2.5rem;
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 28px;
+            padding: 2px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.4), rgba(255,255,255,0.1));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-header h1 {
+            color: white;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+            font-weight: 400;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.3rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1.1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            transition: all 0.3s;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem 1.2rem 1rem 3rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 14px;
+            font-size: 0.95rem;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .form-control:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1),
+                        0 4px 20px rgba(0, 0, 0, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .form-control:focus ~ .input-icon {
+            color: white;
+            transform: translateY(-50%) scale(1.1);
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+            transition: all 0.3s;
+        }
+
+        .form-control:focus::placeholder {
+            opacity: 0.4;
+        }
+
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 0;
+        }
+        
+        .btn-reset {
+            flex: 0 0 auto;
+            padding: 1.1rem 1.8rem;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            color: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 14px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-reset:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+        }
+        
+        .btn-reset:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .checkbox-wrapper label {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .forgot-link {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .forgot-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: width 0.3s;
+        }
+
+        .forgot-link:hover {
+            color: white;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+
+        .forgot-link:hover::after {
+            width: 100%;
+        }
+
+        .btn-login {
+            flex: 1;
+            padding: 1.1rem;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-radius: 14px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-login::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.35);
+            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-login:hover::before {
+            left: 100%;
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 加载动画 */
+        .btn-login.loading {
+            pointer-events: none;
+            position: relative;
+        }
+        
+        .btn-login.loading .btn-text {
+            opacity: 0;
+        }
+        
+        .btn-login .loader {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .btn-login.loading .loader {
+            display: block;
+        }
+        
+        .loader {
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+        }
+
+        .error-message {
+            background: rgba(244, 67, 54, 0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 1rem 1.2rem;
+            border-radius: 12px;
+            border: 2px solid rgba(244, 67, 54, 0.5);
+            margin-bottom: 1.5rem;
+            display: none;
+            animation: shake 0.5s, fadeIn 0.3s;
+            font-weight: 500;
+            box-shadow: 0 4px 20px rgba(244, 67, 54, 0.3);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .success-message {
+            background: rgba(76, 175, 80, 0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 1rem 1.2rem;
+            border-radius: 12px;
+            border: 2px solid rgba(76, 175, 80, 0.5);
+            margin-bottom: 1.5rem;
+            display: none;
+            animation: fadeIn 0.3s;
+            font-weight: 500;
+            box-shadow: 0 4px 20px rgba(76, 175, 80, 0.3);
+        }
+    </style>
+    
+    <!-- 视频背景系统 -->
+    <link rel="stylesheet" href="css/admin-video-background.css">
+    <script src="js/admin-video-background.js"></script>
+</head>
+<body>
+    <!-- 动态背景粒子 -->
+    <div class="particles" id="particles"></div>
+    
+    <div class="login-container">
+        <div class="login-header">
+            <h1>📝 博客管理系统</h1>
+            <p>欢迎回来，请登录您的账户</p>
+        </div>
+
+        <div id="errorMessage" class="error-message"></div>
+        <div id="successMessage" class="success-message"></div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <div class="input-wrapper">
+                    <input type="text" id="username" class="form-control" placeholder="用户名" required>
+                    <span class="input-icon">👤</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-wrapper">
+                    <input type="password" id="password" class="form-control" placeholder="密码" required>
+                    <span class="input-icon">🔒</span>
+                </div>
+            </div>
+
+            <div class="remember-forgot">
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="remember">
+                    <label for="remember">记住我</label>
+                </div>
+                <a href="#" class="forgot-link">忘记密码？</a>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn-login">
+                    <span class="btn-text">登录</span>
+                    <div class="loader"></div>
+                </button>
+                <button type="button" class="btn-reset" onclick="resetForm()">清空</button>
+            </div>
+        </form>
+
+        <div class="login-footer">
+            <p>© 2025 博客管理系统. All rights reserved.</p>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/admin-background.js"></script>
+    <script>
+        // 创建动态背景粒子
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 20;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 60 + 20;
+                const left = Math.random() * 100;
+                const delay = Math.random() * 15;
+                const duration = Math.random() * 10 + 10;
+                
+                particle.style.cssText = `
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${left}%;
+                    top: ${Math.random() * 100}%;
+                    animation-delay: ${delay}s;
+                    animation-duration: ${duration}s;
+                `;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // 页面加载时创建粒子
+        createParticles();
+        
+        // 备用背景设置 - 确保背景一定显示
+        // 备用背景设置 - 确保背景一定显示
+        (function() {
+            function ensureBackground() {
+                let bgLayer = document.querySelector('.admin-background-layer');
+                
+                // 如果背景层不存在或没有背景图片，强制创建
+                if (!bgLayer || !bgLayer.style.backgroundImage) {
+                    if (!bgLayer) {
+                        bgLayer = document.createElement('div');
+                        bgLayer.className = 'admin-background-layer';
+                        document.body.insertBefore(bgLayer, document.body.firstChild);
+                    }
+                    
+                    // 强制设置背景样式
+                    bgLayer.style.cssText = `
+                        position: fixed !important;
+                        top: 0 !important;
+                        left: 0 !important;
+                        right: 0 !important;
+                        bottom: 0 !important;
+                        width: 100vw !important;
+                        height: 100vh !important;
+                        z-index: -2 !important;
+                        background-image: url('uploads/images/background/bg-${Math.floor(Math.random() * 15) + 1}.jpg') !important;
+                        background-size: cover !important;
+                        background-position: center !important;
+                        background-repeat: no-repeat !important;
+                        pointer-events: none !important;
+                        display: block !important;
+                        visibility: visible !important;
+                        opacity: 1 !important;
+                    `;
+                    
+                    // 添加遮罩
+                    let overlay = document.querySelector('.login-background-overlay');
+                    if (!overlay) {
+                        overlay = document.createElement('div');
+                        overlay.className = 'login-background-overlay';
+                        document.body.insertBefore(overlay, bgLayer.nextSibling);
+                    }
+                    
+                    console.log('✅ 备用背景已设置');
+                }
+            }
+            
+            // 立即执行
+            ensureBackground();
+            
+            // DOM加载完成后再次检查
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', ensureBackground);
+            }
+            
+            // 延迟500ms后再次检查（确保万无一失）
+            setTimeout(ensureBackground, 500);
+        })();
+        
+        // 如果已经登录，直接跳转到管理页面
+        if (AuthManager.isLoggedIn()) {
+            window.location.href = 'index.html';
+        }
+
+        // 检查是否有退出原因
+        const logoutReason = sessionStorage.getItem('logout_reason');
+        if (logoutReason) {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = '⏰ ' + logoutReason;
+            errorMessage.style.display = 'block';
+            sessionStorage.removeItem('logout_reason');
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+            const loginBtn = document.querySelector('.btn-login');
+
+            // 隐藏之前的消息
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+            
+            // 显示加载动画
+            loginBtn.classList.add('loading');
+
+            // 模拟登录延迟（让用户看到加载动画）
+            setTimeout(() => {
+                // 使用 AuthManager 进行登录
+                const result = AuthManager.login(username, password);
+                
+                if (result.success) {
+                    successMessage.textContent = '✨ ' + result.message + '！正在跳转...';
+                    successMessage.style.display = 'block';
+                    
+                    // 保持加载状态，准备跳转
+                    setTimeout(() => {
+                        // 检查是否有重定向目标
+                        const redirectUrl = sessionStorage.getItem('redirect_after_login');
+                        if (redirectUrl) {
+                            sessionStorage.removeItem('redirect_after_login');
+                            window.location.href = redirectUrl;
+                        } else {
+                            window.location.href = 'index.html';
+                        }
+                    }, 1200);
+                } else {
+                    // 移除加载状态
+                    loginBtn.classList.remove('loading');
+                    errorMessage.textContent = '❌ ' + result.message;
+                    errorMessage.style.display = 'block';
+                }
+            }, 800);
+        });
+
+        // 清空表单
+        function resetForm() {
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('remember').checked = false;
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('username').focus();
+        }
+
+        // 演示提示
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                const hint = document.createElement('div');
+                hint.style.cssText = `
+                    position: fixed;
+                    bottom: 20px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: rgba(0,0,0,0.8);
+                    color: white;
+                    padding: 1rem 2rem;
+                    border-radius: 10px;
+                    font-size: 0.9rem;
+                    animation: fadeIn 0.5s;
+                `;
+                hint.innerHTML = '💡 <strong>测试账号：</strong>admin / admin123 或 editor / editor123';
+                document.body.appendChild(hint);
+
+                setTimeout(() => {
+                    hint.style.animation = 'fadeOut 0.5s';
+                    setTimeout(() => hint.remove(), 500);
+                }, 5000);
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

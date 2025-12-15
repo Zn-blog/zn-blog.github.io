@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ℳঞ执念ꦿ的博客</title>
+    <link rel="stylesheet" href="css/style.css?v=2">
+    <link rel="stylesheet" href="css/search.css">
+    <link rel="stylesheet" href="css/player.css">
+    <link rel="stylesheet" href="css/main-player.css">
+    <link rel="stylesheet" href="css/video-player.css">
+    <link rel="stylesheet" href="css/sakura.css">
+    <!-- 主题系统 -->
+    <link rel="stylesheet" href="css/themes.css">
+    <link rel="stylesheet" href="css/theme-adapter.css?v=2">
+    <!-- 视频背景 -->
+    <link rel="stylesheet" href="css/video-background.css">
+    <!-- 增强的欢迎界面 -->
+    <link rel="stylesheet" href="css/welcome-enhanced.css">
+    <!-- 现代导航栏 - 必须在style.css之后加载以覆盖旧样式 -->
+    <link rel="stylesheet" href="css/modern-nav.css?v=2">
+    <!-- 滚动条样式覆盖 - 必须最后加载 -->
+    <link rel="stylesheet" href="css/scrollbar-override.css?v=2">
+</head>
+<body class="home-page">
+    <!-- 现代导航栏 -->
+    <nav class="modern-nav">
+        <!-- 左侧：Logo -->
+        <div class="nav-left">
+            <a href="index.html" class="nav-logo">
+                <img id="siteAvatar" class="logo-avatar" src="https://ui-avatars.com/api/?name=执念&size=200&background=4fc3f7&color=fff&bold=true" alt="头像">
+                <span class="logo-text">ℳঞ执念ꦿ的博客</span>
+            </a>
+        </div>
+        
+        <!-- 中间：导航菜单 -->
+        <div class="nav-center">
+            <div class="nav-indicator"></div>
+            <a href="index.html" class="nav-item active">
+                <span class="nav-item-icon">🏠</span>
+                <span class="nav-item-text">首页</span>
+            </a>
+            <a href="pages/tags.html" class="nav-item">
+                <span class="nav-item-icon">🏷️</span>
+                <span class="nav-item-text">标签</span>
+            </a>
+            <a href="pages/categories.html" class="nav-item">
+                <span class="nav-item-icon">📂</span>
+                <span class="nav-item-text">分类</span>
+            </a>
+            <a href="pages/timeline.html" class="nav-item">
+                <span class="nav-item-icon">⏰</span>
+                <span class="nav-item-text">时光轴</span>
+            </a>
+            <a href="pages/about.html" class="nav-item">
+                <span class="nav-item-icon">👤</span>
+                <span class="nav-item-text">关于</span>
+            </a>
+            <a href="pages/gallery.html" class="nav-item">
+                <span class="nav-item-icon">🖼️</span>
+                <span class="nav-item-text">相册</span>
+            </a>
+            <a href="pages/apps.html" class="nav-item">
+                <span class="nav-item-icon">🎮</span>
+                <span class="nav-item-text">应用</span>
+            </a>
+            <a href="pages/guestbook.html" class="nav-item">
+                <span class="nav-item-icon">💬</span>
+                <span class="nav-item-text">留言板</span>
+            </a>
+            <a href="pages/links.html" class="nav-item">
+                <span class="nav-item-icon">🔗</span>
+                <span class="nav-item-text">友链</span>
+            </a>
+        </div>
+        
+        <!-- 右侧：搜索 -->
+        <div class="nav-right">
+            <div class="nav-search">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索文章..." onkeypress="handleSearchKeyPress(event)">
+            </div>
+        </div>
+        
+        <!-- 移动端菜单按钮 -->
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- 全屏欢迎页面 -->
+    <section class="welcome-section" id="welcome">
+        <!-- 背景切换按钮 -->
+        <button class="slide-btn slide-btn-left" id="prevSlide">‹</button>
+        <button class="slide-btn slide-btn-right" id="nextSlide">›</button>
+        
+        <div class="welcome-content">
+            <!-- 顶部区域：标题和副标题 -->
+            <div class="welcome-top">
+                <h1 class="welcome-title">欢迎来到ℳঞ执念ꦿ的博客</h1>
+                <p class="welcome-subtitle">分享知识，记录生活</p>
+                
+                <!-- 名言警句（打字机效果） -->
+                <div class="quote-container">
+                    <p class="quote-text" id="dailyQuote">
+                        <span class="quote-icon">💭</span>
+                        <span id="quoteContent"></span>
+                        <span class="cursor">|</span>
+                    </p>
+                    <p class="quote-author" id="quoteAuthor"></p>
+                </div>
+            </div>
+            
+            <!-- 底部区域：按钮和社交链接 -->
+            <div class="welcome-bottom">
+                <!-- 操作按钮 -->
+                <div class="welcome-actions">
+                    <button class="action-btn primary-btn" onclick="scrollToContent()">
+                        <span class="btn-icon">📖</span>
+                        <span>开始阅读</span>
+                    </button>
+                    <a href="pages/about.html" class="action-btn secondary-btn">
+                        <span class="btn-icon">👤</span>
+                        <span>关于我&nbsp;&nbsp;</span>
+                    </a>
+                </div>
+                
+                <!-- 社交链接 -->
+                <div class="social-links">
+                    <a href="https://github.com" target="_blank" class="social-link" title="GitHub">
+                        <svg viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="currentColor" d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                    </a>
+                    <a href="mailto:your@email.com" class="social-link" title="Email">
+                        <svg viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="currentColor" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-link" title="RSS">
+                        <svg viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="currentColor" d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20C5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-link" title="微博">
+                        <svg viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="currentColor" d="M10.5 17.5c-2.5.3-4.7-1-4.9-2.8-.2-1.8 1.6-3.5 4.1-3.8 2.5-.3 4.7 1 4.9 2.8.2 1.8-1.6 3.5-4.1 3.8zm8.5-5.5c-.2-.1-.3-.1-.2-.3.5-.8.6-1.5.4-2-.4-.9-1.5-1-2.9-.1 0 0-.4.3-.3-.1.2-.7.2-1.3-.1-1.6-.7-.7-2.6.1-4.3 1.7-1.3 1.2-2 2.5-2 3.6 0 2.1 2.2 3.4 5.8 3.4 3.8 0 6.3-2 6.3-3.6 0-1-.9-1.5-1.7-1.9z"/>
+                        </svg>
+                    </a>
+                </div>
+                
+                <!-- 背景指示器 -->
+                <div class="slide-indicators">
+                    <span class="indicator active" data-slide="0"></span>
+                    <span class="indicator" data-slide="1"></span>
+                    <span class="indicator" data-slide="2"></span>
+                    <span class="indicator" data-slide="3"></span>
+                    <span class="indicator" data-slide="4"></span>
+                    <span class="indicator" data-slide="5"></span>
+                    <span class="indicator" data-slide="6"></span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 向下滚动指示器 -->
+        <div class="scroll-indicator">
+            <span>向下滚动</span>
+            <div class="scroll-arrow">↓</div>
+        </div>
+    </section>
+
+    <!-- 主要内容区域 -->
+    <section class="main-content">
+
+        <main class="content-area">
+            <!-- 主内容悬浮容器 -->
+            <div class="main-content-box">
+                <!-- 名言警句 -->
+                <div class="quote-section">
+                    <p class="quote-text" id="quoteText">生活不止眼前的苟且，还有诗和远方的田野。</p>
+                </div>
+                
+                <!-- 音乐播放器模块 -->
+                <section class="music-section" id="music">
+                    <h2 class="music-title">🎵 MUSIC</h2>
+                    <div class="main-player-container">
+                        <div class="main-player-left">
+                            <div class="main-player-cover-wrapper">
+                                <img class="main-player-cover rotating" id="mainPlayerCover" src="https://p1.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg" alt="封面">
+                            </div>
+                            <div class="main-player-info">
+                                <h3 class="main-song-name" id="mainSongName">选择一首歌曲</h3>
+                                <p class="main-song-artist" id="mainSongArtist">-</p>
+                            </div>
+                            <div class="main-player-controls">
+                                <button class="main-control-btn" id="mainPrevBtn">⏮</button>
+                                <button class="main-control-btn main-play-btn" id="mainPlayBtn">▶</button>
+                                <button class="main-control-btn" id="mainNextBtn">⏭</button>
+                            </div>
+                            <div class="main-player-progress">
+                                <span class="main-time-current" id="mainTimeCurrent">0:00</span>
+                                <div class="main-progress-bar" id="mainProgressBar">
+                                    <div class="main-progress-fill" id="mainProgressFill"></div>
+                                </div>
+                                <span class="main-time-total" id="mainTimeTotal">0:00</span>
+                            </div>
+                        </div>
+                        <div class="main-player-right">
+                            <div class="playlist-header">
+                                <h3>播放列表</h3>
+                                <span class="playlist-count" id="playlistCount">0首</span>
+                            </div>
+                            <div class="playlist-container" id="playlistContainer">
+                                <!-- 播放列表将通过JS动态生成 -->
+                            </div>
+                        </div>
+                        <div class="lyrics-panel" id="lyricsPanel">
+                            <div class="lyrics-header">
+                                <h3>歌词</h3>
+                                <button class="lyrics-toggle" id="lyricsToggle">展开</button>
+                            </div>
+                            <div class="lyrics-content" id="lyricsContent">
+                                <p class="lyrics-line">暂无歌词</p>
+                            </div>
+                        </div>
+                    </div>
+                    <audio id="mainAudioPlayer"></audio>
+                </section>
+
+                <!-- 视频播放器模块 -->
+                <section class="video-section" id="video">
+                    <h2 class="video-title">🎬 VIDEO</h2>
+                    <div class="video-player-container">
+                        <div class="video-main">
+                            <div class="video-wrapper">
+                                <video id="videoPlayer" class="video-element" controls>
+                                    <source src="" type="video/mp4">
+                                    您的浏览器不支持视频播放。
+                                </video>
+                            </div>
+                            <div class="video-info">
+                                <h3 class="video-name" id="videoName">选择一个视频</h3>
+                                <p class="video-description" id="videoDescription">暂无描述</p>
+                            </div>
+                        </div>
+                        <div class="video-playlist">
+                            <div class="video-playlist-header">
+                                <h3>视频列表</h3>
+                                <span class="video-count" id="videoCount">0个</span>
+                            </div>
+                            <div class="video-list-container" id="videoListContainer">
+                                <!-- 视频列表将通过JS动态生成 -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- 文章模块 - 独立在内容框外 -->
+            <section class="articles-section" id="articles">
+                <h2 class="articles-title">📝 ARTICLES</h2>
+                <div class="articles-grid" id="articlesGrid">
+                    <!-- 文章将通过 JavaScript 动态加载 -->
+                    <article class="article-card">
+                        <div class="article-image">
+                            <img src="https://picsum.photos/seed/life5/400/250" alt="文章封面">
+                            <span class="article-category">随笔</span>
+                        </div>
+                        <div class="article-content">
+                            <div class="article-header">
+                                <h3>关于成长的思考</h3>
+                                <p class="article-date">📅 2025-11-12</p>
+                            </div>
+                            <p class="article-excerpt">记录个人成长过程中的感悟和体会，分享一些人生经验...</p>
+                            <a href="#" class="read-more">阅读更多 →</a>
+                        </div>
+                    </article>
+                    <article class="article-card">
+                        <div class="article-image">
+                            <img src="https://picsum.photos/seed/git6/400/250" alt="文章封面">
+                            <span class="article-category">教程</span>
+                        </div>
+                        <div class="article-content">
+                            <div class="article-header">
+                                <h3>Git版本控制入门</h3>
+                                <p class="article-date">📅 2025-11-11</p>
+                            </div>
+                            <p class="article-excerpt">从零开始学习Git，掌握版本控制的基本概念和常用命令...</p>
+                            <a href="#" class="read-more">阅读更多 →</a>
+                        </div>
+                    </article>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="footer-stats">
+                <div class="stat-item">
+                    <span class="stat-icon">📝</span>
+                    <div class="stat-info">
+                        <span class="stat-label">总字数</span>
+                        <span class="stat-value" id="totalWords">0</span>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">👀</span>
+                    <div class="stat-info">
+                        <span class="stat-label">总访问量</span>
+                        <span class="stat-value" id="totalViews">0</span>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">👥</span>
+                    <div class="stat-info">
+                        <span class="stat-label">访问人数</span>
+                        <span class="stat-value" id="totalVisitors">0</span>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">⏱️</span>
+                    <div class="stat-info">
+                        <span class="stat-label">运行时长</span>
+                        <span class="stat-value" id="runningTime">0天</span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-copyright">
+                <p>&copy; 2025 ℳঞ执念ꦿ的博客. All rights reserved.</p>
+            </div>
+        </footer>
+    </section>
+
+    <!-- 音乐播放器 -->
+    <div class="music-player" id="musicPlayer">
+        <div class="player-toggle" id="playerToggle">
+            <span class="music-icon">♪</span>
+        </div>
+        <div class="player-content" id="playerContent">
+            <div class="player-header">
+                <span class="player-title">音乐播放器</span>
+                <button class="player-close" id="playerClose">×</button>
+            </div>
+            <div class="player-info">
+                <img class="player-cover" id="playerCover" src="" alt="封面">
+                <div class="player-details">
+                    <div class="song-name" id="songName">加载中...</div>
+                    <div class="song-artist" id="songArtist">-</div>
+                </div>
+            </div>
+            <div class="player-controls">
+                <button class="control-btn" id="prevBtn">⏮</button>
+                <button class="control-btn play-btn" id="playBtn">▶</button>
+                <button class="control-btn" id="nextBtn">⏭</button>
+            </div>
+            <div class="player-progress">
+                <span class="time-current" id="timeCurrent">0:00</span>
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span class="time-total" id="timeTotal">0:00</span>
+            </div>
+            <audio id="audioPlayer"></audio>
+        </div>
+    </div>
+
+    <!-- 数据适配层 - 支持JSON文件存储 -->
+    <script src="js/data-adapter.js"></script>
+    <script src="js/data-store-wrapper.js"></script>
+    <!-- 主题系统 - 在其他脚本之前加载 -->
+    <script src="js/theme-manager.js"></script>
+    <!-- 现代导航栏 -->
+    <script src="js/modern-nav.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/background.js"></script>
+    <script src="js/video-background.js"></script>
+    <script src="js/sakura.js"></script>
+    <script src="js/welcome-quote.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/main-player.js"></script>
+    <script src="js/video-player.js"></script>
+    <script src="js/media-sync.js"></script>
+    <script src="js/stats-sync.js"></script>
+    <script src="js/blog-render.js"></script>
+</body>
+</html>

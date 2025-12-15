@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>示例游戏</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .game-container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 500px;
+        }
+        h1 { color: #667eea; margin-bottom: 20px; }
+        p { color: #666; line-height: 1.6; }
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4); }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>🎮 示例游戏</h1>
+        <p>这是一个示例游戏页面。</p>
+        <p>你可以在这里开发自己的小游戏，比如：</p>
+        <ul style="text-align: left; color: #666;">
+            <li>猜数字游戏</li>
+            <li>记忆卡片游戏</li>
+            <li>简单的益智游戏</li>
+            <li>互动小游戏</li>
+        </ul>
+        <button class="btn" onclick="alert('游戏开始！')">开始游戏</button>
+    </div>
+</body>
+</html>

@@ -1,0 +1,1798 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博客后台管理系统</title>
+    
+    <!-- ⚡ 主题和背景预加载 - 避免闪烁，必须在CSS之前 -->
+    <script>
+        (function() {
+            // === 主题预加载 ===
+            try {
+                var theme = localStorage.getItem('admin_theme');
+                if (!theme) {
+                    try {
+                        var blogData = localStorage.getItem('blogData');
+                        if (blogData) {
+                            var data = JSON.parse(blogData);
+                            theme = (data.settings && (data.settings.backendTheme || data.settings.adminTheme)) || null;
+                        }
+                    } catch (e) {
+                        console.warn('读取主题设置失败:', e);
+                    }
+                }
+                var validThemes = ['ocean', 'purple', 'green', 'orange', 'dark', 'pink', 'glass-dark', 'cyberpunk'];
+                if (!theme || validThemes.indexOf(theme) === -1) {
+                    theme = 'ocean';
+                }
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('admin_theme', theme);
+                console.log('⚡ 主题预加载:', theme);
+            } catch (error) {
+                console.error('主题预加载失败:', error);
+                document.documentElement.setAttribute('data-theme', 'ocean');
+            }
+            
+            // === 背景预加载 ===
+            try {
+                // 从localStorage读取上次使用的背景
+                var lastBackground = localStorage.getItem('admin_current_background');
+                
+                if (lastBackground) {
+                    // 立即创建背景层和遮罩层
+                    var style = document.createElement('style');
+                    style.textContent = 
+                        '.admin-background-layer{' +
+                        'position:fixed!important;' +
+                        'top:0;left:0;right:0;bottom:0;' +
+                        'background-image:url(' + lastBackground + ');' +
+                        'background-size:cover;' +
+                        'background-position:center;' +
+                        'background-repeat:no-repeat;' +
+                        'z-index:-2!important;' +
+                        'pointer-events:none;' +
+                        '}' +
+                        '.admin-background-overlay{' +
+                        'position:fixed!important;' +
+                        'top:0;left:0;right:0;bottom:0;' +
+                        'background:rgba(255,255,255,0.85);' +
+                        'backdrop-filter:blur(10px);' +
+                        'z-index:-1!important;' +
+                        'pointer-events:none;' +
+                        '}';
+                    document.head.appendChild(style);
+                    
+                    // 在body加载后立即添加背景元素
+                    document.addEventListener('DOMContentLoaded', function() {
+                        if (!document.querySelector('.admin-background-layer')) {
+                            var bgLayer = document.createElement('div');
+                            bgLayer.className = 'admin-background-layer';
+                            document.body.insertBefore(bgLayer, document.body.firstChild);
+                            
+                            var overlay = document.createElement('div');
+                            overlay.className = 'admin-background-overlay';
+                            document.body.insertBefore(overlay, document.body.firstChild);
+                        }
+                    });
+                    
+                    console.log('⚡ 背景预加载:', lastBackground);
+                }
+            } catch (error) {
+                console.error('背景预加载失败:', error);
+            }
+        })();
+    </script>
+    
+    <link rel="stylesheet" href="css/admin.css?v=20251205-emoji-fix">
+    <link rel="stylesheet" href="css/admin-ui-patch.css?v=20251205-emoji-fix">
+    <link rel="stylesheet" href="css/media-form-patch.css">
+    <link rel="stylesheet" href="css/logout-button-fix.css">
+    <link rel="stylesheet" href="css/weibo-hot-search.css?v=4.0">
+    <link rel="stylesheet" href="css/events-unified.css?v=20251120">
+    <link rel="stylesheet" href="css/dashboard-unified.css?v=20251205-emoji-fix-v2">
+    <!-- 主题系统 -->
+    <link rel="stylesheet" href="../blog/css/themes.css">
+    <link rel="stylesheet" href="css/admin-theme-adapter.css?v=20251205-emoji-color-fix">
+    <!-- 留言统计卡片颜色修复 -->
+    <link rel="stylesheet" href="css/guestbook-stats-fix.css">
+    <!-- 全新下拉框系统 - 简洁可靠 -->
+    <link rel="stylesheet" href="css/dropdown-new.css?v=20251123-new">
+    <!-- 视频背景系统 -->
+    <link rel="stylesheet" href="css/admin-video-background.css">
+    <!-- 统一滚动条样式 -->
+    <link rel="stylesheet" href="css/scrollbar-unified.css?v=20251210">
+    <!-- 网站描述编辑器 -->
+    <link rel="stylesheet" href="css/description-editor.css">
+    
+    <!-- 模态框和设置页面主题修复 - 最后加载确保最高优先级 -->
+    <link rel="stylesheet" href="css/modal-theme-fix.css?v=20251210-final">
+    
+    <!-- 背景管理器 - 提前加载避免延迟 -->
+    <script src="js/admin-background.js?v=20251123"></script>
+    <!-- 视频背景管理器 -->
+    <script src="js/admin-video-background.js"></script>
+</head>
+<body>
+    <!-- 顶部栏 -->
+    <header class="top-bar">
+        <div class="breadcrumb">
+                <span>📚</span>
+                <span>博客后台管理系统</span>
+        </div>
+        <div class="user-info">
+            <img id="topBarAvatar" class="top-bar-avatar" src="https://ui-avatars.com/api/?name=执念&size=200&background=4fc3f7&color=fff&bold=true" alt="头像">
+            <div class="user-dropdown">
+                <button class="user-dropdown-toggle">
+                    <span class="username" id="currentUsername">用户名</span>
+                    <span class="dropdown-arrow">▼</span>
+                </button>
+                <div class="user-dropdown-menu" id="userDropdownMenu">
+                    <div class="dropdown-item" onclick="showChangePasswordModal()">
+                        <span class="dropdown-icon">🔑</span>
+                        <span>修改密码</span>
+                    </div>
+                    <div class="dropdown>
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <div class="dropdown-item logout-item" onclick="handleLogout()">
+                        <span class="dropdown-icon">🚪</span>
+                        <span>退出登录</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主容器 -->
+    <div class="admin-container">
+        <!-- 侧边栏 -->
+        <aside class="sidebar">
+        <div class="logo">
+            <div class="logo-container">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="35" r="20" fill="rgba(255,255,255,0.9)" opacity="0.8"/>
+                        <circle cx="35" cy="60" r="20" fill="rgba(255,255,255,0.9)" opacity="0.8"/>
+                        <circle cx="65" cy="60" r="20" fill="rgba(255,255,255,0.9)" opacity="0.8"/>
+                    </svg>
+                </div>
+                <div class="logo-text">
+                    <span class="logo-title">ℳঞ执念ꦿ</span>
+                    <span class="logo-subtitle">Blog Admin</span>
+                </div>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#dashboard" class="nav-item active" data-page="dashboard">
+                <span class="icon">📊</span>
+                <span>仪表盘</span>
+            </a>
+            <a href="#articles" class="nav-item" data-page="articles">
+                <span class="icon">📄</span>
+                <span>文章管理</span>
+            </a>
+            <a href="#categories" class="nav-item" data-page="categories">
+                <span class="icon">📂</span>
+                <span>分类管理</span>
+            </a>
+            <a href="#tags" class="nav-item" data-page="tags">
+                <span class="icon">🏷️</span>
+                <span>标签管理</span>
+            </a>
+            <a href="#comments" class="nav-item" data-page="comments">
+                <span class="icon">💬</span>
+                <span>评论管理</span>
+            </a>
+            <a href="#guestbook" class="nav-item" data-page="guestbook">
+                <span class="icon">📝</span>
+                <span>留言管理</span>
+            </a>
+            <a href="#media" class="nav-item" data-page="media">
+                <span class="icon">🖼️</span>
+                <span>媒体库</span>
+            </a>
+            <a href="#links" class="nav-item" data-page="links">
+                <span class="icon">🔗</span>
+                <span>友情链接</span>
+            </a>
+            <a href="#apps" class="nav-item" data-page="apps">
+                <span class="icon">📱</span>
+                <span>应用管理</span>
+            </a>
+            <a href="#settings" class="nav-item" data-page="settings">
+                <span class="icon">⚙️</span>
+                <span>系统设置</span>
+            </a>
+            <a href="#users" class="nav-item" data-page="users">
+                <span class="icon">👥</span>
+                <span>用户管理</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="../blog/index.html" target="_blank" class="btn-view-site">查看网站</a>
+        </div>
+    </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 内容区域 -->
+            <div class="content-area">
+            <!-- 仪表盘 -->
+            <section id="page-dashboard" class="page-content active">
+                <h1>📊 仪表盘</h1>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📄</div>
+                        <div class="stat-info">
+                            <div class="stat-value">25</div>
+                            <div class="stat-label">文章总数</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💬</div>
+                        <div class="stat-info">
+                            <div class="stat-value">128</div>
+                            <div class="stat-label">评论总数</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">👀</div>
+                        <div class="stat-info">
+                            <div class="stat-value">5,432</div>
+                            <div class="stat-label">总访问量</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-info">
+                            <div class="stat-value">1,234</div>
+                            <div class="stat-label">访客总数</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <h3>最近文章</h3>
+                        <div class="recent-list">
+                            <div class="recent-item">
+                                <span class="item-title">如何使用 Vue 3 构建现代化应用</span>
+                                <span class="item-date">2025-11-15</span>
+                            </div>
+                            <div class="recent-item">
+                                <span class="item-title">JavaScript 异步编程最佳实践</span>
+                                <span class="item-date">2025-11-10</span>
+                            </div>
+                            <div class="recent-item">
+                                <span class="item-title">CSS Grid 布局完全指南</span>
+                                <span class="item-date">2025-11-05</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <h3>最新评论</h3>
+                        <div class="recent-list">
+                            <div class="recent-item">
+                                <span class="item-title">很棒的文章，学到了很多！</span>
+                                <span class="item-date">2小时前</span>
+                            </div>
+                            <div class="recent-item">
+                                <span class="item-title">期待更多这样的内容</span>
+                                <span class="item-date">5小时前</span>
+                            </div>
+                            <div class="recent-item">
+                                <span class="item-title">写得非常详细，感谢分享</span>
+                                <span class="item-date">1天前</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 重要事项和热搜榜布局 -->
+                <div class="dashboard-split-layout">
+                    <!-- 左侧：重要事项 -->
+                    <div class="dashboard-left-panel">
+                        <div class="dashboard-card events-widget">
+                            <h3>
+                                <span>📌 重要事项</span>
+                                <button class="btn-add-event" onclick="eventsManager.showEventModal()">+ 添加</button>
+                            </h3>
+                            <div class="events-list-container" id="eventsListContainer">
+                                <div class="events-list" id="eventsList"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 右侧：热搜榜 -->
+                    <div class="dashboard-right-panel">
+                        <div class="dashboard-card hot-search-panel">
+                            <h3>🔥 热搜榜</h3>
+                            <div class="hot-search-tabs">
+                                <button class="hot-tab active" data-type="douyin">📱 抖音</button>
+                                <button class="hot-tab" data-type="weibo">🐦 微博</button>
+                                <button class="hot-tab" data-type="zhihu">🐧 知乎</button>
+                                <button class="hot-tab" data-type="toutiao">📰 今日头条</button>
+                                <button class="hot-tab" data-type="bilibili">📺 B站</button>
+                            </div>
+                            <div id="hotSearchList" class="hot-search-list">
+                                <div class="loading-text">加载中...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 文章管理 -->
+            <section id="page-articles" class="page-content">
+                <div class="page-header">
+                    <h1>📄 文章管理</h1>
+                    <div class="article-actions">
+                        <button class="btn-action btn-new" id="btnNewArticle">
+                            <span class="btn-icon">✏️</span>
+                            <span class="btn-text">新建文章</span>
+                        </button>
+                        <button class="btn-action btn-import" id="btnImportMd" onclick="articleImportExport.showImportDialog()">
+                            <span class="btn-icon">📥</span>
+                            <span class="btn-text">导入MD</span>
+                        </button>
+                        <button class="btn-action btn-feishu" id="btnImportFeishu" onclick="feishuImporter.showImportDialog()">
+                            <span class="btn-icon">📄</span>
+                            <span class="btn-text">导入飞书</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>标题</th>
+                                <th>分类</th>
+                                <th>标签</th>
+                                <th>状态</th>
+                                <th>发布时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="articlesTable">
+                            <tr>
+                                <td>如何使用 Vue 3 构建现代化应用</td>
+                                <td>技术</td>
+                                <td>Vue.js, 前端开发</td>
+                                <td><span class="badge badge-success">已发布</span></td>
+                                <td>2025-11-15</td>
+                                <td>
+                                    <button class="btn-icon" title="编辑">✏️</button>
+                                    <button class="btn-icon" title="删除">🗑️</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>JavaScript 异步编程最佳实践</td>
+                                <td>技术</td>
+                                <td>JavaScript</td>
+                                <td><span class="badge badge-success">已发布</span></td>
+                                <td>2025-11-10</td>
+                                <td>
+                                    <button class="btn-icon" title="编辑">✏️</button>
+                                    <button class="btn-icon" title="删除">🗑️</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>CSS Grid 布局完全指南</td>
+                                <td>技术</td>
+                                <td>CSS, 前端开发</td>
+                                <td><span class="badge badge-warning">草稿</span></td>
+                                <td>2025-11-05</td>
+                                <td>
+                                    <button class="btn-icon" title="编辑">✏️</button>
+                                    <button class="btn-icon" title="删除">🗑️</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 分类管理 -->
+            <section id="page-categories" class="page-content">
+                <div class="page-header">
+                    <h1>📂 分类管理</h1>
+                    <button class="btn-primary" id="btnNewCategory">新建分类</button>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>分类名称</th>
+                                <th>描述</th>
+                                <th>文章数</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="categoriesTable">
+                            <tr>
+                                <td>技术</td>
+                                <td>技术相关文章</td>
+                                <td>12</td>
+                                <td>
+                                    <button class="btn-icon" title="编辑">✏️</button>
+                                    <button class="btn-icon" title="删除">🗑️</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>生活</td>
+                                <td>生活随笔</td>
+                                <td>8</td>
+                                <td>
+                                    <button class="btn-icon" title="编辑">✏️</button>
+                                    <button class="btn-icon" title="删除">🗑️</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>设计</td>
+                                <td>设计相关内容</td>
+                                <td>5</td>
+                                <td>
+                                    <button class="btn-icon" title="编辑">✏️</button>
+                                    <button class="btn-icon" title="删除">🗑️</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 标签管理 -->
+            <section id="page-tags" class="page-content">
+                <div class="page-header">
+                    <h1>🏷️ 标签管理</h1>
+                    <button class="btn-primary" id="btnNewTag">新建标签</button>
+                </div>
+                <div class="tags-grid">
+                    <div class="tag-card">
+                        <div class="tag-name">JavaScript</div>
+                        <div class="tag-count">15 篇文章</div>
+                        <div class="tag-actions">
+                            <button class="btn-icon">✏️</button>
+                            <button class="btn-icon">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="tag-card">
+                        <div class="tag-name">前端开发</div>
+                        <div class="tag-count">20 篇文章</div>
+                        <div class="tag-actions">
+                            <button class="btn-icon">✏️</button>
+                            <button class="btn-icon">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="tag-card">
+                        <div class="tag-name">CSS</div>
+                        <div class="tag-count">10 篇文章</div>
+                        <div class="tag-actions">
+                            <button class="btn-icon">✏️</button>
+                            <button class="btn-icon">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="tag-card">
+                        <div class="tag-name">Vue.js</div>
+                        <div class="tag-count">12 篇文章</div>
+                        <div class="tag-actions">
+                            <button class="btn-icon">✏️</button>
+                            <button class="btn-icon">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="tag-card">
+                        <div class="tag-name">React</div>
+                        <div class="tag-count">8 篇文章</div>
+                        <div class="tag-actions">
+                            <button class="btn-icon">✏️</button>
+                            <button class="btn-icon">🗑️</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 评论管理 -->
+            <section id="page-comments" class="page-content">
+                <div class="page-header">
+                    <h1>💬 评论管理</h1>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>评论内容</th>
+                                <th>文章</th>
+                                <th>作者</th>
+                                <th>时间</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="commentsTable">
+                            <tr>
+                                <td>很棒的文章，学到了很多！</td>
+                                <td>Vue 3 构建应用</td>
+                                <td>张三</td>
+                                <td>2小时前</td>
+                                <td><span class="badge badge-success">已通过</span></td>
+                                <td>
+                                    <button class="btn-icon" title="回复">💬</button>
+                                    <button class="btn-icon" title="删除">🗑️</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>期待更多这样的内容</td>
+                                <td>JavaScript 异步编程</td>
+                                <td>李四</td>
+                                <td>5小时前</td>
+                                <td><span class="badge badge-warning">待审核</span></td>
+                                <td>
+                                    <button class="btn-icon" title="通过">✅</button>
+                                    <button class="btn-icon" title="删除">🗑️</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 留言管理 -->
+            <section id="page-guestbook" class="page-content">
+                <div class="page-header">
+                    <h1>📝 留言管理</h1>
+                </div>
+                <div class="guestbook-container">
+                    <div class="guestbook-stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                        <div class="stat-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1.5rem; border-radius: 12px;">
+                            <div style="font-size: 2rem; font-weight: bold;" id="totalMessages">0</div>
+                            <div style="opacity: 0.9;">总留言数</div>
+                        </div>
+                        <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 1.5rem; border-radius: 12px;">
+                            <div style="font-size: 2rem; font-weight: bold;" id="pinnedMessages">0</div>
+                            <div style="opacity: 0.9;">置顶留言</div>
+                        </div>
+                        <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 1.5rem; border-radius: 12px;">
+                            <div style="font-size: 2rem; font-weight: bold;" id="totalLikes">0</div>
+                            <div style="opacity: 0.9;">总点赞数</div>
+                        </div>
+                    </div>
+                    
+                    <div class="messages-list" id="adminMessagesList">
+                        <!-- 留言列表将在这里动态生成 -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- 媒体库 -->
+            <section id="page-media" class="page-content">
+                <div class="page-header">
+                    <h1>🖼️ 媒体库</h1>
+                </div>
+                
+                <!-- 媒体类型标签 -->
+                <div class="media-tabs" style="display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid #f0f0f0;">
+                    <button class="media-tab active" data-type="images" style="padding: 1rem 2rem; background: none; border: none; border-bottom: 3px solid #4fc3f7; color: #2c5f7c; font-weight: 600; cursor: pointer;">
+                        🖼️ 图片
+                    </button>
+                    <button class="media-tab" data-type="music" style="padding: 1rem 2rem; background: none; border: none; border-bottom: 3px solid transparent; color: #999; cursor: pointer;">
+                        🎵 音乐
+                    </button>
+                    <button class="media-tab" data-type="videos" style="padding: 1rem 2rem; background: none; border: none; border-bottom: 3px solid transparent; color: #999; cursor: pointer;">
+                        🎬 视频
+                    </button>
+                </div>
+
+                <!-- 图片管理 -->
+                <div class="media-panel" id="panel-images">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <div class="media-stats" style="display: flex; gap: 1rem;">
+                            <div style="padding: 0.8rem 1.5rem; background: #f0f8ff; border-radius: 8px;">
+                                <span style="color: #666; font-size: 0.9rem;">总数：</span>
+                                <span style="color: #2c5f7c; font-weight: bold;" id="imagesCount">0</span>
+                            </div>
+                        </div>
+                        <button class="btn-primary" id="btnUploadImage">上传图片</button>
+                    </div>
+                    <div class="media-grid" id="imagesGrid"></div>
+                    <input type="file" id="imageInput" accept="image/*" style="display: none;" multiple>
+                </div>
+
+                <!-- 音乐管理 -->
+                <div class="media-panel" id="panel-music" style="display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <div class="media-stats" style="display: flex; gap: 1rem;">
+                            <div style="padding: 0.8rem 1.5rem; background: #f0f8ff; border-radius: 8px;">
+                                <span style="color: #666; font-size: 0.9rem;">总数：</span>
+                                <span style="color: #2c5f7c; font-weight: bold;" id="musicCount">0</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn-primary" onclick="neteaseMusicModal.open()" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);">
+                                🎵 网易云导入
+                            </button>
+                            <button class="btn-primary" id="btnAddMusic">手动添加</button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 40px; text-align: center;">#</th>
+                                    <th style="width: 280px;">歌曲信息</th>
+                                    <th style="width: 70px; text-align: center;">时长</th>
+                                    <th style="width: 90px; text-align: center;">歌词</th>
+                                    <th style="width: 90px; text-align: center;">音源</th>
+                                    <th style="width: 100px; text-align: center;">上传日期</th>
+                                    <th style="width: 140px; text-align: center;">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="musicTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 视频管理 -->
+                <div class="media-panel" id="panel-videos" style="display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <div class="media-stats" style="display: flex; gap: 1rem;">
+                            <div style="padding: 0.8rem 1.5rem; background: #f0f8ff; border-radius: 8px;">
+                                <span style="color: #666; font-size: 0.9rem;">总数：</span>
+                                <span style="color: #2c5f7c; font-weight: bold;" id="videosCount">0</span>
+                            </div>
+                        </div>
+                        <button class="btn-primary" id="btnAddVideo">添加视频</button>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>封面</th>
+                                    <th>视频名称</th>
+                                    <th>分类</th>
+                                    <th>时长</th>
+                                    <th>描述</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="videosTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 友情链接管理 -->
+            <section id="page-links" class="page-content">
+                <div class="page-header">
+                    <h1>🔗 友情链接管理</h1>
+                    <button class="btn-primary" onclick="showAddLinkModal()">+ 添加友情链接</button>
+                </div>
+                
+                <div class="data-card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>网站名称</th>
+                                <th>网站地址</th>
+                                <th>分类</th>
+                                <th>描述</th>
+                                <th>状态</th>
+                                <th>添加日期</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="linksTable"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 应用管理 -->
+            <section id="page-apps" class="page-content">
+                <div class="page-header">
+                    <h1>📱 应用管理</h1>
+                    <button class="btn-primary" onclick="safeShowAppModal()">+ 添加应用</button>
+                </div>
+                
+                <div class="apps-manage-container">
+                    <div class="apps-manage-grid" id="appsManageGrid">
+                        <div class="loading-state">
+                            <div class="loading-spinner"></div>
+                            <p>加载中...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 系统设置 -->
+            <section id="page-settings" class="page-content">
+                <div class="page-header">
+                    <h1>⚙️ 系统设置</h1>
+                    <p style="color: #666">配置您的博客基本信息和功能选项</p>
+                </div>
+                
+                <div class="settings-form">
+                    <!-- 头像设置 -->
+                    <div class="form-group avatar-setting">
+                        <label style="font-size: 1.2rem; margin-bottom: 1.5rem;">🎨 网站头像</label>
+                        <div class="avatar-upload-container">
+                            <div class="avatar-preview">
+                                <img id="avatarPreview" src="https://ui-avatars.com/api/?name=执念&size=200&background=4fc3f7&color=fff&bold=true" alt="头像预览">
+                            </div>
+                            <div class="avatar-upload-controls">
+                                <input type="text" id="avatarUrl" class="form-control" placeholder="🔗 输入头像图片URL地址">
+                                <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                                    <button class="btn-secondary" onclick="uploadAvatarFile()" style="flex: 1;">
+                                        📁 上传本地文件
+                                    </button>
+                                    <button class="btn-primary" onclick="updateAvatar()" style="flex: 1;">
+                                        ✅ 应用头像
+                                    </button>
+                                </div>
+                                <input type="file" id="avatarFileInput" accept="image/*" style="display: none;" onchange="handleAvatarFile(event)">
+                                <small style="color: #555; display: block; margin-top: 0.75rem; font-size: 0.95rem;">
+                                    💡 提示：可以输入图片URL或上传本地图片（将自动转为Base64格式）
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 基本信息 -->
+                    <div class="form-group">
+                        <label>📝 网站标题</label>
+                        <input type="text" id="siteName" class="form-control" value="ℳঞ执念ꦿ的博客" placeholder="输入您的网站标题">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>📄 网站描述</label>
+                        <div class="description-editor-container">
+                            <div class="editor-tabs">
+                                <button type="button" class="tab-btn active" data-tab="edit">✏️ 编辑</button>
+                                <button type="button" class="tab-btn" data-tab="preview">👁️ 预览</button>
+                                <button type="button" class="tab-btn" data-tab="help">❓ 帮助</button>
+                            </div>
+                            
+                            <div class="editor-content">
+                                <!-- 编辑模式 -->
+                                <div class="tab-content active" id="edit-tab">
+                                    <div class="editor-toolbar">
+                                        <button type="button" class="toolbar-btn" data-action="bold" title="加粗">**B**</button>
+                                        <button type="button" class="toolbar-btn" data-action="italic" title="斜体">*I*</button>
+                                        <button type="button" class="toolbar-btn" data-action="heading" title="标题"># H</button>
+                                        <button type="button" class="toolbar-btn" data-action="link" title="链接">🔗</button>
+                                        <button type="button" class="toolbar-btn" data-action="list" title="列表">📝</button>
+                                        <button type="button" class="toolbar-btn" data-action="quote" title="引用">💬</button>
+                                        <button type="button" class="toolbar-btn" data-action="code" title="代码">`</button>
+                                        <div class="toolbar-separator"></div>
+                                        <button type="button" class="toolbar-btn" data-action="align-left" title="居左对齐">⬅️</button>
+                                        <button type="button" class="toolbar-btn" data-action="align-center" title="居中对齐">↔️</button>
+                                        <button type="button" class="toolbar-btn" data-action="align-right" title="居右对齐">➡️</button>
+                                    </div>
+                                    <textarea id="siteDescription" class="form-control description-textarea" rows="8" 
+                                              placeholder="输入网站描述，支持Markdown格式...&#10;&#10;示例：&#10;**这是加粗文本**&#10;*这是斜体文本*&#10;# 这是标题&#10;- 这是列表项&#10;> 这是引用&#10;&#10;您可以使用上方工具栏快速插入格式">一个记录生活和技术的博客</textarea>
+                                </div>
+                                
+                                <!-- 预览模式 -->
+                                <div class="tab-content" id="preview-tab">
+                                    <div class="preview-container">
+                                        <div id="descriptionPreview" class="description-preview">
+                                            <!-- 预览内容将在这里显示 -->
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 帮助模式 -->
+                                <div class="tab-content" id="help-tab">
+                                    <div class="help-container">
+                                        <h4>📝 Markdown格式说明</h4>
+                                        <div class="help-content">
+                                            <div class="help-item">
+                                                <strong>加粗文本：</strong> <code>**文本**</code> 或 <code>__文本__</code>
+                                            </div>
+                                            <div class="help-item">
+                                                <strong>斜体文本：</strong> <code>*文本*</code> 或 <code>_文本_</code>
+                                            </div>
+                                            <div class="help-item">
+                                                <strong>标题：</strong> <code># 一级标题</code> <code>## 二级标题</code> <code>### 三级标题</code>
+                                            </div>
+                                            <div class="help-item">
+                                                <strong>链接：</strong> <code>[链接文本](URL)</code>
+                                            </div>
+                                            <div class="help-item">
+                                                <strong>无序列表：</strong> <code>- 列表项</code> 或 <code>* 列表项</code>
+                                            </div>
+                                            <div class="help-item">
+                                                <strong>有序列表：</strong> <code>1. 列表项</code>
+                                            </div>
+                                            <div class="help-item">
+                                                <strong>引用：</strong> <code>> 引用内容</code>
+                                            </div>
+                                            <div class="help-item">
+                                                <strong>行内代码：</strong> <code>`代码`</code>
+                                            </div>
+                                            <div class="help-item">
+                                                <strong>代码块：</strong> <code>```代码块```</code>
+                                            </div>
+                                            <div class="help-item">
+                                                <strong>换行：</strong> 两个回车键或在行末加两个空格
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>📊 每页文章数</label>
+                        <input type="number" id="postsPerPage" class="form-control" value="10" min="5" max="50" placeholder="设置每页显示的文章数量">
+                    </div>
+                    
+                    <div class="form-group" style="display: flex; align-items: center; justify-content: space-between; background: #f8f9fa; padding: 1.5rem; border-radius: 12px; border: 2px solid #e0e0e0;">
+                        <div>
+                            <label style="margin-bottom: 0.25rem;">💬 评论审核</label>
+                            <small style="display: block; color: #666; font-size: 0.9rem;">开启后，新评论需要审核才能显示</small>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="commentModeration" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <!-- 数据源设置 -->
+                    <div class="form-group" style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid #e0e0e0;">
+                        <label style="font-size: 1.2rem; margin-bottom: 1rem; display: block;">💾 数据存储模式</label>
+                        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 12px; border: 2px solid #e0e0e0;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                                <div>
+                                    <label style="margin-bottom: 0.25rem; font-weight: 600;">🌐 使用JSON API模式</label>
+                                    <small style="display: block; color: #666; font-size: 0.9rem;">
+                                        开启：数据保存到JSON文件（需要API服务器）<br>
+                                        关闭：数据保存到浏览器localStorage
+                                    </small>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="useApiMode" onchange="toggleDataSourceMode()">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div id="apiModeStatus" style="padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                                <!-- 状态信息将通过JS动态更新 -->
+                            </div>
+                            
+                            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                                <button class="btn-secondary" onclick="checkApiServerStatus()" style="flex: 1;">
+                                    🔍 检查API服务器
+                                </button>
+                                <button class="btn-secondary" onclick="syncDataToJson()" style="flex: 1;">
+                                    🔄 同步数据到JSON
+                                </button>
+                            </div>
+                            
+                            <small style="color: #999; display: block; margin-top: 1rem; font-size: 0.85rem;">
+                                💡 提示：JSON API模式需要运行 <code>node api-server.js</code>
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- 热榜API配置 -->
+                    <div class="form-group" style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid #e0e0e0;">
+                        <label style="font-size: 1.2rem; margin-bottom: 1rem; display: block;">🔥 热榜API配置</label>
+                        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 12px; border: 2px solid #e0e0e0;">
+                            <p style="color: #666; margin-bottom: 1rem; font-size: 0.95rem;">
+                                💡 配置不同平台的热搜API接口，自定义数据源
+                            </p>
+                            <button class="btn-primary" onclick="openHotlistConfig()" style="padding: 0.75rem 1.5rem; border-radius: 8px;">
+                                ⚙️ 打开热榜API配置
+                            </button>
+                            <small style="color: #999; display: block; margin-top: 1rem; font-size: 0.85rem;">
+                                提示：可以配置抖音、微博、知乎、百度、B站等平台的热搜API
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- 背景管理 -->
+                    <div class="form-group" style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid #e0e0e0;">
+                        <label style="font-size: 1.2rem; margin-bottom: 1rem; display: block;">🖼️ 背景图片</label>
+                        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 12px; border: 2px solid #e0e0e0;">
+                            <p style="color: #666; margin-bottom: 1rem; font-size: 0.95rem;">
+                                💡 系统会从媒体库的图片中随机选择一张作为背景
+                            </p>
+                            <div style="display: flex; gap: 1rem;">
+                                <button class="btn-secondary" id="refreshBackgroundBtn" style="flex: 1;">
+                                    🔄 刷新背景
+                                </button>
+                                <button class="btn-secondary" id="previousBackgroundBtn" style="flex: 1;">
+                                    ⬅️ 上一张
+                                </button>
+                                <button class="btn-secondary" id="nextBackgroundBtn" style="flex: 1;">
+                                    ➡️ 下一张
+                                </button>
+                            </div>
+                            <small style="color: #999; display: block; margin-top: 1rem; font-size: 0.85rem;">
+                                提示：请先在媒体库上传图片，系统会自动从中选择
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- 视频背景设置 -->
+                    <div class="form-group" style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid #e0e0e0;">
+                        <label style="font-size: 1.2rem; margin-bottom: 1rem; display: block;">🎬 视频背景设置</label>
+                        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 12px; border: 2px solid #e0e0e0;">
+                            <p style="color: #666; margin-bottom: 1.5rem; font-size: 0.95rem;">
+                                💡 控制前台和后台的视频背景显示，关闭后可提升页面加载速度
+                            </p>
+                            
+                            <!-- 前台视频背景开关 -->
+                            <div style="display: flex; align-items: center; justify-content: space-between; background: white; padding: 1.2rem; border-radius: 8px; margin-bottom: 1rem; border: 2px solid #e0e0e0;">
+                                <div>
+                                    <label style="margin-bottom: 0.25rem; font-weight: 600;">🌐 前台视频背景</label>
+                                    <small style="display: block; color: #666; font-size: 0.9rem;">控制博客前台页面的视频背景显示</small>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="enableFrontendVideoBackground" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <!-- 后台视频背景开关 -->
+                            <div style="display: flex; align-items: center; justify-content: space-between; background: white; padding: 1.2rem; border-radius: 8px; border: 2px solid #e0e0e0;">
+                                <div>
+                                    <label style="margin-bottom: 0.25rem; font-weight: 600;">⚙️ 后台视频背景</label>
+                                    <small style="display: block; color: #666; font-size: 0.9rem;">控制后台管理系统的视频背景显示</small>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="enableBackendVideoBackground" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <small style="color: #999; display: block; margin-top: 1rem; font-size: 0.85rem;">
+                                ⚡ 提示：关闭视频背景可以减少网络流量，提升页面加载速度
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- 相册特效设置 -->
+                    <div class="form-group" style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid #e0e0e0;">
+                        <label style="font-size: 1.2rem; margin-bottom: 1rem; display: block;">🎨 相册展示特效</label>
+                        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 12px; border: 2px solid #e0e0e0;">
+                            <p style="color: #666; margin-bottom: 1rem; font-size: 0.95rem;">
+                                💡 选择前台相册页面的图片展示特效
+                            </p>
+                            <div class="gallery-effects-grid">
+                                <label class="effect-option">
+                                    <input type="radio" name="galleryEffect" value="grid" checked>
+                                    <div class="effect-card">
+                                        <div class="effect-icon">📊</div>
+                                        <div class="effect-name">网格布局</div>
+                                        <div class="effect-desc">经典网格</div>
+                                    </div>
+                                </label>
+                                <label class="effect-option">
+                                    <input type="radio" name="galleryEffect" value="waterfall">
+                                    <div class="effect-card">
+                                        <div class="effect-icon">🌊</div>
+                                        <div class="effect-name">瀑布流</div>
+                                        <div class="effect-desc">自适应高度</div>
+                                    </div>
+                                </label>
+                                <label class="effect-option">
+                                    <input type="radio" name="galleryEffect" value="flip">
+                                    <div class="effect-card">
+                                        <div class="effect-icon">🔄</div>
+                                        <div class="effect-name">翻转卡片</div>
+                                        <div class="effect-desc">悬停翻转</div>
+                                    </div>
+                                </label>
+                                <label class="effect-option">
+                                    <input type="radio" name="galleryEffect" value="zoom">
+                                    <div class="effect-card">
+                                        <div class="effect-icon">🔍</div>
+                                        <div class="effect-name">缩放效果</div>
+                                        <div class="effect-desc">悬停放大</div>
+                                    </div>
+                                </label>
+                                <label class="effect-option">
+                                    <input type="radio" name="galleryEffect" value="fade">
+                                    <div class="effect-card">
+                                        <div class="effect-icon">✨</div>
+                                        <div class="effect-name">淡入动画</div>
+                                        <div class="effect-desc">渐进加载</div>
+                                    </div>
+                                </label>
+                            </div>
+                            <small style="color: #999; display: block; margin-top: 1rem; font-size: 0.85rem;">
+                                提示:3D旋转相册会自动显示在相册页面顶部
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- 主题设置 -->
+                    <div class="form-group" style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid #e0e0e0;">
+                        <label style="font-size: 1.2rem; margin-bottom: 1rem; display: block;">🎨 主题设置</label>
+                        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 12px; border: 2px solid #e0e0e0;">
+                            <!-- 主题系统开关 -->
+                            <div style="display: flex; align-items: center; justify-content: space-between; background: white; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 2px solid #e0e0e0;">
+                                <div>
+                                    <label style="margin-bottom: 0.25rem; font-weight: 600;">启用主题系统</label>
+                                    <small style="display: block; color: #666; font-size: 0.9rem;">关闭后将使用默认样式</small>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="enableThemeSystem" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div id="themeOptions">
+                                <p style="color: #666; margin-bottom: 1rem; font-size: 0.95rem;">
+                                    💡 选择前台和后台的主题颜色方案
+                                </p>
+                            
+                            <!-- 前台主题 -->
+                            <div style="margin-bottom: 1.5rem;">
+                                <label style="font-weight: 600; margin-bottom: 0.5rem; display: block;">前台主题</label>
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.8rem;">
+                                    <label class="theme-option">
+                                        <input type="radio" name="frontendTheme" value="ocean" checked>
+                                        <div class="theme-card">
+                                            <div class="theme-icon">🌊</div>
+                                            <div class="theme-name">蓝色海洋</div>
+                                        </div>
+                                    </label>
+                                    <label class="theme-option">
+                                        <input type="radio" name="frontendTheme" value="purple">
+                                        <div class="theme-card">
+                                            <div class="theme-icon">💜</div>
+                                            <div class="theme-name">紫色梦幻</div>
+                                        </div>
+                                    </label>
+                                    <label class="theme-option">
+                                        <input type="radio" name="frontendTheme" value="green">
+                                        <div class="theme-card">
+                                            <div class="theme-icon">🌿</div>
+                                            <div class="theme-name">绿色自然</div>
+                                        </div>
+                                    </label>
+                                    <label class="theme-option">
+                                        <input type="radio" name="frontendTheme" value="orange">
+                                        <div class="theme-card">
+                                            <div class="theme-icon">🔥</div>
+                                            <div class="theme-name">橙色活力</div>
+                                        </div>
+                                    </label>
+                                    <label class="theme-option">
+                                        <input type="radio" name="frontendTheme" value="dark">
+                                        <div class="theme-card">
+                                            <div class="theme-icon">🌙</div>
+                                            <div class="theme-name">深色模式</div>
+                                        </div>
+                                    </label>
+                                    <label class="theme-option">
+                                        <input type="radio" name="frontendTheme" value="pink">
+                                        <div class="theme-card">
+                                            <div class="theme-icon">🌸</div>
+                                            <div class="theme-name">粉色浪漫</div>
+                                        </div>
+                                    </label>
+                                    <label class="theme-option">
+                                        <input type="radio" name="frontendTheme" value="glass-dark">
+                                        <div class="theme-card">
+                                            <div class="theme-icon">🖤</div>
+                                            <div class="theme-name">玻璃暗黑</div>
+                                        </div>
+                                    </label>
+                                    <label class="theme-option">
+                                        <input type="radio" name="frontendTheme" value="cyberpunk">
+                                        <div class="theme-card">
+                                            <div class="theme-icon">🤖</div>
+                                            <div class="theme-name">赛博朋克</div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- 后台主题 -->
+                            <div>
+                                <label style="font-weight: 600; margin-bottom: 0.5rem; display: block;">后台主题</label>
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.8rem;">
+                                    <label class="theme-option">
+                                        <input type="radio" name="backendTheme" value="ocean" checked>
+                                        <div class="theme-card">
+                                            <div class="theme-icon">🌊</div>
+                                            <div class="theme-name">蓝色海洋</div>
+                                        </div>
+                                    </label>
+                                    <label class="theme-option">
+                                        <input type="radio" name="backendTheme" value="purple">
+                                        <div class="theme-card">
+                                            <div class="theme-icon">💜</div>
+                                            <div class="theme-name">紫色梦幻</div>
+                                        </div>
+                                    </label>
+                                    <label class="theme-option">
+                                        <input type="radio" name="backendTheme" value="green">
+                                        <div class="theme-card">
+                                            <div class="theme-icon">🌿</div>
+                                            <div class="theme-name">绿色自然</div>
+                                        </div>
+                                    </label>
+                                    <label class="theme-option">
+                                        <input type="radio" name="backendTheme" value="orange">
+                                        <div class="theme-card">
+                                            <div class="theme-icon">🔥</div>
+                                            <div class="theme-name">橙色活力</div>
+                                        </div>
+                                    </label>
+                                    <label class="theme-option">
+                                        <input type="radio" name="backendTheme" value="dark">
+                                        <div class="theme-card">
+                                            <div class="theme-icon">🌙</div>
+                                            <div class="theme-name">深色模式</div>
+                                        </div>
+                                    </label>
+                                    <label class="theme-option">
+                                        <input type="radio" name="backendTheme" value="pink">
+                                        <div class="theme-card">
+                                            <div class="theme-icon">🌸</div>
+                                            <div class="theme-name">粉色浪漫</div>
+                                        </div>
+                                    </label>
+                                    <label class="theme-option">
+                                        <input type="radio" name="backendTheme" value="glass-dark">
+                                        <div class="theme-card">
+                                            <div class="theme-icon">🖤</div>
+                                            <div class="theme-name">玻璃暗黑</div>
+                                        </div>
+                                    </label>
+                                    <label class="theme-option">
+                                        <input type="radio" name="backendTheme" value="cyberpunk">
+                                        <div class="theme-card">
+                                            <div class="theme-icon">🤖</div>
+                                            <div class="theme-name">赛博朋克</div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <small style="color: #999; display: block; margin-top: 1rem; font-size: 0.85rem;">
+                                提示：前台和后台可以使用不同的主题
+                            </small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 密码修改 -->
+                    <div class="form-group" style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid #e0e0e0;">
+                        <label style="font-size: 1.2rem; margin-bottom: 1rem; display: block;">🔐 修改密码</label>
+                        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 12px; border: 2px solid #e0e0e0;">
+                            <div class="form-group">
+                                <label>当前密码</label>
+                                <input type="password" id="currentPassword" class="form-control" placeholder="请输入当前密码">
+                            </div>
+                            <div class="form-group">
+                                <label>新密码</label>
+                                <input type="password" id="newPassword" class="form-control" placeholder="请输入新密码（至少6位）">
+                            </div>
+                            <div class="form-group">
+                                <label>确认新密码</label>
+                                <input type="password" id="confirmPassword" class="form-control" placeholder="请再次输入新密码">
+                            </div>
+                            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                                <button class="btn-primary" onclick="changePassword()" style="flex: 1;">
+                                    🔑 修改密码
+                                </button>
+                                <button onclick="clearPasswordFields()" style="flex: 0 0 auto; padding: 0.8rem 1.5rem; background: linear-gradient(135deg, #ff9800 0%, #ff6f00 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; box-shadow: 0 2px 8px rgba(255, 152, 0, 0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 15px rgba(255, 152, 0, 0.5)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(255, 152, 0, 0.3)'">
+                                    🗑️ 清空
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 代码主题设置 -->
+                    <div class="form-group" style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid #e0e0e0;">
+                        <label style="font-size: 1.2rem; margin-bottom: 1rem; display: block;">💻 代码高亮主题</label>
+                        <p style="color: #666; margin-bottom: 1.5rem;">选择文章中代码块的显示风格</p>
+                        
+                        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 12px; border: 2px solid #e0e0e0;">
+                            <div class="code-theme-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                                <!-- Default -->
+                                <div class="code-theme-option" data-theme="default" style="cursor: pointer; padding: 1rem; border-radius: 8px; border: 2px solid #e0e0e0; transition: all 0.3s; background: white;">
+                                    <div style="width: 100%; height: 60px; background: #f5f2f0; border-radius: 4px; margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: center; color: #333; font-family: monospace; font-size: 0.8rem;">
+                                        Default
+                                    </div>
+                                    <div style="font-weight: 600; margin-bottom: 0.3rem;">Default</div>
+                                    <div style="font-size: 0.85rem; color: #666;">默认浅色主题</div>
+                                </div>
+                                
+                                <!-- Dark -->
+                                <div class="code-theme-option" data-theme="dark" style="cursor: pointer; padding: 1rem; border-radius: 8px; border: 2px solid #e0e0e0; transition: all 0.3s; background: white;">
+                                    <div style="width: 100%; height: 60px; background: #1e1e1e; border-radius: 4px; margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: center; color: #d4d4d4; font-family: monospace; font-size: 0.8rem;">
+                                        Dark
+                                    </div>
+                                    <div style="font-weight: 600; margin-bottom: 0.3rem;">Dark</div>
+                                    <div style="font-size: 0.85rem; color: #666;">经典深色主题</div>
+                                </div>
+                                
+                                <!-- Twilight -->
+                                <div class="code-theme-option" data-theme="twilight" style="cursor: pointer; padding: 1rem; border-radius: 8px; border: 2px solid #e0e0e0; transition: all 0.3s; background: white;">
+                                    <div style="width: 100%; height: 60px; background: #141414; border-radius: 4px; margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: center; color: #f7f7f7; font-family: monospace; font-size: 0.8rem;">
+                                        Twilight
+                                    </div>
+                                    <div style="font-weight: 600; margin-bottom: 0.3rem;">Twilight</div>
+                                    <div style="font-size: 0.85rem; color: #666;">暮光主题</div>
+                                </div>
+                                
+                                <!-- Okaidia -->
+                                <div class="code-theme-option" data-theme="okaidia" style="cursor: pointer; padding: 1rem; border-radius: 8px; border: 2px solid #e0e0e0; transition: all 0.3s; background: white;">
+                                    <div style="width: 100%; height: 60px; background: #272822; border-radius: 4px; margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: center; color: #f8f8f2; font-family: monospace; font-size: 0.8rem;">
+                                        Okaidia
+                                    </div>
+                                    <div style="font-weight: 600; margin-bottom: 0.3rem;">Okaidia</div>
+                                    <div style="font-size: 0.85rem; color: #666;">流行的深色主题</div>
+                                </div>
+                                
+                                <!-- Tomorrow Night -->
+                                <div class="code-theme-option" data-theme="tomorrow" style="cursor: pointer; padding: 1rem; border-radius: 8px; border: 2px solid #e0e0e0; transition: all 0.3s; background: white;">
+                                    <div style="width: 100%; height: 60px; background: #1d1f21; border-radius: 4px; margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: center; color: #c5c8c6; font-family: monospace; font-size: 0.8rem;">
+                                        Tomorrow
+                                    </div>
+                                    <div style="font-weight: 600; margin-bottom: 0.3rem;">Tomorrow Night</div>
+                                    <div style="font-size: 0.85rem; color: #666;">经典 Tomorrow 主题</div>
+                                </div>
+                                
+                                <!-- Solarized Light -->
+                                <div class="code-theme-option" data-theme="solarizedlight" style="cursor: pointer; padding: 1rem; border-radius: 8px; border: 2px solid #e0e0e0; transition: all 0.3s; background: white;">
+                                    <div style="width: 100%; height: 60px; background: #fdf6e3; border-radius: 4px; margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: center; color: #657b83; font-family: monospace; font-size: 0.8rem;">
+                                        Solarized
+                                    </div>
+                                    <div style="font-weight: 600; margin-bottom: 0.3rem;">Solarized Light</div>
+                                    <div style="font-size: 0.85rem; color: #666;">Solarized 浅色主题</div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top: 1rem; padding: 1rem; background: #e3f2fd; border-radius: 8px; color: #1976d2; font-size: 0.9rem;">
+                                💡 提示：点击主题卡片即可预览效果，保存后将应用到所有文章的代码块
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 🔥 数据备份功能 -->
+                    <div class="form-group" style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid #e0e0e0;">
+                        <label style="font-size: 1.2rem; margin-bottom: 1rem; display: block;">💾 数据备份</label>
+                        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 12px; border: 2px solid #e0e0e0;">
+                            <p style="color: #666; margin-bottom: 1rem; font-size: 0.95rem;">
+                                💡 备份所有数据文件到 <code>备份/</code> 文件夹，文件名格式：<code>data_YYYYMMDD_HHMMSS</code>
+                            </p>
+                            <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                                <button class="btn-primary" onclick="backupData()" style="flex: 1;">
+                                    💾 立即备份数据
+                                </button>
+                                <button class="btn-secondary" onclick="showBackupList()" style="flex: 1;">
+                                    📋 查看备份列表
+                                </button>
+                            </div>
+                            <div id="backupStatus" style="padding: 1rem; border-radius: 8px; margin-top: 1rem; display: none;">
+                                <!-- 备份状态信息将通过JS动态更新 -->
+                            </div>
+                            <small style="color: #999; display: block; margin-top: 1rem; font-size: 0.85rem;">
+                                ⚠️ 注意：备份功能需要API服务器运行（<code>node simple-server.js</code>）
+                            </small>
+                        </div>
+                    </div>
+                    
+                    <!-- 保存按钮 -->
+                    <div style="display: flex; justify-content: center; margin-top: 3rem; padding-top: 2rem; border-top: 2px solid #e0e0e0;">
+                        <button class="btn-primary" onclick="saveSettings()" style="min-width: 250px; padding: 1.2rem 3rem; font-size: 1.1rem;">
+                            💾 保存所有设置
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 用户管理 -->
+            <section id="page-users" class="page-content">
+                <div class="page-header">
+                    <h1>👥 用户管理</h1>
+                    <button class="btn-primary" onclick="showAddUserModal()">+ 添加用户</button>
+                </div>
+                
+                <!-- 用户统计 -->
+                <div class="stats-grid" style="margin-bottom: 2rem;">
+                    <div class="stat-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="totalUsers">0</div>
+                            <div class="stat-label">总用户数</div>
+                        </div>
+                    </div>
+                    <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white;">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="activeUsers">0</div>
+                            <div class="stat-label">活跃用户</div>
+                        </div>
+                    </div>
+                    <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+                        <div class="stat-icon">👑</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="adminUsers">0</div>
+                            <div class="stat-label">管理员</div>
+                        </div>
+                    </div>
+                    <div class="stat-card" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white;">
+                        <div class="stat-icon">✏️</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="editorUsers">0</div>
+                            <div class="stat-label">编辑者</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 用户列表 -->
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">ID</th>
+                                <th>用户名</th>
+                                <th>显示名称</th>
+                                <th>邮箱</th>
+                                <th>角色</th>
+                                <th>状态</th>
+                                <th>创建时间</th>
+                                <th style="width: 200px;">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <!-- 用户列表将在这里动态生成 -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- 添加/编辑用户模态框 -->
+    <div id="userModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h2 id="userModalTitle">👤 添加用户</h2>
+                <button class="modal-close" onclick="closeUserModal()">&times;</button>
+            </div>
+            <form id="userForm" onsubmit="handleSaveUser(event)">
+                <input type="hidden" id="editUserId">
+                <input type="hidden" id="editUsername">
+                
+                <div class="form-group">
+                    <label for="newUsername">用户名 *</label>
+                    <input type="text" id="newUsername" name="username" required 
+                           pattern="[a-zA-Z0-9_]{3,20}" 
+                           placeholder="3-20位字母、数字或下划线">
+                    <small style="color: #666; font-size: 0.85rem;">用户名创建后不可修改</small>
+                </div>
+                
+                <div class="form-group" id="passwordGroup">
+                    <label for="newUserPassword">密码 *</label>
+                    <input type="password" id="newUserPassword" name="password" 
+                           minlength="6" placeholder="至少6位">
+                </div>
+                
+                <div class="form-group">
+                    <label for="displayName">显示名称</label>
+                    <input type="text" id="displayName" name="displayName" 
+                           placeholder="用于显示的名称">
+                </div>
+                
+                <div class="form-group">
+                    <label for="userEmail">邮箱</label>
+                    <input type="email" id="userEmail" name="email" 
+                           placeholder="user@example.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="userRole">角色 *</label>
+                    <select id="userRole" name="role" required title="选择用户角色">
+                        <option value="editor">编辑者</option>
+                        <option value="admin">管理员</option>
+                    </select>
+                    <small style="color: #666; font-size: 0.85rem;">管理员拥有所有权限</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="userStatus">状态 *</label>
+                    <select id="userStatus" name="status" required title="选择用户状态">
+                        <option value="active">启用</option>
+                        <option value="inactive">禁用</option>
+                    </select>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="closeUserModal()">取消</button>
+                    <button type="submit" class="btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 重置密码模态框 -->
+    <div id="resetPasswordModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2>🔑 重置密码</h2>
+                <button class="modal-close" onclick="closeResetPasswordModal()">&times;</button>
+            </div>
+            <form id="resetPasswordForm" onsubmit="handleResetPassword(event)">
+                <input type="hidden" id="resetUsername">
+                
+                <div class="form-group">
+                    <label>用户名</label>
+                    <input type="text" id="resetUsernameDisplay" readonly 
+                           style="background: #f5f5f5; cursor: not-allowed;">
+                </div>
+                
+                <div class="form-group">
+                    <label for="resetNewPassword">新密码 *</label>
+                    <input type="password" id="resetNewPassword" name="newPassword" required 
+                           minlength="6" placeholder="至少6位">
+                </div>
+                
+                <div class="form-group">
+                    <label for="resetConfirmPassword">确认密码 *</label>
+                    <input type="password" id="resetConfirmPassword" name="confirmPassword" required 
+                           minlength="6" placeholder="再次输入新密码">
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="closeResetPasswordModal()">取消</button>
+                    <button type="submit" class="btn-primary">确认重置</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 友情链接添加/编辑模态框 -->
+    <div id="linkModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 9999; padding: 2rem; overflow-y: auto;">
+        <div style="max-width: 600px; margin: 2rem auto; background: white; border-radius: 15px; padding: 2rem; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2 id="linkModalTitle" style="margin: 0; color: #2c5f7c;">添加友情链接</h2>
+                <button onclick="closeLinkModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #999;">×</button>
+            </div>
+            
+            <form id="linkForm" onsubmit="saveLinkForm(event)">
+                <input type="hidden" id="linkId">
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: #2c5f7c; font-weight: 500;">网站名称 *</label>
+                    <input type="text" id="linkName" required 
+                           style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;"
+                           placeholder="请输入网站名称">
+                </div>
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: #2c5f7c; font-weight: 500;">网站地址 *</label>
+                    <input type="url" id="linkUrl" required 
+                           style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;"
+                           placeholder="https://example.com">
+                </div>
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: #2c5f7c; font-weight: 500;">网站头像</label>
+                    <input type="url" id="linkAvatar" 
+                           style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;"
+                           placeholder="留空将自动生成">
+                </div>
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: #2c5f7c; font-weight: 500;">分类</label>
+                    <input type="text" id="linkCategory" 
+                           style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;"
+                           placeholder="默认" value="默认">
+                </div>
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: #2c5f7c; font-weight: 500;">网站描述</label>
+                    <textarea id="linkDescription" rows="3"
+                              style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem; resize: vertical;"
+                              placeholder="请输入网站描述"></textarea>
+                </div>
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: #2c5f7c; font-weight: 500;">状态</label>
+                    <select id="linkStatus" style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;" title="选择友情链接状态">
+                        <option value="active">启用</option>
+                        <option value="inactive">禁用</option>
+                    </select>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="submit" class="btn-primary" style="flex: 1; padding: 0.8rem 1.5rem; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; font-weight: 600;">保存</button>
+                    <button type="button" onclick="closeLinkModal()" class="btn-secondary" style="flex: 1; padding: 0.8rem 1.5rem; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; font-weight: 600;">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 应用编辑模态框 -->
+    <div id="appModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 id="appModalTitle">添加应用</h3>
+                <button class="modal-close" onclick="appsAdminManager.hideAppModal()">&times;</button>
+            </div>
+            <form id="appForm" onsubmit="appsAdminManager.saveApp(event)">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>应用名称 *</label>
+                        <input type="text" id="appName" class="form-control" required placeholder="例如：示例游戏">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>图标 (Emoji)</label>
+                            <input type="text" id="appIcon" class="form-control" placeholder="🎮">
+                        </div>
+                        <div class="form-group">
+                            <label>分类</label>
+                            <select id="appCategory" class="form-control">
+                                <option value="游戏">游戏</option>
+                                <option value="工具">工具</option>
+                                <option value="其他">其他</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>应用链接 *</label>
+                        <input type="text" id="appUrl" class="form-control" required 
+                               placeholder="/apps/my-app/index.html 或 https://example.com"
+                               autocomplete="off">
+                        <small>可以是相对路径（内部应用）或完整URL（外部链接）</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>应用描述</label>
+                        <textarea id="appDescription" class="form-control" rows="3" 
+                                  placeholder="简单描述这个应用的功能..."></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>状态</label>
+                            <select id="appStatus" class="form-control">
+                                <option value="enabled">启用</option>
+                                <option value="disabled">禁用</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>排序</label>
+                            <input type="number" id="appOrder" class="form-control" value="0" min="0">
+                            <small>数字越小越靠前</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="appsAdminManager.hideAppModal()">取消</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 认证检查 - 必须最先加载 -->
+    <script src="js/auth.js"></script>
+    <script src="js/user-manager.js"></script>
+    <script>
+        // 检查登录状态，未登录则跳转到登录页
+        if (!AuthManager.requireAuth()) {
+            // requireAuth 会自动重定向，这里不需要额外操作
+        }
+    </script>
+    
+    <!-- 数据适配层 - 支持JSON文件存储 -->
+    <script src="js/data-adapter.js"></script>
+    <script src="js/data-store-wrapper.js"></script>
+    
+    <!-- 网站描述编辑器 -->
+    <script src="js/description-editor.js"></script>
+    
+    <script src="../blog/js/code-theme-manager.js"></script>
+    <script src="js/file-uploader.js"></script>
+    <script src="js/feishu-image-downloader.js"></script>
+    <script src="js/import-export.js"></script>
+    <script src="js/feishu-importer.js"></script>
+    <!-- admin-background.js 已在head中加载，避免重复引入 -->
+    <script src="background-config.js"></script>
+    <script>
+        // 备用背景设置 - 确保背景一定显示
+        (function() {
+            function ensureBackground() {
+                let bgLayer = document.querySelector('.admin-background-layer');
+                
+                if (!bgLayer || !bgLayer.style.backgroundImage) {
+                    if (!bgLayer) {
+                        bgLayer = document.createElement('div');
+                        bgLayer.className = 'admin-background-layer';
+                        document.body.insertBefore(bgLayer, document.body.firstChild);
+                    }
+                    
+                    bgLayer.style.cssText = `
+                        position: fixed !important;
+                        top: 0 !important;
+                        left: 0 !important;
+                        right: 0 !important;
+                        bottom: 0 !important;
+                        width: 100vw !important;
+                        height: 100vh !important;
+                        z-index: -2 !important;
+                        background-image: url('uploads/images/background/bg-${Math.floor(Math.random() * 15) + 1}.jpg') !important;
+                        background-size: cover !important;
+                        background-position: center !important;
+                        background-repeat: no-repeat !important;
+                        pointer-events: none !important;
+                        display: block !important;
+                        visibility: visible !important;
+                        opacity: 1 !important;
+                    `;
+                    
+                    let overlay = document.querySelector('.admin-background-overlay');
+                    if (!overlay) {
+                        overlay = document.createElement('div');
+                        overlay.className = 'admin-background-overlay';
+                        overlay.style.cssText = `
+                            position: fixed !important;
+                            top: 0 !important;
+                            left: 0 !important;
+                            right: 0 !important;
+                            bottom: 0 !important;
+                            background: rgba(255, 255, 255, 1) !important;
+                            z-index: 0 !important;
+                            pointer-events: none !important;
+                        `;
+                        document.body.insertBefore(overlay, bgLayer.nextSibling);
+                    }
+                }
+            }
+            
+            ensureBackground();
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', ensureBackground);
+            }
+            setTimeout(ensureBackground, 500);
+        })();
+    </script>
+    <script src="js/admin-theme-manager.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/admin-render.js"></script>
+    
+    <!-- 全新下拉框系统 - 简洁可靠 -->
+    <script src="js/dropdown-new.js?v=20251123-new"></script>
+    
+    <!-- 代码主题选择器初始化 -->
+    <script>
+        // 初始化代码主题选择器
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeOptions = document.querySelectorAll('.code-theme-option');
+            const currentTheme = localStorage.getItem('code_theme') || 'okaidia';
+            
+            // 标记当前选中的主题
+            themeOptions.forEach(option => {
+                const themeId = option.getAttribute('data-theme');
+                if (themeId === currentTheme) {
+                    option.style.borderColor = '#4fc3f7';
+                    option.style.boxShadow = '0 4px 12px rgba(79, 195, 247, 0.3)';
+                    option.style.transform = 'scale(1.05)';
+                }
+                
+                // 点击切换主题
+                option.addEventListener('click', () => {
+                    // 移除所有选中状态
+                    themeOptions.forEach(opt => {
+                        opt.style.borderColor = '#e0e0e0';
+                        opt.style.boxShadow = 'none';
+                        opt.style.transform = 'scale(1)';
+                    });
+                    
+                    // 标记当前选中
+                    option.style.borderColor = '#4fc3f7';
+                    option.style.boxShadow = '0 4px 12px rgba(79, 195, 247, 0.3)';
+                    option.style.transform = 'scale(1.05)';
+                    
+                    // 保存选择
+                    localStorage.setItem('code_theme', themeId);
+                    
+                    // 显示提示
+                    showNotification('代码主题已选择：' + option.querySelector('[style*="font-weight"]').textContent, 'success');
+                });
+                
+                // 鼠标悬停效果
+                option.addEventListener('mouseenter', () => {
+                    if (option.getAttribute('data-theme') !== currentTheme) {
+                        option.style.transform = 'scale(1.02)';
+                        option.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+                    }
+                });
+                
+                option.addEventListener('mouseleave', () => {
+                    if (option.getAttribute('data-theme') !== currentTheme) {
+                        option.style.transform = 'scale(1)';
+                        option.style.boxShadow = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+    
+    <!-- 樱花特效 -->
+    <link rel="stylesheet" href="../blog/css/sakura.css">
+    <script src="../blog/js/sakura.js"></script>
+    <script>
+        // 初始化樱花特效（后台管理专用配置）
+        const sakura = new SakuraEffect({
+            maxPetals: 20,           // 后台使用较少的花瓣
+            petalInterval: 400,      // 生成间隔稍长
+            enabled: true,           // 默认启用
+            showCounter: false,      // 不显示计数器
+            autoStart: true          // 自动开始
+        });
+    </script>
+    
+    <!-- 热榜API配置 -->
+    <script src="hotlist-api-config.js"></script>
+    <link rel="stylesheet" href="css/hotlist-config-modal.css">
+    <script src="js/hotlist-config-modal.js"></script>
+    
+    <!-- 网易云音乐导入模态框 -->
+    <link rel="stylesheet" href="css/netease-music-modal.css">
+    <script src="js/netease-music-modal.js"></script>
+    
+    <!-- 微博热搜 - 自动滚动版本 -->
+    <script src="js/hot-search-smooth.js?v=20251120-auto-scroll"></script>
+    
+    <!-- 重要事项管理 -->
+    <script src="js/events-manager.js?v=20251120"></script>
+    
+    <!-- 应用管理 -->
+    <script src="js/apps-manager.js"></script>
+    
+    <!-- 最近文章和最新评论丝滑滚动 -->
+    <script src="js/recent-smooth-scroll.js?v=20251120"></script>
+
+    <!-- 修改密码模态框 -->
+    <div id="changePasswordModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2>🔑 修改密码</h2>
+                <button class="modal-close" onclick="closeChangePasswordModal()">&times;</button>
+            </div>
+            <form id="changePasswordForm" onsubmit="handleChangePassword(event)">
+                <div class="form-group">
+                    <label for="oldPassword">当前密码 *</label>
+                    <input type="password" id="oldPassword" name="oldPassword" required 
+                           placeholder="请输入当前密码">
+                </div>
+                
+                <div class="form-group">
+                    <label for="newPasswordInput">新密码 *</label>
+                    <input type="password" id="newPasswordInput" name="newPasswordInput" required 
+                           minlength="6" placeholder="至少6位">
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmNewPassword">确认新密码 *</label>
+                    <input type="password" id="confirmNewPassword" name="confirmNewPassword" required 
+                           minlength="6" placeholder="再次输入新密码">
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="closeChangePasswordModal()">取消</button>
+                    <button type="submit" class="btn-primary">确认修改</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    </div><!-- 关闭 admin-container -->
+</body>
+</html>
