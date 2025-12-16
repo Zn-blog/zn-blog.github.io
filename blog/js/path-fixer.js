@@ -27,78 +27,15 @@ class PathFixer {
     }
     
     fixAllPaths() {
-        console.log('🔧 开始修复所有路径...');
+        console.log('🔧 开始修复数据文件路径...');
         
-        // 修复导航链接
-        this.fixNavigationLinks();
-        
-        // 修复CSS和JS资源
-        this.fixResourcePaths();
-        
-        // 修复图片路径
-        this.fixImagePaths();
-        
-        // 修复数据文件路径（通过重写fetch）
+        // 只修复数据文件路径（通过重写fetch）
         this.fixDataPaths();
         
-        console.log('✅ 路径修复完成');
+        console.log('✅ 数据路径修复完成');
     }
     
-    fixNavigationLinks() {
-        const links = document.querySelectorAll('a[href]');
-        links.forEach(link => {
-            const href = link.getAttribute('href');
-            if (href && !href.startsWith('http') && !href.startsWith('#') && !href.startsWith('mailto:')) {
-                const newHref = this.fixRelativePath(href);
-                if (newHref !== href) {
-                    link.setAttribute('href', newHref);
-                    console.log('🔗 修复导航链接:', href, '→', newHref);
-                }
-            }
-        });
-    }
-    
-    fixResourcePaths() {
-        // 修复CSS链接
-        const cssLinks = document.querySelectorAll('link[rel="stylesheet"][href]');
-        cssLinks.forEach(link => {
-            const href = link.getAttribute('href');
-            if (href && !href.startsWith('http')) {
-                const newHref = this.fixRelativePath(href);
-                if (newHref !== href) {
-                    link.setAttribute('href', newHref);
-                    console.log('🎨 修复CSS路径:', href, '→', newHref);
-                }
-            }
-        });
-        
-        // 修复JS脚本
-        const scripts = document.querySelectorAll('script[src]');
-        scripts.forEach(script => {
-            const src = script.getAttribute('src');
-            if (src && !src.startsWith('http')) {
-                const newSrc = this.fixRelativePath(src);
-                if (newSrc !== src) {
-                    script.setAttribute('src', newSrc);
-                    console.log('📜 修复JS路径:', src, '→', newSrc);
-                }
-            }
-        });
-    }
-    
-    fixImagePaths() {
-        const images = document.querySelectorAll('img[src]');
-        images.forEach(img => {
-            const src = img.getAttribute('src');
-            if (src && !src.startsWith('http') && !src.startsWith('data:')) {
-                const newSrc = this.fixRelativePath(src);
-                if (newSrc !== src) {
-                    img.setAttribute('src', newSrc);
-                    console.log('🖼️ 修复图片路径:', src, '→', newSrc);
-                }
-            }
-        });
-    }
+
     
     fixDataPaths() {
         // 重写fetch函数来修复数据文件路径

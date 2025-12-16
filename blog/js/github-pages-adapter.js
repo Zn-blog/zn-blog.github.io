@@ -41,9 +41,7 @@ class GitHubPagesAdapter {
     // 初始化适配
     init() {
         this.setupStaticMode();
-        this.fixImagePaths();
-        this.fixVideoPaths();
-        this.fixNavigationPaths();
+        // 只设置静态模式，不修复页面路径
     }
     
     // 修复图片路径
