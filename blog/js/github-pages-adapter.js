@@ -42,6 +42,7 @@ class GitHubPagesAdapter {
     init() {
         this.setupStaticMode();
         // 只设置静态模式，不修复页面路径
+        // 路径修复已在data-adapter.js中处理
     }
     
     // 修复图片路径
@@ -166,10 +167,12 @@ class GitHubPagesAdapter {
         // 模拟保存功能
         window.mockSave = true;
         
-        // 重写 fetch 以拦截 API 调用但保留实际文件路径
+        // 路径修复已在data-adapter.js中处理，这里不再重写fetch
         const originalFetch = window.fetch;
         const adapter = this;
         
+        // 注释掉fetch重写，避免干扰data-adapter.js的路径处理
+        /*
         window.fetch = async function(url, options) {
             if (typeof url === 'string') {
                 // 如果是 API 调用（包含 localhost 或以 /api/ 开头）
@@ -287,8 +290,9 @@ class GitHubPagesAdapter {
             
             return originalFetch(url, options);
         };
+        */
         
-        console.log('🔧 已启用静态模式，API调用将被拦截，使用实际仓库文件');
+        console.log('🔧 已启用静态模式，路径修复由data-adapter.js处理');
     }
     
     // 显示静态模式提示
