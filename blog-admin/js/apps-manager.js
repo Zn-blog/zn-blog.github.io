@@ -19,15 +19,32 @@ class AppsAdminManager {
     // 加载应用数据
     async loadApps() {
         try {
-            const response = await fetch('/api/apps');
-            const result = await response.json();
+            // 检查是否为静态环境（GitHub Pages等）
+            const isStatic = window.location.hostname.includes('github.io') || 
+                            window.location.hostname.includes('vercel.app') ||
+                            !window.location.hostname.includes('localhost');
             
-            if (result.success) {
-                this.apps = result.data.sort((a, b) => (a.order || 0) - (b.order || 0));
-                console.log(`✅ 加载了 ${this.apps.length} 个应用`);
+            if (isStatic) {
+                // 静态环境：直接读取JSON文件
+                const response = await fetch('../data/apps.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                this.apps = await response.json();
+                this.apps = this.apps.sort((a, b) => (a.order || 0) - (b.order || 0));
+                console.log(`✅ 从JSON文件加载了 ${this.apps.length} 个应用`);
             } else {
-                console.error('❌ 加载应用失败');
-                this.apps = [];
+                // 本地环境：使用API
+                const response = await fetch('/api/apps');
+                const result = await response.json();
+                
+                if (result.success) {
+                    this.apps = result.data.sort((a, b) => (a.order || 0) - (b.order || 0));
+                    console.log(`✅ 从API加载了 ${this.apps.length} 个应用`);
+                } else {
+                    console.error('❌ 加载应用失败');
+                    this.apps = [];
+                }
             }
         } catch (error) {
             console.error('❌ 加载应用出错:', error);
@@ -217,6 +234,17 @@ class AppsAdminManager {
         }
 
         try {
+            // 检查是否为静态环境
+            const isStatic = window.location.hostname.includes('github.io') || 
+                            window.location.hostname.includes('vercel.app') ||
+                            !window.location.hostname.includes('localhost');
+            
+            if (isStatic) {
+                // 静态环境：显示提示信息
+                alert('静态部署环境下无法保存应用，请在本地环境使用完整功能');
+                return;
+            }
+            
             let response;
             
             if (this.currentApp) {
@@ -296,6 +324,17 @@ class AppsAdminManager {
         }
 
         try {
+            // 检查是否为静态环境
+            const isStatic = window.location.hostname.includes('github.io') || 
+                            window.location.hostname.includes('vercel.app') ||
+                            !window.location.hostname.includes('localhost');
+            
+            if (isStatic) {
+                // 静态环境：显示提示信息
+                alert('静态部署环境下无法删除应用，请在本地环境使用完整功能');
+                return;
+            }
+            
             const response = await fetch(`/api/apps/${appId}`, {
                 method: 'DELETE'
             });
