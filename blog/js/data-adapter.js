@@ -20,25 +20,23 @@ class DataAdapter {
         try {
             // 根据当前页面位置调整路径
             const currentPath = window.location.pathname;
-            let basePath = '../data';
+            let url;
             
-            // 如果在 blog/pages/ 目录下
-            if (currentPath.includes('/blog/pages/')) {
-                basePath = '../../data';
-            } else if (currentPath.includes('/blog/')) {
-                // 在blog目录下
-                basePath = '../data';
+            // 如果是GitHub Pages环境
+            if (window.location.hostname.includes('github.io')) {
+                // 直接使用绝对路径，避免相对路径问题
+                const pathParts = window.location.pathname.split('/').filter(p => p);
+                const baseUrl = pathParts.length > 0 ? `/${pathParts[0]}` : '';
+                url = `${baseUrl}/data/${resource}.json`;
             } else {
-                // 在根目录
-                basePath = 'data';
-            }
-            
-            // 构建完整URL
-            let url = `${basePath}/${resource}.json`;
-            
-            // 如果是GitHub Pages，使用适配器修复路径
-            if (window.githubPagesAdapter && window.githubPagesAdapter.isGitHubPages) {
-                url = window.githubPagesAdapter.fixPath(url);
+                // 本地环境使用相对路径
+                if (currentPath.includes('/blog/pages/')) {
+                    url = `../../data/${resource}.json`;
+                } else if (currentPath.includes('/blog/')) {
+                    url = `../data/${resource}.json`;
+                } else {
+                    url = `data/${resource}.json`;
+                }
             }
             
             console.log(`📊 尝试加载 ${resource} 从:`, url);

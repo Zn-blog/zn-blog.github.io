@@ -38,21 +38,8 @@ class PathFixer {
 
     
     fixDataPaths() {
-        // 重写fetch函数来修复数据文件路径
-        const originalFetch = window.fetch;
-        const pathFixer = this;
-        
-        window.fetch = function(url, options) {
-            if (typeof url === 'string' && !url.startsWith('http')) {
-                // 检查是否是数据文件
-                if (url.includes('.json') && (url.includes('data/') || url.startsWith('../data/') || url.startsWith('../../data/'))) {
-                    const fixedUrl = pathFixer.fixDataPath(url);
-                    console.log('📊 修复数据路径:', url, '→', fixedUrl);
-                    return originalFetch(fixedUrl, options);
-                }
-            }
-            return originalFetch(url, options);
-        };
+        // 数据路径已在data-adapter.js中直接处理，这里不需要额外修复
+        console.log('📊 数据路径修复已在data-adapter.js中处理');
     }
     
     fixRelativePath(path) {
