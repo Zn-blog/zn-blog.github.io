@@ -26,7 +26,16 @@ class AppsAdminManager {
             
             if (isStatic) {
                 // 静态环境：直接读取JSON文件
-                const response = await fetch('../data/apps.json');
+                let url = '../data/apps.json';
+                
+                // 如果是GitHub Pages，使用绝对路径
+                if (window.location.hostname.includes('github.io')) {
+                    const pathParts = window.location.pathname.split('/').filter(p => p);
+                    const repoName = pathParts.length > 0 ? pathParts[0] : '';
+                    url = `/${repoName}/data/apps.json`;
+                }
+                
+                const response = await fetch(url);
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}`);
                 }

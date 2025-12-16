@@ -5,12 +5,10 @@
 
 class DataAdapter {
     constructor() {
-        // 前台博客固定使用JSON文件模式（只读）
-        this.useJSON = true;
-        this.jsonBaseURL = '../data'; // JSON文件目录（相对于blog目录）
-        this.fallbackToLocalStorage = false; // 前台不回退到localStorage
+        // 使用环境适配器
+        this.environmentAdapter = window.environmentAdapter || new EnvironmentAdapter();
         
-        console.log('📖 前台数据适配层初始化 - 使用JSON文件（只读模式）');
+        console.log('📖 数据适配层初始化 - 多环境支持:', this.environmentAdapter.getEnvironmentInfo());
     }
 
     // ========== 核心方法 ==========
@@ -29,17 +27,12 @@ class DataAdapter {
             // 如果是GitHub Pages环境
             if (window.location.hostname.includes('github.io')) {
                 // GitHub Pages: data和blog是同级目录
-                // 简化判断：直接检查URL结构
-                if (currentPath.endsWith('.html') && currentPath.includes('/pages/')) {
-                    // 在pages目录下的页面: ../../data/
-                    url = `../../data/${resource}.json`;
-                } else if (currentPath.includes('/blog/')) {
-                    // 在blog目录下: ../data/
-                    url = `../data/${resource}.json`;
-                } else {
-                    // 在根目录: data/
-                    url = `data/${resource}.json`;
-                }
+                // 获取仓库名称
+                const pathParts = currentPath.split('/').filter(p => p);
+                const repoName = pathParts.length > 0 ? pathParts[0] : '';
+                
+                // 直接使用绝对路径，避免相对路径混乱
+                url = `/${repoName}/data/${resource}.json`;
             } else {
                 // 本地环境使用相对路径
                 if (currentPath.includes('/blog/pages/')) {
@@ -69,7 +62,7 @@ class DataAdapter {
 
     // 统一的数据获取方法
     async getData(resource) {
-        return await this.getDataFromJSON(resource);
+        return await this.environmentAdapter.getData(resource);
     }
 
     // 保存数据（通过 API 保存到 JSON 文件）
