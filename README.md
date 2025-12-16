@@ -648,9 +648,42 @@ data/
 
 ## 🌐 部署指南
 
-### 🚀 Vercel 部署（推荐）
+### 🚀 三种部署方式，满足不同需求
 
-**零配置，一键部署！**
+我们的博客系统现在支持**三种部署方式**，每种都有其独特优势：
+
+#### 🌟 多环境兼容架构
+
+```
+📦 博客系统架构
+├── 🏠 本地开发 (localhost)
+│   ├── Express.js 服务器
+│   ├── JSON 文件存储
+│   └── 完整功能支持
+├── 📄 GitHub Pages (github.io)
+│   ├── 静态文件部署
+│   ├── 自动路径修复
+│   └── 只读模式
+└── ☁️ Vercel (vercel.app)
+    ├── Serverless Functions
+    ├── KV 云存储
+    └── 动态功能支持
+```
+
+---
+
+### 🚀 Vercel 动态部署（推荐）
+
+**🎯 最佳选择：完整功能 + 零配置 + 全球CDN**
+
+#### ✨ 独特优势
+- 🔥 **动态功能支持** - 完整的后台管理、数据编辑
+- 🌐 **Serverless Functions** - 自动扩缩容，按需付费
+- 💾 **KV 云存储** - 数据持久化，自动备份
+- 🚀 **全球CDN** - 极速访问，自动HTTPS
+- 🔄 **自动部署** - Git推送即部署
+
+#### 📋 部署步骤
 
 1. **推送到GitHub**
    ```bash
@@ -659,54 +692,199 @@ data/
    git push origin main
    ```
 
-2. **Vercel导入**
-   - 访问 [vercel.com](https://vercel.com)
-   - 使用GitHub登录
-   - 导入你的仓库
-   - 点击Deploy
+2. **Vercel配置**
+   ```bash
+   # 访问 vercel.com
+   # 1. 使用GitHub登录
+   # 2. 导入仓库
+   # 3. 项目设置：
+   #    - Framework: Other
+   #    - Build Command: echo "Static site with API"
+   #    - Output Directory: . (根目录)
+   ```
 
-3. **访问网站**
-   - 获得地址：`https://your-project.vercel.app`
-   - 自动HTTPS + 全球CDN
+3. **添加数据库**
+   ```bash
+   # Vercel控制台
+   # 1. Storage → Create Database
+   # 2. 选择 KV (Redis)
+   # 3. 自动配置环境变量
+   ```
 
-**✨ 特点：** 免费、快速、自动部署、全球CDN
+4. **数据迁移**
+   ```bash
+   # 部署完成后访问
+   https://your-project.vercel.app/api/migrate
+   # 自动导入现有JSON数据到云存储
+   ```
 
-### 📄 GitHub Pages 部署
+#### 🎯 功能对比
+
+| 功能 | Vercel | GitHub Pages | 本地开发 |
+|------|--------|--------------|----------|
+| 文章管理 | ✅ 完整支持 | ❌ 只读 | ✅ 完整支持 |
+| 数据编辑 | ✅ 云端保存 | ❌ 静态 | ✅ 本地保存 |
+| 图片上传 | ✅ 云存储 | ❌ 不支持 | ✅ 本地存储 |
+| 评论系统 | ✅ 实时更新 | ❌ 静态显示 | ✅ 实时更新 |
+| 访问速度 | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
+| 部署难度 | ⭐⭐ | ⭐ | ⭐⭐⭐ |
+
+---
+
+### 📄 GitHub Pages 静态部署
+
+**🎯 适合场景：展示型博客、无需后台管理**
+
+#### ✨ 特点
+- 🆓 **完全免费** - GitHub提供的免费静态托管
+- 🔧 **零配置** - 推送即部署，无需额外设置
+- 🛡️ **路径自动修复** - 智能处理GitHub Pages路径问题
+- 📱 **完美展示** - 前台功能完整，响应式设计
+
+#### 📋 部署步骤
 
 ```bash
 # 1. 启用GitHub Pages
 # 仓库设置 → Pages → Source: main branch
 
-# 2. 访问地址
-# https://yourusername.github.io/personal-blog-system
+# 2. 等待部署完成（约1-2分钟）
+
+# 3. 访问地址
+# https://yourusername.github.io/repository-name
 ```
 
-### 🌐 Netlify 部署
+#### 🔧 路径修复机制
 
-1. 访问 [netlify.com](https://netlify.com)
-2. New site from Git
-3. 选择GitHub仓库
-4. 部署设置保持默认
+```javascript
+// 自动检测GitHub Pages环境
+if (window.location.hostname.includes('github.io')) {
+    // 使用绝对路径，避免相对路径问题
+    url = `/${repoName}/data/${resource}.json`;
+} else {
+    // 本地环境继续使用相对路径
+    url = `../data/${resource}.json`;
+}
+```
 
-### 💻 本地开发
+#### ⚠️ 功能限制
+- ❌ **后台管理** - 无法编辑数据（静态部署限制）
+- ❌ **图片上传** - 无法上传新图片
+- ❌ **评论互动** - 无法添加新评论
+- ✅ **完美展示** - 所有前台功能正常
+
+---
+
+### 💻 本地开发环境
+
+**🎯 适合场景：开发测试、完整功能体验**
+
+#### ✨ 特点
+- 🔧 **完整功能** - 所有功能无限制使用
+- ⚡ **即时响应** - 本地运行，无网络延迟
+- 💾 **数据安全** - 数据存储在本地，完全可控
+- 🛠️ **开发友好** - 支持热重载，便于二次开发
+
+#### 📋 启动步骤
 
 ```bash
-# 完整功能开发环境
+# 1. 克隆项目
+git clone https://github.com/yourusername/personal-blog-system.git
+cd personal-blog-system
+
+# 2. 安装依赖
+npm install
+
+# 3. 启动项目
 npm start
 
-# 访问地址
+# 4. 访问地址
 # 前台：http://localhost:3001/blog
 # 后台：http://localhost:3001/blog-admin
 ```
 
-**📋 部署对比**
+#### 🔧 其他启动方式
 
-| 平台 | 成本 | 速度 | 功能 | 推荐度 |
-|------|------|------|------|--------|
-| Vercel | 免费 | ⭐⭐⭐⭐⭐ | 静态+API | ⭐⭐⭐⭐⭐ |
-| GitHub Pages | 免费 | ⭐⭐⭐⭐ | 静态 | ⭐⭐⭐⭐ |
-| Netlify | 免费 | ⭐⭐⭐⭐ | 静态+函数 | ⭐⭐⭐⭐ |
-| 本地 | 免费 | ⭐⭐⭐ | 完整 | ⭐⭐⭐ |
+```bash
+# 开发模式（自动重启）
+npm run dev
+
+# 直接启动服务器
+node unified-server.js
+
+# 仅启动服务器
+npm run server
+```
+
+---
+
+### 🌐 其他部署平台
+
+#### Netlify 部署
+```bash
+# 1. 访问 netlify.com
+# 2. New site from Git
+# 3. 选择GitHub仓库
+# 4. 部署设置保持默认
+```
+
+#### 自定义服务器
+```bash
+# 1. 上传项目文件到服务器
+# 2. 安装Node.js环境
+# 3. 运行 npm install
+# 4. 启动 node unified-server.js
+# 5. 配置反向代理（Nginx/Apache）
+```
+
+---
+
+### 📊 部署方式选择指南
+
+| 需求场景 | 推荐方案 | 理由 |
+|---------|----------|------|
+| 🏢 **商业博客** | Vercel | 完整功能 + 专业稳定 |
+| 👨‍💻 **个人展示** | GitHub Pages | 免费 + 简单 |
+| 🛠️ **开发测试** | 本地环境 | 完整功能 + 即时响应 |
+| 📚 **文档站点** | GitHub Pages | 静态内容 + 版本控制 |
+| 🎮 **应用中心** | Vercel | 动态功能 + 云存储 |
+
+### 🔄 数据同步机制
+
+#### 环境间数据流转
+```
+本地开发 ←→ GitHub仓库 ←→ Vercel部署
+    ↓           ↓           ↓
+JSON文件    静态文件     KV存储
+```
+
+#### 数据迁移工具
+- **📤 导出功能** - 本地 → JSON文件
+- **📥 导入功能** - JSON文件 → Vercel KV
+- **🔄 同步工具** - `/api/sync` 手动同步
+- **🔄 自动迁移** - `/api/migrate` 首次部署
+
+### 🛡️ 部署最佳实践
+
+1. **🔒 安全设置**
+   ```bash
+   # 修改默认密码
+   # 配置环境变量
+   # 启用HTTPS
+   ```
+
+2. **⚡ 性能优化**
+   ```bash
+   # 启用CDN
+   # 压缩静态资源
+   # 配置缓存策略
+   ```
+
+3. **📊 监控运维**
+   ```bash
+   # 配置错误监控
+   # 设置备份策略
+   # 监控访问统计
+   ```
 
 ---
 
@@ -884,6 +1062,53 @@ A: 这是v2.0.1已修复的问题，解决方法：
 ---
 
 ## 📝 更新日志
+
+### v2.1.0 (2024-12-17) 🚀 多环境部署支持版本
+
+**🌐 三种部署方式完整支持**
+- ✨ **Vercel动态部署** - Serverless Functions + KV云存储
+- ✨ **GitHub Pages静态部署** - 路径自动修复 + 智能适配
+- ✨ **本地开发环境** - 完整功能 + Express服务器
+- ✨ **环境自动检测** - 智能识别运行环境并适配功能
+- ✨ **优雅降级机制** - API失败时自动回退到JSON文件
+
+**☁️ Vercel云端功能**
+- ✨ **完整API函数集** - 文章、设置、通用资源CRUD
+- ✨ **数据自动迁移** - JSON文件一键导入到KV存储
+- ✨ **手动数据同步** - `/api/sync`支持增量同步
+- ✨ **多环境兼容** - 保持现有功能完全不变
+- ✨ **云端数据管理** - 支持完整的后台管理功能
+
+**🔧 GitHub Pages路径修复**
+- ✨ **绝对路径处理** - 解决相对路径导致的404问题
+- ✨ **智能路径检测** - 自动识别仓库名称和目录结构
+- ✨ **后台应用支持** - 静态环境下的应用管理器适配
+- ✨ **数据加载优化** - 统一的数据获取接口
+
+**🎯 环境适配系统**
+- ✨ **环境适配器** - `blog/js/environment-adapter.js`
+- ✨ **统一数据接口** - 跨环境的数据获取和保存
+- ✨ **功能检测机制** - 根据环境提供对应功能
+- ✨ **用户友好提示** - 静态模式下的功能限制提示
+
+**📦 新增API函数**
+- ✨ `api/[resource].js` - 通用资源管理API
+- ✨ `api/settings.js` - 设置管理专用API
+- ✨ `api/migrate.js` - 自动数据迁移API
+- ✨ `api/sync.js` - 手动数据同步API
+- ✨ 完整的CORS支持和错误处理
+
+**🔄 数据同步机制**
+- ✨ **首次部署迁移** - 自动检测并导入现有数据
+- ✨ **增量同步支持** - 支持部分数据更新
+- ✨ **数据格式兼容** - 与现有JSON格式完全兼容
+- ✨ **备份和恢复** - 支持数据备份和版本管理
+
+**📋 部署配置优化**
+- ✨ **vercel.json更新** - 支持Serverless Functions
+- ✨ **package.json依赖** - 添加@vercel/kv支持
+- ✨ **环境变量配置** - 自动配置KV存储连接
+- ✨ **部署文档完善** - 详细的部署指南和对比
 
 ### v2.0.3 (2024-12-15) 🎬 视频编辑器完善版本
 
@@ -1330,10 +1555,10 @@ git push origin feature/amazing-feature
 
 ## 📚 相关文档
 
-**� 快速开器始**
-- � [服务器设置指南](SERVER-SETUP-GUIDE.md)
-- 🚀 [Vercel 部署指南](VERCEL-DEPLOYMENT.md)
-- 🌐 [Gitee 部署指南](GITEE-DEPLOYMENT.md)
+**🚀 部署和环境**
+- 🌐 [Vercel迁移计划](VERCEL-MIGRATION-PLAN.md) - 完整的多环境支持方案
+- 🚀 [Vercel自动部署教程](🚀-Vercel自动部署完整教程与优化指南.md) - 详细部署指南
+- 📄 [服务器设置指南](SERVER-SETUP-GUIDE.md)
 - ⚡ [快速启动指南](QUICK-START-FIXED.md)
 
 **📝 编辑器和内容**
@@ -1394,7 +1619,13 @@ git push origin feature/amazing-feature
 
 ### 🎉 享受你的博客之旅！
 
-**🚀 快速开始** • **🎨 自定义主题** • **🎮 探索应用** • **📝 创作内容**
+**🚀 三种部署方式** • **☁️ 云端动态功能** • **🎨 自定义主题** • **🎮 探索应用** • **📝 创作内容**
+
+### 🌐 部署选择建议
+
+- **🏢 商业用途** → 选择 **Vercel** (完整功能 + 云端管理)
+- **👨‍💻 个人展示** → 选择 **GitHub Pages** (免费 + 简单)  
+- **🛠️ 开发测试** → 选择 **本地环境** (完整功能 + 即时响应)
 
 ---
 
