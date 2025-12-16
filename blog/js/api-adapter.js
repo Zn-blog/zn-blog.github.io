@@ -127,23 +127,38 @@ class APIAdapter {
      * 获取JSON文件路径
      */
     getJsonPath(resource) {
+        // 根据当前页面位置确定相对路径
+        const currentPath = window.location.pathname;
+        let basePath = '';
+        
+        if (currentPath.includes('/blog/pages/')) {
+            // 在pages目录下，需要回到根目录
+            basePath = '../../data/';
+        } else if (currentPath.includes('/blog/')) {
+            // 在blog目录下，需要回到上级目录
+            basePath = '../data/';
+        } else {
+            // 在根目录
+            basePath = 'data/';
+        }
+        
         const pathMap = {
-            'articles': '/data/articles.json',
-            'categories': '/data/categories.json',
-            'tags': '/data/tags.json',
-            'comments': '/data/comments.json',
-            'guestbook': '/data/guestbook.json',
-            'images': '/data/images.json',
-            'music': '/data/music.json',
-            'videos': '/data/videos.json',
-            'links': '/data/links.json',
-            'apps': '/data/apps.json',
-            'events': '/data/events.json',
-            'users': '/data/users.json',
-            'settings': '/data/settings.json'
+            'articles': `${basePath}articles.json`,
+            'categories': `${basePath}categories.json`,
+            'tags': `${basePath}tags.json`,
+            'comments': `${basePath}comments.json`,
+            'guestbook': `${basePath}guestbook.json`,
+            'images': `${basePath}images.json`,
+            'music': `${basePath}music.json`,
+            'videos': `${basePath}videos.json`,
+            'links': `${basePath}links.json`,
+            'apps': `${basePath}apps.json`,
+            'events': `${basePath}events.json`,
+            'users': `${basePath}users.json`,
+            'settings': `${basePath}settings.json`
         };
         
-        return pathMap[resource] || `/data/${resource}.json`;
+        return pathMap[resource] || `${basePath}${resource}.json`;
     }
     
     /**

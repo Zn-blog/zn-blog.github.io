@@ -22,7 +22,17 @@ class GitHubPagesAdapter {
     // 获取基础URL
     getBaseUrl() {
         const pathParts = window.location.pathname.split('/');
+        // 对于GitHub Pages，通常是 /repository-name/blog/...
+        // 我们需要找到仓库名称
         if (pathParts.length > 1 && pathParts[1]) {
+            // 如果路径包含 blog，说明我们在blog目录下
+            if (pathParts.includes('blog')) {
+                // 找到blog之前的部分作为baseUrl
+                const blogIndex = pathParts.indexOf('blog');
+                if (blogIndex > 0) {
+                    return `/${pathParts[1]}`;
+                }
+            }
             return `/${pathParts[1]}`;
         }
         return '';
@@ -97,28 +107,42 @@ class GitHubPagesAdapter {
             return path;
         }
         
+        // 获取当前页面路径信息
+        const currentPath = window.location.pathname;
+        const isInBlogDir = currentPath.includes('/blog/');
+        const isInPagesDir = currentPath.includes('/blog/pages/');
+        
         // 处理相对路径
         if (path.startsWith('../')) {
-            // ../data/xxx.json -> /repository-name/data/xxx.json
-            const relativePath = path.replace('../', '');
+            // 从pages目录：../data/xxx.json -> /repository-name/data/xxx.json
+            // 从blog目录：../data/xxx.json -> /repository-name/data/xxx.json
+            let relativePath = path;
+            while (relativePath.startsWith('../')) {
+                relativePath = relativePath.substring(3);
+            }
             return `${this.baseUrl}/${relativePath}`;
         } else if (path.startsWith('./')) {
             // ./images/xxx.jpg -> /repository-name/blog/images/xxx.jpg
             const relativePath = path.replace('./', '');
-            return `${this.baseUrl}/blog/${relativePath}`;
+            if (isInPagesDir) {
+                return `${this.baseUrl}/blog/${relativePath}`;
+            } else {
+                return `${this.baseUrl}/blog/${relativePath}`;
+            }
         } else if (path.startsWith('/')) {
             // /data/xxx.json -> /repository-name/data/xxx.json
             // /uploads/xxx.jpg -> /repository-name/uploads/xxx.jpg
             return `${this.baseUrl}${path}`;
         } else {
             // 相对路径处理：根据当前页面位置判断
-            const currentPath = window.location.pathname;
-            
-            if (currentPath.includes('/blog/')) {
-                // 当前在blog目录下，相对路径需要相对于blog目录
+            if (isInPagesDir) {
+                // 在pages目录下，需要回到blog目录
+                return `${this.baseUrl}/blog/${path}`;
+            } else if (isInBlogDir) {
+                // 在blog目录下
                 return `${this.baseUrl}/blog/${path}`;
             } else {
-                // 当前在根目录，相对路径相对于根目录
+                // 在根目录
                 return `${this.baseUrl}/${path}`;
             }
         }
@@ -170,18 +194,23 @@ class GitHubPagesAdapter {
                 let newUrl = url;
                 
                 // 修复相对路径的数据文件
-                if (url.startsWith('../data/')) {
-                    newUrl = `${adapter.baseUrl}/data/${url.replace('../data/', '')}`;
-                    console.log('📊 修复数据路径:', url, '→', newUrl);
-                } else if (url.startsWith('../../data/')) {
-                    // 处理 pages 目录下的路径
-                    newUrl = `${adapter.baseUrl}/data/${url.replace('../../data/', '')}`;
-                    console.log('📊 修复数据路径:', url, '→', newUrl);
-                } else if (url.startsWith('/data/')) {
-                    newUrl = `${adapter.baseUrl}${url}`;
-                    console.log('📊 修复数据路径:', url, '→', newUrl);
-                } else if (url.startsWith('data/')) {
-                    newUrl = `${adapter.baseUrl}/${url}`;
+                if (url.includes('/data/') || url.startsWith('../data/') || url.startsWith('../../data/') || url.startsWith('data/')) {
+                    // 统一处理所有数据文件路径
+                    let dataPath = url;
+                    
+                    // 移除所有相对路径前缀
+                    dataPath = dataPath.replace(/^\.\.\//, '').replace(/^\.\.\//, '').replace(/^\//, '');
+                    
+                    // 如果不是以data/开头，添加data/前缀
+                    if (!dataPath.startsWith('data/')) {
+                        if (dataPath.includes('/data/')) {
+                            dataPath = dataPath.substring(dataPath.indexOf('/data/') + 1);
+                        } else {
+                            dataPath = `data/${dataPath}`;
+                        }
+                    }
+                    
+                    newUrl = `${adapter.baseUrl}/${dataPath}`;
                     console.log('📊 修复数据路径:', url, '→', newUrl);
                 }
                 

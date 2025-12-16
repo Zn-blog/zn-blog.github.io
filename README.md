@@ -97,7 +97,10 @@
 git clone https://github.com/yourusername/personal-blog-system.git
 cd personal-blog-system
 
-# 2. 安装依赖并启动
+# 2. 安装依赖
+npm install
+
+# 3. 启动项目
 npm start
 ```
 

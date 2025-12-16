@@ -25,14 +25,30 @@ class DataAdapter {
             // 如果在 blog/pages/ 目录下
             if (currentPath.includes('/blog/pages/')) {
                 basePath = '../../data';
+            } else if (currentPath.includes('/blog/')) {
+                // 在blog目录下
+                basePath = '../data';
+            } else {
+                // 在根目录
+                basePath = 'data';
             }
             
-            const response = await fetch(`${basePath}/${resource}.json`);
+            // 构建完整URL
+            let url = `${basePath}/${resource}.json`;
+            
+            // 如果是GitHub Pages，使用适配器修复路径
+            if (window.githubPagesAdapter && window.githubPagesAdapter.isGitHubPages) {
+                url = window.githubPagesAdapter.fixPath(url);
+            }
+            
+            console.log(`📊 尝试加载 ${resource} 从:`, url);
+            
+            const response = await fetch(url);
             if (!response.ok) {
                 throw new Error(`无法加载 ${resource}.json: ${response.status}`);
             }
             const data = await response.json();
-            console.log(`✅ 从JSON文件加载 ${resource}:`, data.length || 'object');
+            console.log(`✅ 从JSON文件加载 ${resource}:`, Array.isArray(data) ? `${data.length}条记录` : 'object');
             return data;
         } catch (error) {
             console.error(`❌ 加载 ${resource}.json 失败:`, error);

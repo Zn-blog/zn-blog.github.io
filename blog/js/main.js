@@ -450,8 +450,41 @@ async function loadSiteAvatar() {
     }
 }
 
-// 页面加载时加载头像
+// 页面加载时加载头像和统计数据
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('📄 页面加载完成，准备加载头像');
+    console.log('📄 页面加载完成，准备加载头像和统计数据');
     setTimeout(loadSiteAvatar, 100);
+    setTimeout(loadSiteStats, 200);
 });
+
+// ========== 加载统计数据 ==========
+async function loadSiteStats() {
+    try {
+        console.log('📊 开始加载统计数据...');
+        
+        // 等待数据存储系统初始化
+        if (!window.blogDataStore) {
+            console.warn('⚠️ blogDataStore 未初始化，等待中...');
+            setTimeout(loadSiteStats, 200);
+            return;
+        }
+        
+        const stats = await window.blogDataStore.getStats();
+        console.log('📊 获取到统计数据:', stats);
+        
+        // 更新页面中的统计数据
+        const totalWordsEl = document.getElementById('totalWords');
+        const totalViewsEl = document.getElementById('totalViews');
+        const totalVisitorsEl = document.getElementById('totalVisitors');
+        const runningTimeEl = document.getElementById('runningTime');
+        
+        if (totalWordsEl) totalWordsEl.textContent = stats.totalWords || 0;
+        if (totalViewsEl) totalViewsEl.textContent = stats.totalViews || 0;
+        if (totalVisitorsEl) totalVisitorsEl.textContent = stats.totalVisitors || 0;
+        if (runningTimeEl) runningTimeEl.textContent = `${stats.runningDays || 0}天`;
+        
+        console.log('✅ 统计数据已更新到页面');
+    } catch (error) {
+        console.error('❌ 加载统计数据失败:', error);
+    }
+}
