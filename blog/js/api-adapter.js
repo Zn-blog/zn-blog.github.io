@@ -137,6 +137,7 @@ class APIAdapter {
             'music': '/data/music.json',
             'videos': '/data/videos.json',
             'links': '/data/links.json',
+            'apps': '/data/apps.json',
             'events': '/data/events.json',
             'users': '/data/users.json',
             'settings': '/data/settings.json'
@@ -159,6 +160,7 @@ class APIAdapter {
             'music': [],
             'videos': [],
             'links': [],
+            'apps': [],
             'events': [],
             'users': [],
             'settings': {}

@@ -416,16 +416,17 @@ class BlogDataStoreWrapper {
     // 友情链接相关
     // 🔥 所有方法都改为异步
     async getLinks() {
-        return await this.adapter.getLinks();
+        const result = await this.adapter.getData('links');
+        return result.success ? result.data : result;
     }
 
     async getLinkById(id) {
-        const links = await this.adapter.getLinks();
+        const links = await this.getLinks();
         return links.find(link => link.id === id);
     }
 
     async addLink(link) {
-        const links = await this.adapter.getLinks();
+        const links = await this.getLinks();
         const newLink = {
             id: Date.now(),
             name: link.name || '未命名',
@@ -442,7 +443,7 @@ class BlogDataStoreWrapper {
     }
 
     async updateLink(id, updates) {
-        const links = await this.adapter.getLinks();
+        const links = await this.getLinks();
         const index = links.findIndex(link => link.id === id);
         if (index !== -1) {
             links[index] = { ...links[index], ...updates };
@@ -453,24 +454,24 @@ class BlogDataStoreWrapper {
     }
 
     async deleteLink(id) {
-        const links = await this.adapter.getLinks();
+        const links = await this.getLinks();
         const filtered = links.filter(link => link.id !== id);
         await this.adapter.saveData('links', filtered);
     }
 
     async getLinkCategories() {
-        const links = await this.adapter.getLinks();
+        const links = await this.getLinks();
         const categories = [...new Set(links.map(link => link.category))];
         return categories.length > 0 ? categories : ['默认'];
     }
 
     async getLinksByCategory(category) {
-        const links = await this.adapter.getLinks();
+        const links = await this.getLinks();
         return links.filter(link => link.category === category && link.status === 'active');
     }
 
     async getActiveLinks() {
-        const links = await this.adapter.getLinks();
+        const links = await this.getLinks();
         return links.filter(link => link.status === 'active');
     }
 

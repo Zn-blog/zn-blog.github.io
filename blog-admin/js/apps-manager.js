@@ -19,7 +19,7 @@ class AppsAdminManager {
     // 加载应用数据
     async loadApps() {
         try {
-            const response = await fetch('http://localhost:3001/api/apps');
+            const response = await fetch('/api/apps');
             const result = await response.json();
             
             if (result.success) {
@@ -221,7 +221,7 @@ class AppsAdminManager {
             
             if (this.currentApp) {
                 // 更新现有应用
-                response = await fetch(`http://localhost:3001/api/apps/${this.currentApp.id}`, {
+                response = await fetch(`/api/apps/${this.currentApp.id}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
@@ -229,7 +229,7 @@ class AppsAdminManager {
             } else {
                 // 创建新应用
                 formData.createdAt = new Date().toISOString();
-                response = await fetch('http://localhost:3001/api/apps', {
+                response = await fetch('/api/apps', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
@@ -265,7 +265,7 @@ class AppsAdminManager {
         const newStatus = app.status === 'enabled' ? 'disabled' : 'enabled';
         
         try {
-            const response = await fetch(`http://localhost:3001/api/apps/${appId}`, {
+            const response = await fetch(`/api/apps/${appId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ ...app, status: newStatus })
@@ -296,7 +296,7 @@ class AppsAdminManager {
         }
 
         try {
-            const response = await fetch(`http://localhost:3001/api/apps/${appId}`, {
+            const response = await fetch(`/api/apps/${appId}`, {
                 method: 'DELETE'
             });
 
