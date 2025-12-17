@@ -10,6 +10,14 @@
       "destination": "/blog-admin/index.html"
     },
     {
+      "source": "/blog",
+      "destination": "/blog/index.html"
+    },
+    {
+      "source": "/blog/pages/(.*)",
+      "destination": "/blog/pages/$1"
+    },
+    {
       "source": "/apps",
       "destination": "/blog/pages/apps.html"
     },
@@ -22,6 +30,34 @@
       "destination": "/blog/pages/gallery.html"
     },
     {
+      "source": "/categories",
+      "destination": "/blog/pages/categories.html"
+    },
+    {
+      "source": "/tags",
+      "destination": "/blog/pages/tags.html"
+    },
+    {
+      "source": "/timeline",
+      "destination": "/blog/pages/timeline.html"
+    },
+    {
+      "source": "/guestbook",
+      "destination": "/blog/pages/guestbook.html"
+    },
+    {
+      "source": "/links",
+      "destination": "/blog/pages/links.html"
+    },
+    {
+      "source": "/search",
+      "destination": "/blog/pages/search.html"
+    },
+    {
+      "source": "/article",
+      "destination": "/blog/pages/article.html"
+    },
+    {
       "source": "/css/(.*)",
       "destination": "/blog/css/$1"
     },
@@ -32,6 +68,18 @@
     {
       "source": "/images/(.*)",
       "destination": "/blog/images/$1"
+    },
+    {
+      "source": "/blog-admin/css/(.*)",
+      "destination": "/blog-admin/css/$1"
+    },
+    {
+      "source": "/blog-admin/js/(.*)",
+      "destination": "/blog-admin/js/$1"
+    },
+    {
+      "source": "/blog-admin/images/(.*)",
+      "destination": "/blog-admin/images/$1"
     },
     {
       "source": "/uploads/(.*)",
