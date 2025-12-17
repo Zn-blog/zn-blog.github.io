@@ -76,7 +76,7 @@
   "rewrites": [
     {
       "source": "/",
-      "destination": "/index.html"
+      "destination": "/blog/index.html"
     },
     {
       "source": "/blog",
