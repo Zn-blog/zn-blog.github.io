@@ -6,13 +6,14 @@
     {
       "source": "/",
       "destination": "/blog/index.html"
-    }
-  ],
-  "redirects": [
+    },
     {
       "source": "/admin",
-      "destination": "/blog-admin/index.html",
-      "permanent": false
+      "destination": "/blog-admin/index.html"
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "/blog-admin/:path*"
     }
   ],
   "headers": [
