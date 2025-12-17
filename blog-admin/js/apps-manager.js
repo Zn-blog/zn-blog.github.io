@@ -28,11 +28,9 @@ class AppsAdminManager {
                 // 静态环境：直接读取JSON文件
                 let url = '../data/apps.json';
                 
-                // 如果是GitHub Pages，使用绝对路径
+                // 如果是GitHub Pages，使用绝对路径（与环境适配器保持一致）
                 if (window.location.hostname.includes('github.io')) {
-                    const pathParts = window.location.pathname.split('/').filter(p => p);
-                    const repoName = pathParts.length > 0 ? pathParts[0] : '';
-                    url = `/${repoName}/data/apps.json`;
+                    url = '/data/apps.json';
                 }
                 
                 const response = await fetch(url);
