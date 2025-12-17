@@ -13,9 +13,25 @@ class AppsManager {
 
     async init() {
         console.log('📱 初始化应用页面...');
+        // 等待 blogDataStore 初始化
+        await this.waitForDataStore();
         await this.loadApps();
         this.setupEventListeners();
         this.renderApps();
+    }
+
+    // 等待数据存储初始化
+    async waitForDataStore() {
+        let attempts = 0;
+        while (!window.blogDataStore && attempts < 50) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+            attempts++;
+        }
+        if (!window.blogDataStore) {
+            console.error('❌ blogDataStore 初始化超时');
+        } else {
+            console.log('✅ blogDataStore 已就绪');
+        }
     }
 
     // 加载应用数据
