@@ -4,9 +4,32 @@ let articlesPerPage = 10; // 默认每页10篇
 let allArticles = [];
 
 document.addEventListener('DOMContentLoaded', async function() {
-    await loadSettings();
-    await renderArticles();
-    updateFooterStats();
+    // 等待数据适配器就绪
+    function initWhenReady() {
+        if (window.blogDataStore && window.blogDataStore.adapter) {
+            initBlogRender();
+        } else {
+            setTimeout(initWhenReady, 100);
+        }
+    }
+    
+    // 监听数据适配器就绪事件
+    document.addEventListener('dataAdapterReady', function() {
+        initBlogRender();
+    });
+    
+    async function initBlogRender() {
+        try {
+            await loadSettings();
+            await renderArticles();
+            updateFooterStats();
+            console.log('✅ 博客渲染器已初始化');
+        } catch (error) {
+            console.error('❌ 博客渲染器初始化失败:', error);
+        }
+    }
+    
+    initWhenReady();
 });
 
 // 加载设置

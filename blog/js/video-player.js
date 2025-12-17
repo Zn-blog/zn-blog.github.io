@@ -139,10 +139,29 @@ let videoPlayerInstance = null;
 
 document.addEventListener('DOMContentLoaded', function() {
     // 等待数据存储加载完成
-    setTimeout(() => {
-        videoPlayerInstance = new VideoPlayer();
-        
-        // 将实例暴露给全局，方便其他脚本调用
-        window.videoPlayerInstance = videoPlayerInstance;
-    }, 100);
+    function initVideoPlayer() {
+        if (window.blogDataStore && window.blogDataStore.adapter) {
+            videoPlayerInstance = new VideoPlayer();
+            window.videoPlayerInstance = videoPlayerInstance;
+            console.log('✅ 视频播放器已初始化');
+            return true;
+        }
+        return false;
+    }
+    
+    // 监听数据适配器就绪事件
+    document.addEventListener('dataAdapterReady', function() {
+        if (!videoPlayerInstance) {
+            initVideoPlayer();
+        }
+    });
+    
+    // 尝试初始化
+    function tryInit() {
+        if (!initVideoPlayer()) {
+            setTimeout(tryInit, 100);
+        }
+    }
+    
+    tryInit();
 });

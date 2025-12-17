@@ -94,7 +94,25 @@ class StatsSync {
     }
 }
 
-// 自动初始化
+// 自动初始化 - 等待数据适配器就绪
 document.addEventListener('DOMContentLoaded', function() {
-    window.statsSync = new StatsSync();
+    // 等待数据适配器就绪
+    function initWhenReady() {
+        if (window.blogDataStore && window.blogDataStore.adapter) {
+            window.statsSync = new StatsSync();
+            console.log('✅ 统计同步器已初始化');
+        } else {
+            setTimeout(initWhenReady, 100);
+        }
+    }
+    
+    // 监听数据适配器就绪事件
+    document.addEventListener('dataAdapterReady', function() {
+        if (!window.statsSync) {
+            window.statsSync = new StatsSync();
+            console.log('✅ 统计同步器已初始化（事件触发）');
+        }
+    });
+    
+    initWhenReady();
 });

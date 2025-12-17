@@ -535,7 +535,18 @@ function initMusicPlayer() {
 
 document.addEventListener('DOMContentLoaded', function() {
     // 等待数据存储加载完成
-    if (!initMusicPlayer()) {
-        setTimeout(initMusicPlayer, 100);
+    function tryInit() {
+        if (!initMusicPlayer()) {
+            setTimeout(tryInit, 100);
+        }
     }
+    
+    // 监听数据适配器就绪事件
+    document.addEventListener('dataAdapterReady', function() {
+        if (!mainMusicPlayerInstance) {
+            initMusicPlayer();
+        }
+    });
+    
+    tryInit();
 });

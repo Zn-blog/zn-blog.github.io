@@ -95,13 +95,22 @@ function updateVideoPlayer() {
 document.addEventListener('DOMContentLoaded', function() {
     // 等待数据存储和播放器加载完成
     function trySync() {
-        const musicSynced = updateMusicPlayer();
-        const videoSynced = updateVideoPlayer();
-        
-        if (!musicSynced || !videoSynced) {
-            setTimeout(trySync, 100);
+        if (window.blogDataStore && window.blogDataStore.adapter) {
+            const musicSynced = updateMusicPlayer();
+            const videoSynced = updateVideoPlayer();
+            
+            if (musicSynced && videoSynced) {
+                console.log('✅ 媒体同步完成');
+                return;
+            }
         }
+        setTimeout(trySync, 100);
     }
+    
+    // 监听数据适配器就绪事件
+    document.addEventListener('dataAdapterReady', function() {
+        setTimeout(trySync, 200);
+    });
     
     setTimeout(trySync, 200);
 });

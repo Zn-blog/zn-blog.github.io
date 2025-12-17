@@ -6,13 +6,31 @@
 class BlogDataStoreWrapper {
     constructor() {
         // 使用数据适配层
-        this.adapter = window.dataAdapter || new DataAdapter();
-        console.log('✅ BlogDataStore包装器已初始化');
+        this.adapter = window.dataAdapter;
+        
+        if (!this.adapter) {
+            console.warn('⚠️ 数据适配器尚未加载，等待中...');
+            // 延迟初始化
+            setTimeout(() => {
+                this.adapter = window.dataAdapter;
+                if (this.adapter) {
+                    console.log('✅ BlogDataStore包装器已延迟初始化');
+                } else {
+                    console.error('❌ 数据适配器加载失败');
+                }
+            }, 200);
+        } else {
+            console.log('✅ BlogDataStore包装器已初始化');
+        }
     }
 
     // ========== 文章相关方法 ==========
     
     getArticles(status = null) {
+        if (!this.adapter) {
+            console.warn('⚠️ 数据适配器未就绪，返回空数组');
+            return Promise.resolve([]);
+        }
         return this.adapter.getArticles(status);
     }
 
@@ -414,6 +432,10 @@ class BlogDataStoreWrapper {
     // ========== 设置相关方法 ==========
     
     getSettings() {
+        if (!this.adapter) {
+            console.warn('⚠️ 数据适配器未就绪，返回空设置');
+            return Promise.resolve({});
+        }
         return this.adapter.getSettings();
     }
 
@@ -424,6 +446,17 @@ class BlogDataStoreWrapper {
     // ========== 统计方法 ==========
     
     getStats() {
+        if (!this.adapter) {
+            console.warn('⚠️ 数据适配器未就绪，返回默认统计');
+            return Promise.resolve({
+                totalWords: 0,
+                totalViews: 0,
+                totalVisitors: 0,
+                runningDays: 0,
+                totalArticles: 0,
+                totalComments: 0
+            });
+        }
         return this.adapter.getStats();
     }
 

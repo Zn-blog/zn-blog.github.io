@@ -369,6 +369,8 @@
     <script src="js/path-fixer.js"></script>
     <!-- GitHub Pages 适配器 -->
     <script src="js/github-pages-adapter.js"></script>
+    <!-- 环境适配器 - 必须在数据适配器之前加载 -->
+    <script src="js/environment-adapter.js"></script>
     <!-- 数据适配层 - 支持JSON文件存储 -->
     <script src="js/data-adapter.js"></script>
     <script src="js/data-store-wrapper.js"></script>
@@ -387,5 +389,31 @@
     <script src="js/media-sync.js"></script>
     <script src="js/stats-sync.js"></script>
     <script src="js/blog-render.js"></script>
+    
+    <!-- 初始化脚本 - 确保所有组件正确加载 -->
+    <script>
+        // 等待所有依赖加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查关键组件是否已加载
+            function checkAndInit() {
+                if (window.environmentAdapter && window.dataAdapter && window.blogDataStore) {
+                    console.log('✅ 所有数据组件已加载完成');
+                    
+                    // 触发初始化事件
+                    const event = new CustomEvent('dataAdapterReady');
+                    document.dispatchEvent(event);
+                } else {
+                    console.log('⏳ 等待数据组件加载...', {
+                        environmentAdapter: !!window.environmentAdapter,
+                        dataAdapter: !!window.dataAdapter,
+                        blogDataStore: !!window.blogDataStore
+                    });
+                    setTimeout(checkAndInit, 100);
+                }
+            }
+            
+            setTimeout(checkAndInit, 50);
+        });
+    </script>
 </body>
 </html>

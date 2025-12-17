@@ -6,7 +6,17 @@
 class DataAdapter {
     constructor() {
         // 使用环境适配器
-        this.environmentAdapter = window.environmentAdapter || new EnvironmentAdapter();
+        this.environmentAdapter = window.environmentAdapter;
+        
+        if (!this.environmentAdapter) {
+            console.error('❌ 环境适配器未找到，请确保 environment-adapter.js 已正确加载');
+            // 创建一个基本的适配器作为后备
+            this.environmentAdapter = {
+                getData: this.getDataFromJSON.bind(this),
+                saveData: () => Promise.resolve({ success: false, message: '环境适配器未加载' }),
+                getEnvironmentInfo: () => ({ environment: 'unknown', supportsWrite: false })
+            };
+        }
         
         console.log('📖 数据适配层初始化 - 多环境支持:', this.environmentAdapter.getEnvironmentInfo());
     }
