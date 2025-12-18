@@ -52,7 +52,21 @@ class AdminVideoBackgroundManager {
     async fetchBackgroundVideos() {
         try {
             console.log('📡 正在获取背景视频列表...');
-            // 直接从数据文件获取视频列表
+            // 使用数据存储包装器获取视频列表
+            if (window.blogDataStore) {
+                const videos = await window.blogDataStore.getVideos();
+                if (videos && Array.isArray(videos) && videos.length > 0) {
+                    // 过滤出BG类型的视频作为背景视频
+                    const backgroundVideos = videos.filter(video => video.category === 'BG');
+                    console.log(`✅ 找到 ${backgroundVideos.length} 个背景视频`);
+                    return backgroundVideos;
+                } else {
+                    console.log('没有找到背景视频');
+                    return null;
+                }
+            }
+            
+            // 降级方案：直接从数据文件获取视频列表（后台管理路径）
             const response = await fetch('../data/videos.json');
             
             if (!response.ok) {
