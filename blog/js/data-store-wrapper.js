@@ -589,6 +589,60 @@ class BlogDataStoreWrapper {
         return this.adapter.getLinks();
     }
 
+    // ========== 应用相关方法 ==========
+    
+    getApps() {
+        return this.adapter.getApps();
+    }
+
+    // 获取所有数据的便捷方法
+    async getAllData() {
+        try {
+            const [articles, categories, tags, comments, guestbook, images, music, videos, links, apps, settings] = await Promise.all([
+                this.getArticles(),
+                this.getCategories(), 
+                this.getTags(),
+                this.getComments(),
+                this.getGuestbookMessages(),
+                this.getImages(),
+                this.getMusic(),
+                this.getVideos(),
+                this.getLinks(),
+                this.getApps(),
+                this.getSettings()
+            ]);
+            
+            return {
+                articles,
+                categories,
+                tags,
+                comments,
+                guestbook,
+                images,
+                music,
+                videos,
+                links,
+                apps,
+                settings
+            };
+        } catch (error) {
+            console.error('❌ 获取所有数据失败:', error);
+            return {
+                articles: [],
+                categories: [],
+                tags: [],
+                comments: [],
+                guestbook: [],
+                images: [],
+                music: [],
+                videos: [],
+                links: [],
+                apps: [],
+                settings: {}
+            };
+        }
+    }
+
     async getLinkById(id) {
         const links = await this.adapter.getLinks();
         return links.find(link => link.id === id);

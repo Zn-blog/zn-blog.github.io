@@ -309,6 +309,10 @@ class DataAdapter {
         return await this.getData('links');
     }
 
+    async getApps() {
+        return await this.getData('apps');
+    }
+
     // ========== 统计方法 ==========
     
     async getStats() {
