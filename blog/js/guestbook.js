@@ -3,13 +3,33 @@
    ======================================== */
 
 // 页面加载时初始化
-document.addEventListener('DOMContentLoaded', function() {
-    loadGuestbookMessages();
+document.addEventListener('DOMContentLoaded', async function() {
+    await waitForDataStore();
+    await loadGuestbookMessages();
     loadSiteAvatar();
 });
 
+// 等待数据存储初始化
+async function waitForDataStore() {
+    let attempts = 0;
+    while (!window.blogDataStore && attempts < 50) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        attempts++;
+    }
+    if (!window.blogDataStore) {
+        console.error('❌ blogDataStore 初始化超时');
+    } else {
+        console.log('✅ blogDataStore 已就绪');
+    }
+}
+
 // 加载留言列表（异步）
 async function loadGuestbookMessages() {
+    if (!window.blogDataStore) {
+        console.error('❌ blogDataStore 未初始化');
+        return;
+    }
+    
     const messages = await window.blogDataStore.getGuestbookMessages();
     const messagesList = document.getElementById('messagesList');
     const messageCount = document.getElementById('messageCount');
@@ -276,7 +296,14 @@ async function submitGuestbook() {
     };
     
     try {
-        await window.blogDataStore.addGuestbookMessage(message);
+        console.log('📝 开始提交留言:', message);
+        
+        if (!window.blogDataStore) {
+            throw new Error('blogDataStore 未初始化');
+        }
+        
+        const result = await window.blogDataStore.addGuestbookMessage(message);
+        console.log('✅ 留言提交成功:', result);
         
         // 清空表单
         document.getElementById('guestName').value = '';
@@ -284,12 +311,14 @@ async function submitGuestbook() {
         document.getElementById('guestMessage').value = '';
         
         // 重新加载留言列表
+        console.log('🔄 重新加载留言列表...');
         await loadGuestbookMessages();
         
         showNotification('留言发表成功！', 'success');
     } catch (error) {
-        console.error('提交留言失败:', error);
-        showNotification('留言发表失败，请稍后重试', 'error');
+        console.error('❌ 提交留言失败:', error);
+        console.error('错误详情:', error.message);
+        showNotification(`留言发表失败：${error.message}`, 'error');
     }
     
     // 滚动到留言列表
