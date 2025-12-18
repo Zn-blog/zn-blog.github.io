@@ -3,6 +3,15 @@
   "functions": {
     "api/[resource].js": {
       "maxDuration": 10
+    },
+    "api/force-super-admin.js": {
+      "maxDuration": 10
+    },
+    "api/set-super-admin.js": {
+      "maxDuration": 10
+    },
+    "api/check-permissions.js": {
+      "maxDuration": 10
     }
   },
   "redirects": [
