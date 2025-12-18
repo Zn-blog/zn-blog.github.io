@@ -193,25 +193,46 @@ class DataAdapter {
 
     async addComment(comment) {
         try {
-            const comments = await this.getData('comments');
-            
-            // 生成新ID
-            const newId = comments.length > 0 
-                ? Math.max(...comments.map(c => c.id || 0)) + 1 
-                : 1;
-            
-            // 添加ID和时间戳
-            const newComment = {
-                id: newId,
-                ...comment,
-                time: comment.time || new Date().toISOString()
-            };
-            
-            comments.push(newComment);
-            await this.saveData('comments', comments);
-            
-            console.log('✅ 评论添加成功:', newComment);
-            return newComment;
+            // 直接使用环境适配器的单项添加API
+            if (this.environmentAdapter.environment === 'vercel') {
+                const response = await fetch('/api/comments', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(comment)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`API error: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                if (result.success) {
+                    console.log('✅ 评论添加成功:', result.data);
+                    return result.data;
+                }
+                throw new Error(result.error || '添加失败');
+            } else {
+                // 本地和静态环境的原有逻辑
+                const comments = await this.getData('comments');
+                
+                // 生成新ID
+                const newId = comments.length > 0 
+                    ? Math.max(...comments.map(c => c.id || 0)) + 1 
+                    : 1;
+                
+                // 添加ID和时间戳
+                const newComment = {
+                    id: newId,
+                    ...comment,
+                    time: comment.time || new Date().toISOString()
+                };
+                
+                comments.push(newComment);
+                await this.saveData('comments', comments);
+                
+                console.log('✅ 评论添加成功:', newComment);
+                return newComment;
+            }
         } catch (error) {
             console.error('❌ 添加评论失败:', error);
             throw error;
@@ -265,27 +286,48 @@ class DataAdapter {
 
     async addGuestbookMessage(message) {
         try {
-            const messages = await this.getData('guestbook');
-            
-            // 生成新ID
-            const newId = messages.length > 0 
-                ? Math.max(...messages.map(m => m.id || 0)) + 1 
-                : 1;
-            
-            // 添加ID和时间戳
-            const newMessage = {
-                id: newId,
-                ...message,
-                time: message.time || new Date().toISOString(),
-                likes: 0,
-                dislikes: 0
-            };
-            
-            messages.push(newMessage);
-            await this.saveData('guestbook', messages);
-            
-            console.log('✅ 留言添加成功:', newMessage);
-            return newMessage;
+            // 直接使用环境适配器的单项添加API
+            if (this.environmentAdapter.environment === 'vercel') {
+                const response = await fetch('/api/guestbook', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(message)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`API error: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                if (result.success) {
+                    console.log('✅ 留言添加成功:', result.data);
+                    return result.data;
+                }
+                throw new Error(result.error || '添加失败');
+            } else {
+                // 本地和静态环境的原有逻辑
+                const messages = await this.getData('guestbook');
+                
+                // 生成新ID
+                const newId = messages.length > 0 
+                    ? Math.max(...messages.map(m => m.id || 0)) + 1 
+                    : 1;
+                
+                // 添加ID和时间戳
+                const newMessage = {
+                    id: newId,
+                    ...message,
+                    time: message.time || new Date().toISOString(),
+                    likes: 0,
+                    dislikes: 0
+                };
+                
+                messages.push(newMessage);
+                await this.saveData('guestbook', messages);
+                
+                console.log('✅ 留言添加成功:', newMessage);
+                return newMessage;
+            }
         } catch (error) {
             console.error('❌ 添加留言失败:', error);
             throw error;
