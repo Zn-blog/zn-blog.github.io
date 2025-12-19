@@ -206,10 +206,13 @@ export default async function handler(req, res) {
           });
         }
         
-        if (req.url.includes('/batch')) {
+        // 检查是否为批量操作 - 通过query参数或URL路径
+        const isBatchOperation = req.url.includes('/batch') || query.batch === 'true' || requestBody.isBatch === true;
+        
+        if (isBatchOperation) {
           // 批量导入
           console.log('执行批量导入操作');
-          const data = requestBody;
+          const data = requestBody.isBatch ? requestBody.data : requestBody;
           await kv.set(resource, data);
           const count = Array.isArray(data) ? data.length : 1;
           return res.json({ 

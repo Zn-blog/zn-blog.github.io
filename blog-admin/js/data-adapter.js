@@ -35,8 +35,8 @@ class DataAdapter {
         const hostname = window.location.hostname;
         const isLocalhost = hostname.includes('localhost') || hostname.includes('127.0.0.1');
         
-        if (window.environmentAdapter && window.environmentAdapter.environment === 'vercel' && !isLocalhost) {
-            // 只有在真正的Vercel环境下才使用环境适配器
+        if (window.environmentAdapter && window.environmentAdapter.initialized && window.environmentAdapter.environment === 'vercel' && !isLocalhost) {
+            // 只有在真正的Vercel环境下且适配器已初始化才使用环境适配器
             this.useJSON = false;
             this.useEnvironmentAdapter = true;
             console.log('🌐 Vercel环境：使用环境适配器');
@@ -84,7 +84,7 @@ class DataAdapter {
         // 在Vercel环境下，只使用环境适配器，不回退
         if (this.useEnvironmentAdapter && window.environmentAdapter && window.environmentAdapter.environment === 'vercel') {
             console.log(`🌐 Vercel环境：使用环境适配器创建${resource}`);
-            const result = await this.createItem(resource, itemData);
+            const result = await window.environmentAdapter.createItem(resource, itemData);
             
             if (result.success) {
                 return result.data;
@@ -118,7 +118,7 @@ class DataAdapter {
         // 在Vercel环境下，只使用环境适配器，不回退
         if (this.useEnvironmentAdapter && window.environmentAdapter && window.environmentAdapter.environment === 'vercel') {
             console.log(`🌐 Vercel环境：使用环境适配器更新${resource}`);
-            const result = await this.updateItem(resource, id, updates);
+            const result = await window.environmentAdapter.updateItem(resource, id, updates);
             
             if (result.success) {
                 return result.data;
@@ -150,7 +150,7 @@ class DataAdapter {
         // 在Vercel环境下，只使用环境适配器，不回退
         if (this.useEnvironmentAdapter && window.environmentAdapter && window.environmentAdapter.environment === 'vercel') {
             console.log(`🌐 Vercel环境：使用环境适配器删除${resource}`);
-            const result = await this.deleteItem(resource, id);
+            const result = await window.environmentAdapter.deleteItem(resource, id);
             
             if (result.success) {
                 return result;
@@ -404,7 +404,7 @@ class DataAdapter {
         // 在Vercel环境下，只使用环境适配器，不回退
         if (this.useEnvironmentAdapter && window.environmentAdapter && window.environmentAdapter.environment === 'vercel') {
             console.log('🌐 Vercel环境：使用环境适配器创建文章');
-            const result = await this.createItem('articles', {
+            const result = await window.environmentAdapter.createItem('articles', {
                 ...article,
                 views: 0,
                 publishDate: article.publishDate || new Date().toISOString().split('T')[0]
@@ -442,7 +442,7 @@ class DataAdapter {
         // 在Vercel环境下，只使用环境适配器，不回退
         if (this.useEnvironmentAdapter && window.environmentAdapter && window.environmentAdapter.environment === 'vercel') {
             console.log('🌐 Vercel环境：使用环境适配器更新文章');
-            const result = await this.updateItem('articles', id, updates);
+            const result = await window.environmentAdapter.updateItem('articles', id, updates);
             
             if (result.success) {
                 return result.data;
@@ -473,7 +473,7 @@ class DataAdapter {
         // 在Vercel环境下，只使用环境适配器，不回退
         if (this.useEnvironmentAdapter && window.environmentAdapter && window.environmentAdapter.environment === 'vercel') {
             console.log('🌐 Vercel环境：使用环境适配器删除文章');
-            const result = await this.deleteItem('articles', id);
+            const result = await window.environmentAdapter.deleteItem('articles', id);
             
             if (result.success) {
                 return result;
@@ -560,8 +560,8 @@ class DataAdapter {
     async updateComment(id, updates) {
         try {
             // 在Vercel环境下使用单项更新API
-            if (this.environmentAdapter.environment === 'vercel') {
-                const result = await this.environmentAdapter.updateItem('comments', id, updates);
+            if (window.environmentAdapter && window.environmentAdapter.environment === 'vercel') {
+                const result = await window.environmentAdapter.updateItem('comments', id, updates);
                 if (result.success) {
                     console.log('✅ 评论更新成功 (Vercel):', result.data);
                     return result.data;
@@ -817,7 +817,7 @@ class DataAdapter {
         // 在Vercel环境下，只使用环境适配器，不回退
         if (this.useEnvironmentAdapter && window.environmentAdapter && window.environmentAdapter.environment === 'vercel') {
             console.log('🌐 Vercel环境：使用环境适配器创建用户');
-            const result = await this.createItem('users', {
+            const result = await window.environmentAdapter.createItem('users', {
                 ...userData,
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString()
@@ -877,7 +877,7 @@ class DataAdapter {
         if (this.useEnvironmentAdapter && window.environmentAdapter && window.environmentAdapter.environment === 'vercel') {
             console.log('🌐 Vercel环境：使用API更新用户', id);
             try {
-                const response = await fetch(`/api/users/${id}`, {
+                const response = await fetch(`/api/users?id=${id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
@@ -928,7 +928,7 @@ class DataAdapter {
         if (this.useEnvironmentAdapter && window.environmentAdapter && window.environmentAdapter.environment === 'vercel') {
             console.log('🌐 Vercel环境：使用API删除用户', id);
             try {
-                const response = await fetch(`/api/users/${id}`, {
+                const response = await fetch(`/api/users?id=${id}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json'

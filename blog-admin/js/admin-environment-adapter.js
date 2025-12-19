@@ -6,12 +6,21 @@ class AdminEnvironmentAdapter {
     constructor() {
         this.environment = this.detectEnvironment();
         this.apiBase = this.getApiBase();
+        this.initialized = true;
         
         console.log('🌍 后台环境适配器初始化:', {
             environment: this.environment,
             apiBase: this.apiBase,
-            hostname: window.location.hostname
+            hostname: window.location.hostname,
+            initialized: this.initialized
         });
+        
+        // 触发初始化完成事件
+        if (typeof window !== 'undefined') {
+            window.dispatchEvent(new CustomEvent('environmentAdapterReady', {
+                detail: { adapter: this }
+            }));
+        }
     }
     
     // 检测当前环境
@@ -158,7 +167,7 @@ class AdminEnvironmentAdapter {
                 url = `${this.apiBase}/${resource}`;
                 method = 'PUT';
             } else {
-                url = `${this.apiBase}/${resource}/batch`;
+                url = `${this.apiBase}/${resource}?batch=true`;
                 method = 'POST';
             }
             
@@ -202,7 +211,7 @@ class AdminEnvironmentAdapter {
                     body: JSON.stringify(data)
                 });
             } else {
-                response = await fetch(`${this.apiBase}/${resource}/batch`, {
+                response = await fetch(`${this.apiBase}/${resource}?batch=true`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
@@ -429,7 +438,10 @@ class AdminEnvironmentAdapter {
 
 }
 
-// 创建全局实例
-window.environmentAdapter = new AdminEnvironmentAdapter();
-
-console.log('🌍 后台环境适配器已加载:', window.environmentAdapter.getEnvironmentInfo());
+// 创建全局实例 - 确保只创建一次
+if (!window.environmentAdapter) {
+    window.environmentAdapter = new AdminEnvironmentAdapter();
+    console.log('🌍 后台环境适配器已加载:', window.environmentAdapter.getEnvironmentInfo());
+} else {
+    console.log('⚠️ 环境适配器已存在，跳过重复创建');
+}

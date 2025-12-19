@@ -21,12 +21,6 @@
     },
     "api/health.js": {
       "maxDuration": 5
-    },
-    "api/settings.js": {
-      "maxDuration": 10
-    },
-    "api/articles.js": {
-      "maxDuration": 10
     }
   },
   "redirects": [
