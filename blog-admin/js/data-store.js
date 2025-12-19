@@ -1041,17 +1041,36 @@ class BlogDataStore {
     async getSettings() {
         if (this.useApi) {
             try {
-                const response = await fetch(`${this.apiUrl}/settings`);
-                if (!response.ok) throw new Error('获取设置失败');
-                return await response.json();
+                const apiBase = this.getApiBaseURL();
+                const response = await fetch(`${apiBase}/settings`);
+                
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        console.warn('⚠️ 设置数据不存在，返回空设置对象');
+                        return {};
+                    }
+                    throw new Error(`获取设置失败: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                return result.success ? result.data : {};
             } catch (error) {
-                console.error('API获取设置失败，使用localStorage:', error);
+                console.error('❌ API获取设置失败:', error);
+                
+                // 在Vercel环境下不降级到localStorage，避免JSON数据覆盖KV数据
+                if (window.environmentAdapter && window.environmentAdapter.environment === 'vercel') {
+                    console.warn('⚠️ Vercel环境下不使用localStorage数据，返回空设置');
+                    return {};
+                }
+                
+                // 只有在本地环境下才降级到localStorage
+                console.warn('⚠️ 本地环境降级到localStorage');
                 const data = this.getAllData();
-                return data.settings;
+                return data.settings || {};
             }
         }
         const data = this.getAllData();
-        return data.settings;
+        return data.settings || {};
     }
 
     async updateSettings(updates) {
