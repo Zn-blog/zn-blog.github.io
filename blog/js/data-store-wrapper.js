@@ -40,25 +40,22 @@ class BlogDataStoreWrapper {
 
     async addArticle(article) {
         const result = await this.adapter.addArticle(article);
-        // 同步分类和标签统计
-        await this.syncCategoryStats();
-        await this.syncTagStats();
+        // 前台只读模式：不同步统计数据到后端
+        console.log('📝 前台只读模式：跳过分类和标签统计同步');
         return result;
     }
 
     async updateArticle(id, updates) {
         const result = await this.adapter.updateArticle(id, updates);
-        // 同步分类和标签统计
-        await this.syncCategoryStats();
-        await this.syncTagStats();
+        // 前台只读模式：不同步统计数据到后端
+        console.log('📝 前台只读模式：跳过分类和标签统计同步');
         return result;
     }
 
     async deleteArticle(id) {
         const result = await this.adapter.deleteArticle(id);
-        // 同步分类和标签统计
-        await this.syncCategoryStats();
-        await this.syncTagStats();
+        // 前台只读模式：不同步统计数据到后端
+        console.log('📝 前台只读模式：跳过分类和标签统计同步');
         return result;
     }
 
@@ -119,7 +116,8 @@ class BlogDataStoreWrapper {
         }
         
         if (updated) {
-            await this.adapter.saveData('categories', categories);
+            console.log('📊 前台只读模式：分类统计已计算但不保存到后端');
+            // await this.adapter.saveData('categories', categories); // 前台只读模式禁用
         }
     }
 
@@ -182,7 +180,8 @@ class BlogDataStoreWrapper {
         }
         
         if (updated) {
-            await this.adapter.saveData('tags', tags);
+            console.log('📊 前台只读模式：标签统计已计算但不保存到后端');
+            // await this.adapter.saveData('tags', tags); // 前台只读模式禁用
         }
     }
 
@@ -478,7 +477,8 @@ class BlogDataStoreWrapper {
         image.uploadDate = new Date().toISOString().split('T')[0];
         image.usedIn = image.usedIn || [];
         images.unshift(image);
-        await this.adapter.saveData('images', images);
+        console.warn('⚠️ 前台只读模式：图片添加仅在本地生效');
+        // await this.adapter.saveData('images', images); // 前台只读模式禁用
         return image;
     }
 
@@ -487,7 +487,8 @@ class BlogDataStoreWrapper {
         const index = images.findIndex(img => img.id === parseInt(id));
         if (index !== -1) {
             images[index] = { ...images[index], ...updates };
-            await this.adapter.saveData('images', images);
+            console.warn('⚠️ 前台只读模式：图片更新仅在本地生效');
+            // await this.adapter.saveData('images', images); // 前台只读模式禁用
             return images[index];
         }
         return null;
@@ -496,7 +497,8 @@ class BlogDataStoreWrapper {
     async deleteImage(id) {
         const images = await this.adapter.getImages();
         const filtered = images.filter(img => img.id !== parseInt(id));
-        await this.adapter.saveData('images', filtered);
+        console.warn('⚠️ 前台只读模式：图片删除仅在本地生效');
+        // await this.adapter.saveData('images', filtered); // 前台只读模式禁用
     }
 
     // 音乐相关
@@ -514,7 +516,8 @@ class BlogDataStoreWrapper {
         music.id = Math.max(...musicList.map(m => m.id || 0), 0) + 1;
         music.uploadDate = new Date().toISOString().split('T')[0];
         musicList.unshift(music);
-        await this.adapter.saveData('music', musicList);
+        console.warn('⚠️ 前台只读模式：音乐添加仅在本地生效');
+        // await this.adapter.saveData('music', musicList); // 前台只读模式禁用
         return music;
     }
 
@@ -523,7 +526,8 @@ class BlogDataStoreWrapper {
         const index = musicList.findIndex(m => m.id === parseInt(id));
         if (index !== -1) {
             musicList[index] = { ...musicList[index], ...updates };
-            await this.adapter.saveData('music', musicList);
+            console.warn('⚠️ 前台只读模式：音乐更新仅在本地生效');
+            // await this.adapter.saveData('music', musicList); // 前台只读模式禁用
             return musicList[index];
         }
         return null;
@@ -532,7 +536,8 @@ class BlogDataStoreWrapper {
     async deleteMusic(id) {
         const musicList = await this.adapter.getMusic();
         const filtered = musicList.filter(m => m.id !== parseInt(id));
-        await this.adapter.saveData('music', filtered);
+        console.warn('⚠️ 前台只读模式：音乐删除仅在本地生效');
+        // await this.adapter.saveData('music', filtered); // 前台只读模式禁用
     }
 
     // 视频相关
@@ -550,7 +555,8 @@ class BlogDataStoreWrapper {
         video.id = Math.max(...videos.map(v => v.id || 0), 0) + 1;
         video.uploadDate = new Date().toISOString().split('T')[0];
         videos.unshift(video);
-        await this.adapter.saveData('videos', videos);
+        console.warn('⚠️ 前台只读模式：视频添加仅在本地生效');
+        // await this.adapter.saveData('videos', videos); // 前台只读模式禁用
         return video;
     }
 
@@ -559,7 +565,8 @@ class BlogDataStoreWrapper {
         const index = videos.findIndex(v => v.id === parseInt(id));
         if (index !== -1) {
             videos[index] = { ...videos[index], ...updates };
-            await this.adapter.saveData('videos', videos);
+            console.warn('⚠️ 前台只读模式：视频更新仅在本地生效');
+            // await this.adapter.saveData('videos', videos); // 前台只读模式禁用
             return videos[index];
         }
         return null;
@@ -568,7 +575,8 @@ class BlogDataStoreWrapper {
     async deleteVideo(id) {
         const videos = await this.adapter.getVideos();
         const filtered = videos.filter(v => v.id !== parseInt(id));
-        await this.adapter.saveData('videos', filtered);
+        console.warn('⚠️ 前台只读模式：视频删除仅在本地生效');
+        // await this.adapter.saveData('videos', filtered); // 前台只读模式禁用
     }
 
     // 友情链接相关
@@ -648,7 +656,8 @@ class BlogDataStoreWrapper {
             addedDate: new Date().toISOString().split('T')[0]
         };
         links.push(newLink);
-        await this.adapter.saveData('links', links);
+        console.warn('⚠️ 前台只读模式：链接添加仅在本地生效');
+        // await this.adapter.saveData('links', links); // 前台只读模式禁用
         return newLink;
     }
 
@@ -657,7 +666,8 @@ class BlogDataStoreWrapper {
         const index = links.findIndex(link => link.id === id);
         if (index !== -1) {
             links[index] = { ...links[index], ...updates };
-            await this.adapter.saveData('links', links);
+            console.warn('⚠️ 前台只读模式：链接更新仅在本地生效');
+            // await this.adapter.saveData('links', links); // 前台只读模式禁用
             return links[index];
         }
         return null;
@@ -666,7 +676,8 @@ class BlogDataStoreWrapper {
     async deleteLink(id) {
         const links = await this.adapter.getLinks();
         const filtered = links.filter(link => link.id !== id);
-        await this.adapter.saveData('links', filtered);
+        console.warn('⚠️ 前台只读模式：链接删除仅在本地生效');
+        // await this.adapter.saveData('links', filtered); // 前台只读模式禁用
     }
 
     async getLinkCategories() {

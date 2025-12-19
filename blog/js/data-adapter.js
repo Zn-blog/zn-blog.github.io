@@ -101,28 +101,20 @@ class DataAdapter {
         return null;
     }
 
-    // 更新文章（支持点赞等操作）
+    // 更新文章（前台只读模式，仅支持本地缓存更新）
     async updateArticle(id, updates) {
+        console.warn('⚠️ 前台只读模式，文章更新仅在本地生效，不会保存到后端');
+        
         try {
-            if (!this.environmentAdapter.supportsWrite) {
-                console.warn('⚠️ 当前环境不支持写入操作');
-                return null;
-            }
-            
-            // 获取当前文章列表
+            // 仅在内存中更新，不保存到后端
             const articles = await this.getData('articles');
             const index = articles.findIndex(article => article.id === parseInt(id));
             
             if (index !== -1) {
-                // 更新文章
+                // 仅在内存中更新，不调用 saveData
                 articles[index] = { ...articles[index], ...updates };
-                
-                // 保存更新后的数据
-                const result = await this.saveData('articles', articles);
-                if (result.success) {
-                    console.log(`✅ 文章已更新: ${id}`);
-                    return articles[index];
-                }
+                console.log(`📝 文章 ${id} 已在本地更新 (不保存到后端):`, updates);
+                return articles[index];
             }
             
             console.warn('⚠️ 未找到文章:', id);
@@ -229,9 +221,10 @@ class DataAdapter {
                 };
                 
                 comments.push(newComment);
-                await this.saveData('comments', comments);
+                console.warn('⚠️ 前台只读模式：评论添加仅在本地生效');
+                // await this.saveData('comments', comments); // 前台只读模式禁用
                 
-                console.log('✅ 评论添加成功:', newComment);
+                console.log('📝 评论添加成功 (仅本地):', newComment);
                 return newComment;
             }
         } catch (error) {
@@ -258,8 +251,9 @@ class DataAdapter {
                 
                 if (index !== -1) {
                     comments[index] = { ...comments[index], ...updates };
-                    await this.saveData('comments', comments);
-                    console.log('✅ 评论更新成功 (本地):', comments[index]);
+                    console.warn('⚠️ 前台只读模式：评论更新仅在本地生效');
+                    // await this.saveData('comments', comments); // 前台只读模式禁用
+                    console.log('📝 评论更新成功 (仅本地):', comments[index]);
                     return comments[index];
                 }
                 
@@ -278,8 +272,9 @@ class DataAdapter {
             const filteredComments = comments.filter(c => c.id !== parseInt(id));
             
             if (filteredComments.length < comments.length) {
-                await this.saveData('comments', filteredComments);
-                console.log('✅ 评论删除成功:', id);
+                console.warn('⚠️ 前台只读模式：评论删除仅在本地生效');
+                // await this.saveData('comments', filteredComments); // 前台只读模式禁用
+                console.log('📝 评论删除成功 (仅本地):', id);
                 return { success: true };
             }
             
@@ -337,9 +332,10 @@ class DataAdapter {
                 };
                 
                 messages.push(newMessage);
-                await this.saveData('guestbook', messages);
+                console.warn('⚠️ 前台只读模式：留言添加仅在本地生效');
+                // await this.saveData('guestbook', messages); // 前台只读模式禁用
                 
-                console.log('✅ 留言添加成功:', newMessage);
+                console.log('📝 留言添加成功 (仅本地):', newMessage);
                 return newMessage;
             }
         } catch (error) {
@@ -355,8 +351,9 @@ class DataAdapter {
             
             if (index !== -1) {
                 messages[index] = { ...messages[index], ...updates };
-                await this.saveData('guestbook', messages);
-                console.log('✅ 留言更新成功:', messages[index]);
+                console.warn('⚠️ 前台只读模式：留言更新仅在本地生效');
+                // await this.saveData('guestbook', messages); // 前台只读模式禁用
+                console.log('📝 留言更新成功 (仅本地):', messages[index]);
                 return messages[index];
             }
             
@@ -374,8 +371,9 @@ class DataAdapter {
             const filteredMessages = messages.filter(m => m.id !== parseInt(id));
             
             if (filteredMessages.length < messages.length) {
-                await this.saveData('guestbook', filteredMessages);
-                console.log('✅ 留言删除成功:', id);
+                console.warn('⚠️ 前台只读模式：留言删除仅在本地生效');
+                // await this.saveData('guestbook', filteredMessages); // 前台只读模式禁用
+                console.log('📝 留言删除成功 (仅本地):', id);
                 return { success: true };
             }
             
@@ -468,18 +466,14 @@ class DataAdapter {
             needUpdate = true;
         }
         
-        // 异步更新 settings（不阻塞返回）
-        if (needUpdate && this.environmentAdapter.supportsWrite) {
-            this.environmentAdapter.saveData('settings', settings)
-                .then(result => {
-                    if (result.success) {
-                        console.log('✅ 统计数据已自动更新');
-                        console.log(`   总字数: ${calculatedWords}, 总访问量: ${calculatedViews}`);
-                    }
-                })
-                .catch(err => {
-                    console.error('❌ 更新统计数据失败:', err);
-                });
+        // 前台只读模式：不自动更新统计数据到后端
+        if (needUpdate) {
+            console.log('📊 前台计算的统计数据 (只读):', {
+                totalWords: calculatedWords,
+                totalViews: calculatedViews,
+                note: '前台不会自动保存统计数据，避免覆盖后台数据'
+            });
+        }
         }
         
         return {
