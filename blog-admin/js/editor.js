@@ -71,10 +71,7 @@ class ArticleEditor {
     async loadArticleData() {
         console.log('=== 加载文章数据 ===');
         console.log('window.blogDataStore 存在:', !!window.blogDataStore);
-        console.log('window.dataAdapter 存在:', !!window.dataAdapter);
-        if (window.dataAdapter) {
-            console.log('dataAdapter.useAPI:', window.dataAdapter.useAPI);
-        }
+        console.log('window.environmentAdapter 存在:', !!window.environmentAdapter);
         
         const urlParams = new URLSearchParams(window.location.search);
         const urlId = urlParams.get('id');
