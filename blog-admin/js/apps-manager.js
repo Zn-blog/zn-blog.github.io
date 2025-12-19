@@ -19,44 +19,91 @@ class AppsAdminManager {
     // 加载应用数据
     async loadApps() {
         try {
-            // 检查是否为静态环境（GitHub Pages等）
-            const isStatic = window.location.hostname.includes('github.io') || 
-                            window.location.hostname.includes('vercel.app') ||
-                            !window.location.hostname.includes('localhost');
+            console.log('📱 开始加载应用数据...');
             
-            if (isStatic) {
-                // 静态环境：直接读取JSON文件
-                let url = '../data/apps.json';
-                
-                // 如果是GitHub Pages，使用绝对路径（与环境适配器保持一致）
-                if (window.location.hostname.includes('github.io')) {
-                    url = '/data/apps.json';
-                }
-                
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
-                }
-                this.apps = await response.json();
+            // 优先使用环境适配器
+            if (window.environmentAdapter && window.environmentAdapter.initialized) {
+                console.log('🌍 使用环境适配器加载应用数据');
+                this.apps = await window.environmentAdapter.getData('apps');
                 this.apps = this.apps.sort((a, b) => (a.order || 0) - (b.order || 0));
-                console.log(`✅ 从JSON文件加载了 ${this.apps.length} 个应用`);
-            } else {
-                // 使用环境适配器获取API
-                const apiBase = window.environmentAdapter ? window.environmentAdapter.apiBase : '/api';
-                const response = await fetch(`${apiBase}/apps`);
-                const result = await response.json();
-                
-                if (result.success) {
-                    this.apps = result.data.sort((a, b) => (a.order || 0) - (b.order || 0));
-                    console.log(`✅ 从API加载了 ${this.apps.length} 个应用`);
-                } else {
-                    console.error('❌ 加载应用失败');
-                    this.apps = [];
-                }
+                console.log(`✅ 从环境适配器加载了 ${this.apps.length} 个应用`);
+                return;
             }
+            
+            // 回退到直接API调用
+            const hostname = window.location.hostname;
+            let url;
+            
+            if (hostname.includes('vercel.app') || 
+                hostname.includes('vercel.com') ||
+                hostname.includes('web3v.vip') || 
+                hostname.includes('slxhdjy.top')) {
+                // Vercel环境：使用API
+                url = '/api/apps';
+                console.log('🌐 Vercel环境：使用API加载');
+            } else if (hostname.includes('github.io')) {
+                // GitHub Pages：使用绝对路径
+                url = '/data/apps.json';
+                console.log('📄 GitHub Pages：使用JSON文件');
+            } else if (hostname.includes('localhost') || hostname.includes('127.0.0.1')) {
+                // 本地环境：优先尝试API
+                try {
+                    const apiResponse = await fetch('/api/apps');
+                    if (apiResponse.ok) {
+                        url = '/api/apps';
+                        console.log('🏠 本地环境：使用API');
+                    } else {
+                        throw new Error('API不可用');
+                    }
+                } catch (e) {
+                    url = '../data/apps.json';
+                    console.log('🏠 本地环境：回退到JSON文件');
+                }
+            } else {
+                // 其他环境：使用相对路径
+                url = '../data/apps.json';
+                console.log('📁 其他环境：使用相对路径JSON文件');
+            }
+            
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            
+            if (url.includes('/api/')) {
+                // API响应
+                const result = await response.json();
+                if (result.success) {
+                    this.apps = result.data;
+                } else {
+                    throw new Error(result.error || 'API返回失败');
+                }
+            } else {
+                // JSON文件响应
+                this.apps = await response.json();
+            }
+            
+            this.apps = this.apps.sort((a, b) => (a.order || 0) - (b.order || 0));
+            console.log(`✅ 成功加载了 ${this.apps.length} 个应用`);
+            
         } catch (error) {
             console.error('❌ 加载应用出错:', error);
             this.apps = [];
+            
+            // 显示用户友好的错误信息
+            const container = document.getElementById('appsManageGrid');
+            if (container) {
+                container.innerHTML = `
+                    <div class="error-state">
+                        <div class="error-icon">⚠️</div>
+                        <p>应用数据加载失败</p>
+                        <p style="font-size: 0.9rem; color: #666;">${error.message}</p>
+                        <button class="btn-primary" onclick="window.appsAdminManager?.loadApps().then(() => window.appsAdminManager?.renderApps())">
+                            🔄 重试
+                        </button>
+                    </div>
+                `;
+            }
         }
     }
 

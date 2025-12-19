@@ -2682,6 +2682,30 @@ body:not([data-theme="ocean"]):not([data-theme="purple"]):not([data-theme="green
     margin: 0 auto 1rem;
 }
 
+.error-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+    background: #fff5f5;
+    border: 2px dashed #fed7d7;
+    border-radius: 12px;
+    margin: 1rem;
+}
+
+.error-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.error-state p {
+    margin-bottom: 0.5rem;
+    color: #e53e3e;
+}
+
+.error-state p:last-of-type {
+    margin-bottom: 1.5rem;
+}
+
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }

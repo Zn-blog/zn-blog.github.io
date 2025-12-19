@@ -2,6 +2,28 @@
 document.addEventListener('DOMContentLoaded', async function() {
     console.log('🚀 后台管理系统初始化...');
     
+    // 等待关键依赖加载完成
+    let retryCount = 0;
+    const maxRetries = 10;
+    
+    while ((!window.blogDataStore || !window.environmentAdapter) && retryCount < maxRetries) {
+        console.log(`⏳ 等待依赖加载... (${retryCount + 1}/${maxRetries})`);
+        await new Promise(resolve => setTimeout(resolve, 500));
+        retryCount++;
+    }
+    
+    if (!window.blogDataStore) {
+        console.error('❌ blogDataStore 未加载，无法初始化');
+        return;
+    }
+    
+    if (!window.environmentAdapter) {
+        console.error('❌ environmentAdapter 未加载，无法初始化');
+        return;
+    }
+    
+    console.log('✅ 依赖加载完成，开始数据渲染');
+    
     try {
         // 并行加载所有数据
         await Promise.all([
@@ -12,16 +34,37 @@ document.addEventListener('DOMContentLoaded', async function() {
             renderCommentsTable(),
             renderGuestbookMessages(),
             renderMediaGrid(),
-            renderLinksTable()
+            renderLinksTable(),
+            renderAppsManager()
         ]);
         
         console.log('✅ 所有数据加载完成');
     } catch (error) {
         console.error('❌ 数据加载失败:', error);
+        
+        // 显示用户友好的错误信息
+        const errorMessage = error.message || '未知错误';
+        if (errorMessage.includes('KV')) {
+            showNotification('数据库配置错误，请检查 Vercel KV 设置', 'error');
+        } else if (errorMessage.includes('fetch')) {
+            showNotification('网络连接失败，请检查网络或稍后重试', 'error');
+        } else {
+            showNotification('数据加载失败：' + errorMessage, 'error');
+        }
     }
     
     // 初始化按钮事件
     initButtonEvents();
+    
+    // 加载设置
+    setTimeout(loadSettings, 100);
+    
+    // 初始化数据源模式
+    setTimeout(() => {
+        if (typeof initDataSourceMode === 'function') {
+            initDataSourceMode();
+        }
+    }, 200);
     
     // 每5分钟刷新一次仪表盘统计数据（降低频率）
     setInterval(() => {
@@ -59,44 +102,51 @@ async function renderDashboard() {
         };
         
         updateDashboardUI(stats, articles, comments);
-
-    // 更新统计卡片（带动画效果）
-    const statCards = document.querySelectorAll('#page-dashboard .stat-card');
-    if (statCards.length >= 4) {
-        animateStatNumber(statCards[0].querySelector('.stat-value'), stats.totalArticles);
-        animateStatNumber(statCards[1].querySelector('.stat-value'), stats.totalComments);
-        animateStatNumber(statCards[2].querySelector('.stat-value'), stats.totalViews);
-        animateStatNumber(statCards[3].querySelector('.stat-value'), stats.totalVisitors);
-    }
-
-    // 渲染最近文章 - 显示所有文章
-    const recentArticles = articles; // 显示所有文章
-    const recentArticlesList = document.querySelector('#page-dashboard .dashboard-grid .dashboard-card:first-child .recent-list');
-    if (recentArticlesList) {
-        recentArticlesList.innerHTML = recentArticles.map(article => `
-            <div class="recent-item">
-                <span class="item-title">${article.title}</span>
-                <span class="item-date">${article.publishDate}</span>
-            </div>
-        `).join('');
-    }
-
-    // 渲染最新评论 - 显示所有评论
-    const recentComments = comments; // 显示所有评论
-    const recentCommentsList = document.querySelector('#page-dashboard .dashboard-grid .dashboard-card:last-child .recent-list');
-    if (recentCommentsList) {
-        recentCommentsList.innerHTML = recentComments.map(comment => {
-            const timeAgo = getTimeAgo(new Date(comment.time));
-            return `
-                <div class="recent-item">
-                    <span class="item-title">${comment.content}</span>
-                    <span class="item-date">${timeAgo}</span>
-                </div>
-            `;
-        }).join('');
-    }
     } catch (error) {
         console.error('渲染仪表盘失败:', error);
+    }
+}
+
+// 更新仪表盘UI
+function updateDashboardUI(stats, articles, comments) {
+    try {
+        // 更新统计卡片（带动画效果）
+        const statCards = document.querySelectorAll('#page-dashboard .stat-card');
+        if (statCards.length >= 4) {
+            animateStatNumber(statCards[0].querySelector('.stat-value'), stats.totalArticles);
+            animateStatNumber(statCards[1].querySelector('.stat-value'), stats.totalComments);
+            animateStatNumber(statCards[2].querySelector('.stat-value'), stats.totalViews);
+            animateStatNumber(statCards[3].querySelector('.stat-value'), stats.totalVisitors);
+        }
+
+        // 渲染最近文章 - 显示所有文章
+        const recentArticles = articles; // 显示所有文章
+        const recentArticlesList = document.querySelector('#page-dashboard .dashboard-grid .dashboard-card:first-child .recent-list');
+        if (recentArticlesList) {
+            recentArticlesList.innerHTML = recentArticles.map(article => `
+                <div class="recent-item">
+                    <span class="item-title">${article.title}</span>
+                    <span class="item-date">${article.publishDate}</span>
+                </div>
+            `).join('');
+        }
+
+        // 渲染最新评论 - 显示所有评论
+        const recentComments = comments; // 显示所有评论
+        const recentCommentsList = document.querySelector('#page-dashboard .dashboard-grid .dashboard-card:last-child .recent-list');
+        if (recentCommentsList) {
+            recentCommentsList.innerHTML = recentComments.map(comment => {
+                const timeAgo = getTimeAgo(new Date(comment.time));
+                return `
+                    <div class="recent-item">
+                        <span class="item-title">${comment.content}</span>
+                        <span class="item-date">${timeAgo}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+    } catch (error) {
+        console.error('更新仪表盘UI失败:', error);
     }
 }
 
@@ -2185,11 +2235,7 @@ async function saveSettings() {
     }
 }
 
-// 页面加载时加载设置
-document.addEventListener('DOMContentLoaded', function() {
-    // 延迟加载设置，确保数据存储已初始化
-    setTimeout(loadSettings, 100);
-});
+// loadSettings 函数将在主初始化中调用
 
 // ========== 文章导出菜单 ==========
 
@@ -2387,6 +2433,38 @@ function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+}
+
+// ========== 应用管理 ==========
+
+// 渲染应用管理器
+async function renderAppsManager() {
+    try {
+        console.log('📱 初始化应用管理器...');
+        
+        // 检查应用管理容器是否存在
+        const container = document.getElementById('appsManageGrid');
+        if (!container) {
+            console.warn('⚠️ 应用管理容器不存在');
+            return;
+        }
+        
+        // 确保应用管理器已加载
+        if (typeof initAppsManager === 'function') {
+            initAppsManager();
+            console.log('✅ 应用管理器初始化完成');
+        } else if (typeof AppsAdminManager !== 'undefined') {
+            // 直接创建实例
+            if (!window.appsAdminManager) {
+                window.appsAdminManager = new AppsAdminManager();
+                console.log('✅ 应用管理器实例创建完成');
+            }
+        } else {
+            console.warn('⚠️ 应用管理器类未找到');
+        }
+    } catch (error) {
+        console.error('❌ 应用管理器初始化失败:', error);
+    }
 }
 
 // ========== 友情链接管理 ==========
@@ -2781,9 +2859,4 @@ async function syncDataToJson_DISABLED() {
     }
 }
 
-// 页面加载时初始化数据源模式
-document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(() => {
-        initDataSourceMode();
-    }, 200);
-});
+// initDataSourceMode 函数将在主初始化中调用
