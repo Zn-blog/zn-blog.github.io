@@ -728,9 +728,20 @@ function setupCategoryButtonHandlers() {
 
 // 编辑分类
 async function editCategory(id) {
+    console.log('🔍 editCategory 调用，ID:', id, 'Type:', typeof id);
+    
     const categories = await window.blogDataStore.getCategories();
-    const category = categories.find(c => c.id === id);
-    if (!category) return;
+    console.log('📊 获取到的分类数据:', categories.map(c => ({ id: c.id, idType: typeof c.id, name: c.name })));
+    
+    // 修复ID类型不匹配问题：使用字符串比较
+    const category = categories.find(c => String(c.id) === String(id));
+    console.log('🎯 查找结果:', category ? `找到分类: ${category.name}` : '未找到分类');
+    
+    if (!category) {
+        console.error('❌ 分类不存在，ID:', id);
+        showNotification('分类不存在', 'error');
+        return;
+    }
 
     const form = `
         <div class="modal-form">
@@ -740,7 +751,7 @@ async function editCategory(id) {
             </div>
             <div class="form-group">
                 <label>分类描述</label>
-                <textarea class="form-control" rows="3" id="categoryDesc">${category.description}</textarea>
+                <textarea class="form-control" rows="3" id="categoryDesc">${category.description || ''}</textarea>
             </div>
             <div class="modal-actions">
                 <button class="btn-primary" id="saveCategoryBtn">保存</button>
@@ -798,9 +809,20 @@ async function updateCategory(id) {
 
 // 删除分类确认
 async function deleteCategoryConfirm(id) {
+    console.log('🔍 deleteCategoryConfirm 调用，ID:', id, 'Type:', typeof id);
+    
     const categories = await window.blogDataStore.getCategories();
-    const category = categories.find(c => c.id === id);
-    if (!category) return;
+    console.log('📊 获取到的分类数据:', categories.map(c => ({ id: c.id, idType: typeof c.id, name: c.name })));
+    
+    // 修复ID类型不匹配问题：使用字符串比较
+    const category = categories.find(c => String(c.id) === String(id));
+    console.log('🎯 查找结果:', category ? `找到分类: ${category.name}` : '未找到分类');
+    
+    if (!category) {
+        console.error('❌ 分类不存在，ID:', id);
+        showNotification('分类不存在', 'error');
+        return;
+    }
     
     if (category.count > 0) {
         showNotification(`无法删除"${category.name}"分类，该分类下还有 ${category.count} 篇文章`, 'error');
@@ -813,6 +835,7 @@ async function deleteCategoryConfirm(id) {
             showNotification('分类删除成功', 'success');
             await renderCategoriesTable();
         } catch (error) {
+            console.error('❌ 删除分类失败:', error);
             showNotification('删除失败: ' + error.message, 'error');
         }
     }
