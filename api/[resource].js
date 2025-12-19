@@ -390,14 +390,22 @@ function validateAndCleanData(resource, data) {
         break;
         
       case 'users':
-        if (!cleaned.username || typeof cleaned.username !== 'string') {
-          return { valid: false, error: '用户名不能为空' };
+        // 用户名验证（如果提供的话）
+        if (cleaned.username && typeof cleaned.username !== 'string') {
+          return { valid: false, error: '用户名格式错误' };
         }
-        if (!cleaned.password || typeof cleaned.password !== 'string') {
-          return { valid: false, error: '密码不能为空' };
+        // 密码验证（如果提供的话）
+        if (cleaned.password && typeof cleaned.password !== 'string') {
+          return { valid: false, error: '密码格式错误' };
         }
-        cleaned.role = cleaned.role || 'viewer';
-        cleaned.status = cleaned.status || 'active';
+        // 角色验证（如果提供的话）
+        if (cleaned.role) {
+          const validRoles = ['super_admin', 'admin', 'editor', 'viewer'];
+          if (!validRoles.includes(cleaned.role)) {
+            return { valid: false, error: '无效的用户角色' };
+          }
+        }
+        // 不设置默认值，保持原有数据
         break;
         
       case 'comments':

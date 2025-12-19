@@ -295,13 +295,11 @@ class AppsAdminManager {
         }
 
         try {
-            // 检查是否为静态环境
-            const isStatic = window.location.hostname.includes('github.io') || 
-                            window.location.hostname.includes('vercel.app') ||
-                            !window.location.hostname.includes('localhost');
+            // 检查是否为真正的静态环境（只有GitHub Pages是纯静态的）
+            const isStaticOnly = window.location.hostname.includes('github.io');
             
-            if (isStatic) {
-                // 静态环境：显示提示信息
+            if (isStaticOnly) {
+                // 纯静态环境：显示提示信息
                 alert('静态部署环境下无法保存应用，请在本地环境使用完整功能');
                 return;
             }
@@ -454,12 +452,11 @@ class AppsAdminManager {
                 }
             } else {
                 // 非Vercel环境的处理
-                // 检查是否为静态环境
-                const isStatic = window.location.hostname.includes('github.io') || 
-                                !window.location.hostname.includes('localhost');
+                // 检查是否为真正的静态环境（只有GitHub Pages是纯静态的）
+                const isStaticOnly = window.location.hostname.includes('github.io');
                 
-                if (isStatic) {
-                    // 静态环境：显示提示信息
+                if (isStaticOnly) {
+                    // 纯静态环境：显示提示信息
                     alert('静态部署环境下无法删除应用，请在本地环境使用完整功能');
                     return;
                 }

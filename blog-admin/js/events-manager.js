@@ -208,7 +208,7 @@ class EventsManager {
 
     showEventModal() {
         // 检查权限
-        if (!window.checkPermission('dashboard', 'create')) {
+        if (!window.checkPermission('events', 'create')) {
             return;
         }
         

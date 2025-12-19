@@ -241,13 +241,24 @@ class UserManager {
                 };
             }
             
-            // 普通用户不能修改自己的角色
-            const canModifyRoles = ['admin', 'super_admin'].includes(currentUserData.role);
-            if (updates.role && !canModifyRoles && currentUser.username === username) {
-                return {
-                    success: false,
-                    message: '不能修改自己的角色'
-                };
+            // 角色修改权限检查
+            if (updates.role) {
+                // 任何用户都不能修改自己的角色
+                if (currentUser.username === username) {
+                    return {
+                        success: false,
+                        message: '不能修改自己的角色'
+                    };
+                }
+                
+                // 只有管理员和超管可以修改其他用户的角色
+                const canModifyRoles = ['admin', 'super_admin'].includes(currentUserData.role);
+                if (!canModifyRoles) {
+                    return {
+                        success: false,
+                        message: '没有权限修改用户角色'
+                    };
+                }
             }
             
             // 使用blogDataStore更新用户

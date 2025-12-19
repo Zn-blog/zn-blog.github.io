@@ -6,6 +6,7 @@ class PermissionManager {
     constructor() {
         this.permissions = this.initializePermissions();
         this.currentUser = null;
+        this.initialized = false;
         this.init();
     }
 
@@ -53,9 +54,10 @@ class PermissionManager {
             users: {
                 read: ['super_admin'],
                 create: ['super_admin'],
-                update: ['super_admin'],
+                update: ['super_admin', 'admin', 'editor', 'viewer'], // 允许用户修改自己的信息
                 delete: ['super_admin'],
-                change_role: ['super_admin']
+                change_role: ['super_admin'],
+                change_password: ['super_admin', 'admin', 'editor', 'viewer'] // 允许用户修改自己的密码
             },
             settings: {
                 read: ['super_admin', 'admin', 'viewer'],
@@ -69,6 +71,12 @@ class PermissionManager {
             },
             dashboard: {
                 read: ['super_admin', 'admin', 'editor', 'viewer']
+            },
+            events: {
+                read: ['super_admin', 'admin', 'editor', 'viewer'],
+                create: ['super_admin', 'admin', 'editor'],
+                update: ['super_admin', 'admin', 'editor'],
+                delete: ['super_admin', 'admin', 'editor']
             }
         };
     }
@@ -80,6 +88,9 @@ class PermissionManager {
             this.setupPermissionUI();
             console.log('🔐 权限管理器初始化完成');
             console.log('👤 当前用户权限:', this.getUserPermissions());
+            
+            // 标记权限管理器已就绪
+            this.initialized = true;
             
             // 延迟执行按钮样式更新，确保DOM已加载
             setTimeout(() => {
@@ -102,8 +113,22 @@ class PermissionManager {
                     }, 500);
                 }
             });
+            
+            // 定期检查并更新权限样式（处理动态内容）
+            setInterval(() => {
+                this.updateTableButtonStyles();
+                this.updateAllButtonStyles();
+            }, 10000); // 每10秒检查一次
+            
         } catch (error) {
             console.error('❌ 权限管理器初始化失败:', error);
+            this.initialized = false;
+            
+            // 重试机制
+            setTimeout(() => {
+                console.log('🔄 重试权限管理器初始化...');
+                this.init();
+            }, 2000);
         }
     }
 
@@ -147,6 +172,12 @@ class PermissionManager {
 
     // 检查权限
     hasPermission(module, action) {
+        // 如果权限管理器未初始化完成，临时允许访问
+        if (!this.initialized) {
+            console.warn('⚠️ 权限管理器未初始化完成，临时允许访问');
+            return true;
+        }
+        
         if (!this.currentUser) {
             console.warn('⚠️ 用户未登录，拒绝访问');
             return false;
@@ -173,6 +204,19 @@ class PermissionManager {
         return hasAccess;
     }
 
+    // 检查用户是否可以修改特定用户的信息
+    canModifyUser(targetUsername) {
+        if (!this.currentUser) return false;
+        
+        // 超管可以修改任何用户
+        if (this.currentUser.role === 'super_admin') return true;
+        
+        // 用户可以修改自己的信息
+        if (this.currentUser.username === targetUsername) return true;
+        
+        return false;
+    }
+
     // 检查权限并显示错误信息
     checkPermission(module, action, showError = true) {
         const hasAccess = this.hasPermission(module, action);
@@ -196,7 +240,8 @@ class PermissionManager {
             users: '用户管理',
             settings: '系统设置',
             apps: '应用管理',
-            dashboard: '仪表盘'
+            dashboard: '仪表盘',
+            events: '重要事项'
         };
 
         const actionNames = {
@@ -290,7 +335,7 @@ class PermissionManager {
             'add-app-btn': { module: 'apps', action: 'create' },
             
             // 仪表盘相关
-            'add-event-btn': { module: 'dashboard', action: 'create' },
+            'add-event-btn': { module: 'events', action: 'create' },
             
             // 网易云导入
             'btnNeteaseMusicImport': { module: 'media', action: 'upload' }
@@ -430,7 +475,7 @@ class PermissionManager {
             'add-app-btn': { module: 'apps', action: 'create' },
             
             // 仪表盘相关
-            'add-event-btn': { module: 'dashboard', action: 'create' },
+            'add-event-btn': { module: 'events', action: 'create' },
             
             // 网易云导入
             'btnNeteaseMusicImport': { module: 'media', action: 'upload' }
@@ -601,7 +646,8 @@ class PermissionManager {
             users: '用户管理',
             settings: '系统设置',
             apps: '应用管理',
-            dashboard: '仪表盘'
+            dashboard: '仪表盘',
+            events: '重要事项'
         };
 
         const actionNames = {
@@ -820,19 +866,66 @@ class PermissionManager {
 
 // 权限检查辅助函数
 window.checkPermission = function(module, action, showError = true) {
-    if (window.permissionManager) {
+    if (window.permissionManager && window.permissionManager.currentUser) {
         return window.permissionManager.checkPermission(module, action, showError);
     }
-    console.warn('⚠️ 权限管理器未初始化');
+    
+    // 如果权限管理器未初始化或用户未加载，等待一下再重试
+    if (!window.permissionManager) {
+        console.warn('⚠️ 权限管理器未初始化，等待初始化...');
+        
+        // 异步重试机制
+        setTimeout(() => {
+            if (window.permissionManager && window.permissionManager.currentUser) {
+                console.log('✅ 权限管理器已就绪，重新应用权限样式');
+                if (window.updatePermissionStyles) {
+                    window.updatePermissionStyles();
+                }
+            }
+        }, 1000);
+        
+        return true; // 临时允许，避免阻塞操作
+    }
+    
+    if (!window.permissionManager.currentUser) {
+        console.warn('⚠️ 用户信息未加载完成');
+        return true; // 临时允许
+    }
+    
     return true; // 降级处理
 };
 
 window.hasPermission = function(module, action) {
-    if (window.permissionManager) {
+    if (window.permissionManager && window.permissionManager.initialized) {
         return window.permissionManager.hasPermission(module, action);
     }
-    console.warn('⚠️ 权限管理器未初始化');
+    console.warn('⚠️ 权限管理器未初始化或未就绪');
     return true; // 降级处理
+};
+
+// 权限就绪检查函数
+window.isPermissionManagerReady = function() {
+    return window.permissionManager && 
+           window.permissionManager.initialized && 
+           window.permissionManager.currentUser;
+};
+
+// 等待权限管理器就绪的函数
+window.waitForPermissionManager = function(callback, maxWait = 5000) {
+    const startTime = Date.now();
+    
+    const check = () => {
+        if (window.isPermissionManagerReady()) {
+            callback();
+        } else if (Date.now() - startTime < maxWait) {
+            setTimeout(check, 100);
+        } else {
+            console.warn('⚠️ 权限管理器等待超时');
+            callback(); // 超时后仍然执行回调
+        }
+    };
+    
+    check();
 };
 
 window.requirePermission = function(module, action) {
@@ -843,13 +936,24 @@ window.requirePermission = function(module, action) {
 
 // 全局函数：手动更新权限样式
 window.updatePermissionStyles = function() {
-    if (window.permissionManager) {
+    if (window.permissionManager && window.permissionManager.initialized) {
         console.log('🔄 手动更新权限样式...');
         window.permissionManager.updateTableButtonStyles();
         window.permissionManager.updateAllButtonStyles();
         
         // 强制更新标签按钮样式
         window.permissionManager.forceUpdateTagButtons();
+    } else {
+        console.log('⏳ 权限管理器未就绪，稍后重试...');
+        // 如果权限管理器未就绪，稍后重试
+        setTimeout(() => {
+            if (window.permissionManager && window.permissionManager.initialized) {
+                console.log('🔄 重试更新权限样式...');
+                window.permissionManager.updateTableButtonStyles();
+                window.permissionManager.updateAllButtonStyles();
+                window.permissionManager.forceUpdateTagButtons();
+            }
+        }, 1000);
     }
 };
 

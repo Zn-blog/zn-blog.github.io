@@ -56,7 +56,7 @@ class APIClient {
     }
 
     async getArticle(id) {
-        return this.request(`/articles/${id}`);
+        return this.request(`/articles?id=${id}`);
     }
 
     async createArticle(article) {
@@ -67,14 +67,14 @@ class APIClient {
     }
 
     async updateArticle(id, article) {
-        return this.request(`/articles/${id}`, {
+        return this.request(`/articles?id=${id}`, {
             method: 'PUT',
             body: JSON.stringify(article)
         });
     }
 
     async deleteArticle(id) {
-        return this.request(`/articles/${id}`, {
+        return this.request(`/articles?id=${id}`, {
             method: 'DELETE'
         });
     }
@@ -92,14 +92,14 @@ class APIClient {
     }
 
     async updateCategory(id, category) {
-        return this.request(`/categories/${id}`, {
+        return this.request(`/categories?id=${id}`, {
             method: 'PUT',
             body: JSON.stringify(category)
         });
     }
 
     async deleteCategory(id) {
-        return this.request(`/categories/${id}`, {
+        return this.request(`/categories?id=${id}`, {
             method: 'DELETE'
         });
     }
@@ -117,14 +117,14 @@ class APIClient {
     }
 
     async updateTag(id, tag) {
-        return this.request(`/tags/${id}`, {
+        return this.request(`/tags?id=${id}`, {
             method: 'PUT',
             body: JSON.stringify(tag)
         });
     }
 
     async deleteTag(id) {
-        return this.request(`/tags/${id}`, {
+        return this.request(`/tags?id=${id}`, {
             method: 'DELETE'
         });
     }
@@ -142,7 +142,7 @@ class APIClient {
     }
 
     async deleteComment(id) {
-        return this.request(`/comments/${id}`, {
+        return this.request(`/comments?id=${id}`, {
             method: 'DELETE'
         });
     }
@@ -160,14 +160,14 @@ class APIClient {
     }
 
     async updateGuestbookEntry(id, entry) {
-        return this.request(`/guestbook/${id}`, {
+        return this.request(`/guestbook?id=${id}`, {
             method: 'PUT',
             body: JSON.stringify(entry)
         });
     }
 
     async deleteGuestbookEntry(id) {
-        return this.request(`/guestbook/${id}`, {
+        return this.request(`/guestbook?id=${id}`, {
             method: 'DELETE'
         });
     }
@@ -185,14 +185,14 @@ class APIClient {
     }
 
     async updateUser(id, user) {
-        return this.request(`/users/${id}`, {
+        return this.request(`/users?id=${id}`, {
             method: 'PUT',
             body: JSON.stringify(user)
         });
     }
 
     async deleteUser(id) {
-        return this.request(`/users/${id}`, {
+        return this.request(`/users?id=${id}`, {
             method: 'DELETE'
         });
     }
@@ -222,7 +222,7 @@ class APIClient {
     }
 
     async deleteImage(id) {
-        return this.request(`/images/${id}`, {
+        return this.request(`/images?id=${id}`, {
             method: 'DELETE'
         });
     }
@@ -239,14 +239,14 @@ class APIClient {
     }
 
     async updateMusic(id, music) {
-        return this.request(`/music/${id}`, {
+        return this.request(`/music?id=${id}`, {
             method: 'PUT',
             body: JSON.stringify(music)
         });
     }
 
     async deleteMusic(id) {
-        return this.request(`/music/${id}`, {
+        return this.request(`/music?id=${id}`, {
             method: 'DELETE'
         });
     }
@@ -263,7 +263,7 @@ class APIClient {
     }
 
     async deleteVideo(id) {
-        return this.request(`/videos/${id}`, {
+        return this.request(`/videos?id=${id}`, {
             method: 'DELETE'
         });
     }
@@ -281,14 +281,14 @@ class APIClient {
     }
 
     async updateLink(id, link) {
-        return this.request(`/links/${id}`, {
+        return this.request(`/links?id=${id}`, {
             method: 'PUT',
             body: JSON.stringify(link)
         });
     }
 
     async deleteLink(id) {
-        return this.request(`/links/${id}`, {
+        return this.request(`/links?id=${id}`, {
             method: 'DELETE'
         });
     }
@@ -306,14 +306,14 @@ class APIClient {
     }
 
     async updateEvent(id, event) {
-        return this.request(`/events/${id}`, {
+        return this.request(`/events?id=${id}`, {
             method: 'PUT',
             body: JSON.stringify(event)
         });
     }
 
     async deleteEvent(id) {
-        return this.request(`/events/${id}`, {
+        return this.request(`/events?id=${id}`, {
             method: 'DELETE'
         });
     }

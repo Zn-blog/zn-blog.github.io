@@ -87,17 +87,32 @@ const PageStateManager = {
 
 // 页面导航
 document.addEventListener('DOMContentLoaded', function() {
-    // 初始化权限管理器
-    if (typeof PermissionManager !== 'undefined') {
-        window.permissionManager = new PermissionManager();
-        console.log('🔐 权限管理器已初始化');
+    // 延迟初始化权限管理器，等待数据存储准备完成
+    initPermissionManagerWhenReady();
+    
+    async function initPermissionManagerWhenReady() {
+        let retryCount = 0;
+        const maxRetries = 10;
         
-        // 测试权限系统
-        setTimeout(() => {
-            testPermissionSystem();
-        }, 1000);
-    } else {
-        console.warn('⚠️ 权限管理器类未找到');
+        while ((!window.blogDataStore || !window.environmentAdapter) && retryCount < maxRetries) {
+            console.log(`⏳ 等待数据存储准备完成... (${retryCount + 1}/${maxRetries})`);
+            await new Promise(resolve => setTimeout(resolve, 500));
+            retryCount++;
+        }
+        
+        if (typeof PermissionManager !== 'undefined') {
+            window.permissionManager = new PermissionManager();
+            console.log('🔐 权限管理器已初始化');
+            
+            // 测试权限系统
+            setTimeout(() => {
+                if (typeof testPermissionSystem === 'function') {
+                    testPermissionSystem();
+                }
+            }, 1000);
+        } else {
+            console.warn('⚠️ 权限管理器类未找到');
+        }
     }
     // 背景图片按钮事件监听
     const refreshBtn = document.getElementById('refreshBackgroundBtn');
@@ -181,6 +196,14 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 更新当前页面
         currentPage = pageName;
+        
+        // 页面切换后重新应用权限样式
+        setTimeout(() => {
+            if (window.updatePermissionStyles) {
+                console.log('🔄 页面切换后更新权限样式:', pageName);
+                window.updatePermissionStyles();
+            }
+        }, 100);
     }
 
     navItems.forEach(item => {
@@ -844,7 +867,7 @@ document.addEventListener('click', function(e) {
 // 显示修改密码模态框
 function showChangePasswordModal() {
     // 检查权限 - 用户可以修改自己的密码
-    if (!window.checkPermission('users', 'update') && !AuthManager.isLoggedIn()) {
+    if (!window.checkPermission('users', 'change_password')) {
         return;
     }
     
@@ -912,18 +935,23 @@ async function handleChangePassword(event) {
     
     // 修改密码
     if (typeof userManager !== 'undefined') {
-        const result = userManager.resetPassword(currentUser.username, newPassword);
-        
-        if (result.success) {
-            showNotification('密码修改成功，请重新登录', 'success');
-            closeChangePasswordModal();
+        try {
+            const result = await userManager.changePassword(currentUser.username, oldPassword, newPassword);
             
-            // 延迟后退出登录
-            setTimeout(() => {
-                handleLogout();
-            }, 1500);
-        } else {
-            showNotification(result.message, 'error');
+            if (result.success) {
+                showNotification('密码修改成功，请重新登录', 'success');
+                closeChangePasswordModal();
+                
+                // 延迟后退出登录
+                setTimeout(() => {
+                    handleLogout();
+                }, 1500);
+            } else {
+                showNotification(result.message, 'error');
+            }
+        } catch (error) {
+            console.error('❌ 修改密码失败:', error);
+            showNotification('修改密码失败: ' + error.message, 'error');
         }
     } else {
         showNotification('用户管理器未加载', 'error');
@@ -1083,6 +1111,7 @@ function showAddUserModal() {
     // 显示密码字段并设为必填
     passwordGroup.style.display = 'block';
     passwordInput.required = true;
+    passwordInput.setAttribute('minlength', '6'); // 恢复最小长度验证
     
     // 启用用户名输入
     usernameInput.disabled = false;
@@ -1133,6 +1162,8 @@ async function showEditUserModal(username) {
         // 隐藏密码字段（编辑时不修改密码）
         passwordGroup.style.display = 'none';
         passwordInput.required = false;
+        passwordInput.value = ''; // 清空密码字段
+        passwordInput.removeAttribute('minlength'); // 移除最小长度验证
         
         // 禁用用户名输入
         usernameInput.disabled = true;
@@ -1178,8 +1209,14 @@ async function handleSaveUser(event) {
         
         // 添加用户时需要密码
         if (!isEdit) {
-            formData.password = document.getElementById('newUserPassword').value;
+            const password = document.getElementById('newUserPassword').value;
+            if (!password || password.length < 6) {
+                showNotification('密码不能为空且至少6位', 'error');
+                return;
+            }
+            formData.password = password;
         }
+        // 编辑用户时不包含密码字段
         
         let result;
         if (isEdit) {

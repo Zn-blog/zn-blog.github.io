@@ -519,7 +519,7 @@ class BlogDataStore {
     async updateArticle(id, updates) {
         try {
             const apiBase = this.getApiBaseURL();
-            const response = await fetch(`${apiBase}/articles/${id}`, {
+            const response = await fetch(`${apiBase}/articles?id=${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updates)
@@ -543,7 +543,7 @@ class BlogDataStore {
     async deleteArticle(id) {
         try {
             const apiBase = this.getApiBaseURL();
-            const response = await fetch(`${apiBase}/articles/${id}`, {
+            const response = await fetch(`${apiBase}/articles?id=${id}`, {
                 method: 'DELETE'
             });
             
@@ -645,7 +645,7 @@ class BlogDataStore {
     async updateCategory(id, updates) {
         try {
             const apiBase = this.getApiBaseURL();
-            const response = await fetch(`${apiBase}/categories/${id}`, {
+            const response = await fetch(`${apiBase}/categories?id=${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updates)
@@ -669,7 +669,7 @@ class BlogDataStore {
     async deleteCategory(id) {
         try {
             const apiBase = this.getApiBaseURL();
-            const response = await fetch(`${apiBase}/categories/${id}`, {
+            const response = await fetch(`${apiBase}/categories?id=${id}`, {
                 method: 'DELETE'
             });
             
@@ -773,7 +773,7 @@ class BlogDataStore {
     async updateTag(id, updates) {
         try {
             const apiBase = this.getApiBaseURL();
-            const response = await fetch(`${apiBase}/tags/${id}`, {
+            const response = await fetch(`${apiBase}/tags?id=${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updates)
@@ -797,7 +797,7 @@ class BlogDataStore {
     async deleteTag(id) {
         try {
             const apiBase = this.getApiBaseURL();
-            const response = await fetch(`${apiBase}/tags/${id}`, {
+            const response = await fetch(`${apiBase}/tags?id=${id}`, {
                 method: 'DELETE'
             });
             
@@ -857,7 +857,7 @@ class BlogDataStore {
     async updateComment(id, updates) {
         try {
             const apiBase = this.getApiBaseURL();
-            const response = await fetch(`${apiBase}/comments/${id}`, {
+            const response = await fetch(`${apiBase}/comments?id=${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updates)
@@ -881,7 +881,7 @@ class BlogDataStore {
     async deleteComment(id) {
         try {
             const apiBase = this.getApiBaseURL();
-            const response = await fetch(`${apiBase}/comments/${id}`, {
+            const response = await fetch(`${apiBase}/comments?id=${id}`, {
                 method: 'DELETE'
             });
             
@@ -941,7 +941,7 @@ class BlogDataStore {
     async updateGuestbookMessage(id, updates) {
         try {
             const apiBase = this.getApiBaseURL();
-            const response = await fetch(`${apiBase}/guestbook/${id}`, {
+            const response = await fetch(`${apiBase}/guestbook?id=${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updates)
@@ -965,7 +965,7 @@ class BlogDataStore {
     async deleteGuestbookMessage(id) {
         try {
             const apiBase = this.getApiBaseURL();
-            const response = await fetch(`${apiBase}/guestbook/${id}`, {
+            const response = await fetch(`${apiBase}/guestbook?id=${id}`, {
                 method: 'DELETE'
             });
             
@@ -1168,7 +1168,7 @@ class BlogDataStore {
     async updateImage(id, updates) {
         try {
             const apiBase = this.getApiBaseURL();
-            const response = await fetch(`${apiBase}/images/${id}`, {
+            const response = await fetch(`${apiBase}/images?id=${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updates)
@@ -1192,7 +1192,7 @@ class BlogDataStore {
     async deleteImage(id) {
         try {
             const apiBase = this.getApiBaseURL();
-            const response = await fetch(`${apiBase}/images/${id}`, {
+            const response = await fetch(`${apiBase}/images?id=${id}`, {
                 method: 'DELETE'
             });
             
@@ -1253,7 +1253,7 @@ class BlogDataStore {
     async updateMusic(id, updates) {
         try {
             const apiBase = this.getApiBaseURL();
-            const response = await fetch(`${apiBase}/music/${id}`, {
+            const response = await fetch(`${apiBase}/music?id=${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updates)
@@ -1277,7 +1277,7 @@ class BlogDataStore {
     async deleteMusic(id) {
         try {
             const apiBase = this.getApiBaseURL();
-            const response = await fetch(`${apiBase}/music/${id}`, {
+            const response = await fetch(`${apiBase}/music?id=${id}`, {
                 method: 'DELETE'
             });
             
@@ -1338,7 +1338,7 @@ class BlogDataStore {
     async updateVideo(id, updates) {
         try {
             const apiBase = this.getApiBaseURL();
-            const response = await fetch(`${apiBase}/videos/${id}`, {
+            const response = await fetch(`${apiBase}/videos?id=${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updates)
@@ -1362,7 +1362,7 @@ class BlogDataStore {
     async deleteVideo(id) {
         try {
             const apiBase = this.getApiBaseURL();
-            const response = await fetch(`${apiBase}/videos/${id}`, {
+            const response = await fetch(`${apiBase}/videos?id=${id}`, {
                 method: 'DELETE'
             });
             
@@ -1557,7 +1557,7 @@ class BlogDataStore {
     async updateLink(id, updates) {
         try {
             const apiBase = this.getApiBaseURL();
-            const response = await fetch(`${apiBase}/links/${id}`, {
+            const response = await fetch(`${apiBase}/links?id=${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updates)
@@ -1582,7 +1582,7 @@ class BlogDataStore {
     async deleteLink(id) {
         try {
             const apiBase = this.getApiBaseURL();
-            const response = await fetch(`${apiBase}/links/${id}`, {
+            const response = await fetch(`${apiBase}/links?id=${id}`, {
                 method: 'DELETE'
             });
             
@@ -1668,7 +1668,7 @@ class BlogDataStore {
     async updateUser(id, updates) {
         try {
             const apiBase = this.getApiBaseURL();
-            const response = await fetch(`${apiBase}/users/${id}`, {
+            const response = await fetch(`${apiBase}/users?id=${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updates)
@@ -1693,7 +1693,7 @@ class BlogDataStore {
     async deleteUser(id) {
         try {
             const apiBase = this.getApiBaseURL();
-            const response = await fetch(`${apiBase}/users/${id}`, {
+            const response = await fetch(`${apiBase}/users?id=${id}`, {
                 method: 'DELETE'
             });
             

@@ -201,12 +201,20 @@ async function renderArticlesTable(page = 1) {
         // 渲染分页控件
         renderArticlesPagination(totalPages, totalArticles);
         
-        // 更新权限样式
-        setTimeout(() => {
-            if (window.updatePermissionStyles) {
-                window.updatePermissionStyles();
-            }
-        }, 100);
+        // 更新权限样式 - 等待权限管理器就绪
+        if (window.waitForPermissionManager) {
+            window.waitForPermissionManager(() => {
+                if (window.updatePermissionStyles) {
+                    window.updatePermissionStyles();
+                }
+            });
+        } else {
+            setTimeout(() => {
+                if (window.updatePermissionStyles) {
+                    window.updatePermissionStyles();
+                }
+            }, 100);
+        }
     } catch (error) {
         console.error('加载文章失败:', error);
         tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:2rem; color:#f44336;">加载失败，请刷新重试</td></tr>';
