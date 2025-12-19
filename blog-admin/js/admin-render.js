@@ -660,19 +660,14 @@ function setupCategoryButtonHandlers() {
         return;
     }
     
-    // 检查是否已经添加过监听器
-    if (categoriesTable.dataset.hasListener === 'true') {
-        console.log('⚠️ 分类表格已经有事件监听器，跳过重复添加');
-        return;
+    // 移除旧的事件监听器（如果存在）
+    if (categoriesTable.categoryClickHandler) {
+        categoriesTable.removeEventListener('click', categoriesTable.categoryClickHandler);
+        console.log('🗑️ 移除旧的分类事件监听器');
     }
     
-    // 标记已添加监听器
-    categoriesTable.dataset.hasListener = 'true';
-    console.log('✅ 为分类表格添加事件监听器');
-    
-    // 添加事件委托
-    console.log('🎯 为分类表格添加事件委托');
-    categoriesTable.addEventListener('click', async (e) => {
+    // 创建新的事件处理函数
+    const categoryClickHandler = async (e) => {
         console.log('🖱️ 分类表格点击事件触发:', e.target);
         
         const editBtn = e.target.closest('.category-edit-btn');
@@ -723,7 +718,12 @@ function setupCategoryButtonHandlers() {
             console.log('✅ 权限检查通过，删除分类按钮被点击, ID:', categoryId, 'Type:', typeof categoryId);
             await deleteCategoryConfirm(categoryId);
         }
-    });
+    };
+    
+    // 绑定新的事件监听器
+    categoriesTable.addEventListener('click', categoryClickHandler);
+    categoriesTable.categoryClickHandler = categoryClickHandler; // 保存引用以便后续移除
+    console.log('✅ 分类事件监听器已绑定');
 }
 
 // 编辑分类
