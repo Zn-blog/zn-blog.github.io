@@ -890,7 +890,7 @@
                             <p style="color: #666; margin-bottom: 1rem; font-size: 0.95rem;">
                                 💡 配置不同平台的热搜API接口，自定义数据源
                             </p>
-                            <button class="btn-primary" onclick="openHotlistConfig()" style="padding: 0.75rem 1.5rem; border-radius: 8px;">
+                            <button class="btn-primary" id="btnHotlistConfig" onclick="openHotlistConfig()" style="padding: 0.75rem 1.5rem; border-radius: 8px;">
                                 ⚙️ 打开热榜API配置
                             </button>
                             <small style="color: #999; display: block; margin-top: 1rem; font-size: 0.85rem;">
@@ -1591,6 +1591,15 @@
 
     <!-- 后台专用环境适配器 - 必须在数据适配器之前加载 -->
     <script src="/blog-admin/js/admin-environment-adapter.js"></script>
+    
+    <!-- Vercel诊断工具 - 仅在需要时加载 -->
+    <script src="/blog-admin/js/vercel-diagnostics.js"></script>
+    
+    <!-- 错误恢复系统 - 早期加载 -->
+    <script src="/blog-admin/js/error-recovery.js"></script>
+    
+    <!-- 初始化管理器 - 协调所有组件初始化 -->
+    <script src="/blog-admin/js/initialization-manager.js"></script>
     
     <!-- 认证检查 - 必须最先加载 -->
     <script src="/blog-admin/js/auth.js"></script>
