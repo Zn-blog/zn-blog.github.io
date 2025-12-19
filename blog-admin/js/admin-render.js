@@ -2807,17 +2807,38 @@ async function renderGuestbookMessages() {
 
 // 渲染留言UI的辅助函数
 function renderGuestbookUI(messages, messagesList) {
+    console.log('🎯 renderGuestbookUI 接收到的数据:', {
+        type: typeof messages,
+        isArray: Array.isArray(messages),
+        length: messages?.length,
+        hasData: messages?.data,
+        dataType: typeof messages?.data,
+        isDataArray: Array.isArray(messages?.data),
+        sample: messages
+    });
+    
     // 数据类型检查和修复
     if (!Array.isArray(messages)) {
         console.error('❌ 留言数据格式错误:', typeof messages, messages);
-        if (messages && typeof messages === 'object' && messages.data && Array.isArray(messages.data)) {
-            console.log('🔧 尝试使用 messages.data');
-            messages = messages.data;
+        
+        if (messages && typeof messages === 'object') {
+            if (messages.data && Array.isArray(messages.data)) {
+                console.log('🔧 尝试使用 messages.data');
+                messages = messages.data;
+            } else if (messages.success && messages.data && Array.isArray(messages.data)) {
+                console.log('🔧 尝试使用 messages.data (API格式)');
+                messages = messages.data;
+            } else {
+                console.log('🔧 对象格式无法处理，使用空数组');
+                messages = [];
+            }
         } else {
-            console.log('🔧 使用空数组作为默认值');
+            console.log('🔧 非对象类型，使用空数组作为默认值');
             messages = [];
         }
     }
+    
+    console.log('✅ 最终处理的留言数据:', Array.isArray(messages) ? `${messages.length}条` : typeof messages);
     
     // 清除旧的事件监听器标记，确保重新渲染后能重新绑定事件
     const guestbookContainer = document.querySelector('#page-guestbook .guestbook-container');

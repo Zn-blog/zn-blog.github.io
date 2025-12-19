@@ -15,12 +15,16 @@ class ArticleEditor {
     async init() {
         this.initElements();
         
-        // 🔥 先确保数据已从 JSON 文件加载
+        // 🔥 在Vercel环境下禁用JSON文件加载，避免覆盖KV数据
         console.log('=== 编辑器初始化 ===');
-        if (window.blogDataStore.useJSONFiles) {
+        const isVercelEnv = window.environmentAdapter && window.environmentAdapter.environment === 'vercel';
+        
+        if (window.blogDataStore.useJSONFiles && !isVercelEnv) {
             console.log('📁 从 JSON 文件加载数据...');
             await window.blogDataStore.getAllDataAsync();
             console.log('✅ 数据加载完成');
+        } else if (isVercelEnv) {
+            console.log('🚫 Vercel环境下跳过JSON文件加载，避免覆盖KV数据');
         }
         
         await this.loadCategories(); // 先加载分类列表

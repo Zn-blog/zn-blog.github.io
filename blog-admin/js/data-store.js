@@ -914,23 +914,44 @@ class BlogDataStore {
             
             if (response.ok) {
                 const result = await response.json();
-                console.log('✅ 从API获取留言数据:', result);
+                console.log('✅ 从API获取留言数据 - 原始响应:', result);
                 
-                // 确保返回数组格式
-                let messages = result.data || result || [];
+                // 严格的数据提取和验证
+                let messages = [];
+                
+                if (result && result.success && result.data) {
+                    // 标准API响应格式: { success: true, data: [...] }
+                    messages = result.data;
+                    console.log('📊 使用 result.data:', Array.isArray(messages) ? `${messages.length}条` : typeof messages);
+                } else if (result && Array.isArray(result)) {
+                    // 直接返回数组格式
+                    messages = result;
+                    console.log('📊 使用 result 数组:', messages.length, '条');
+                } else {
+                    console.warn('⚠️ API响应格式异常:', {
+                        hasResult: !!result,
+                        hasSuccess: result?.success,
+                        hasData: !!result?.data,
+                        dataType: typeof result?.data,
+                        isResultArray: Array.isArray(result)
+                    });
+                    messages = [];
+                }
+                
+                // 最终验证：确保返回数组
                 if (!Array.isArray(messages)) {
-                    console.warn('⚠️ API返回的数据不是数组格式:', typeof messages, messages);
+                    console.error('❌ 提取的留言数据不是数组:', typeof messages, messages);
                     messages = [];
                 }
                 
                 console.log('📊 留言数据处理完成:', messages.length, '条');
                 return messages;
             } else {
-                console.warn('⚠️ API获取留言失败，使用缓存数据');
+                console.warn('⚠️ API获取留言失败，状态码:', response.status);
                 return this.getGuestbookMessages();
             }
         } catch (error) {
-            console.warn('⚠️ API获取留言失败，使用缓存数据:', error.message);
+            console.error('❌ API获取留言失败:', error);
             return this.getGuestbookMessages();
         }
     }
