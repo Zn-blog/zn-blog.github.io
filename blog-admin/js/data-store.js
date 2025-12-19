@@ -533,10 +533,66 @@ class BlogDataStore {
         return data.articles.find(article => article.id === parseInt(id));
     }
     
-    // 🔥 异步获取文章（优先从 JSON 文件）
+    // 🔥 异步获取文章（直接从API获取，避免JSON文件加载）
     async getArticleByIdAsync(id) {
-        const data = await this.getAllDataAsync();
-        return data.articles.find(article => article.id === parseInt(id));
+        console.log('🔍 getArticleByIdAsync 调用，ID:', id, 'Type:', typeof id);
+        
+        // 强制检查Vercel环境，直接使用API
+        const hostname = window.location.hostname;
+        const isVercelEnv = hostname.includes('vercel.app') || 
+                           hostname.includes('vercel.com') ||
+                           hostname.includes('web3v.vip') || 
+                           hostname.includes('slxhdjy.top');
+        
+        if (isVercelEnv || this.useApi) {
+            try {
+                const apiBase = this.getApiBaseURL();
+                console.log('📡 从API获取文章，URL:', `${apiBase}/articles?id=${id}`);
+                
+                const response = await fetch(`${apiBase}/articles?id=${id}`);
+                
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        console.warn('⚠️ 文章不存在，ID:', id);
+                        return null;
+                    }
+                    throw new Error(`API请求失败: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                console.log('✅ API返回结果:', result);
+                
+                if (result.success && result.data) {
+                    console.log('✅ 文章获取成功:', result.data.title);
+                    return result.data;
+                } else {
+                    console.warn('⚠️ API返回格式异常:', result);
+                    return null;
+                }
+            } catch (error) {
+                console.error('❌ API获取文章失败:', error);
+                // 降级到localStorage缓存
+                console.log('🔄 降级到localStorage缓存');
+            }
+        }
+        
+        // 降级方案：从localStorage获取
+        console.log('💾 从localStorage获取文章');
+        const data = this.getAllData();
+        if (!data.articles || !Array.isArray(data.articles)) {
+            console.warn('⚠️ localStorage中没有文章数据');
+            return null;
+        }
+        
+        // 兼容不同ID类型
+        const article = data.articles.find(article => 
+            String(article.id) === String(id) || 
+            article.id === parseInt(id) || 
+            article.id == id
+        );
+        
+        console.log('🎯 localStorage查找结果:', article ? `找到文章: ${article.title}` : '未找到文章');
+        return article || null;
     }
 
     async addArticle(article) {
