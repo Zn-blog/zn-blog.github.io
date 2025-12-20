@@ -42,9 +42,21 @@ class FooterStats {
         if (!window.blogDataStore) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
         
         const settings = await window.blogDataStore.getSettings();
-        const startDate = new Date(settings.startDate || '2025-01-01');
+        const startDateStr = settings.startDate || '2025-01-01';
+        const startDate = new Date(startDateStr);
+        
+        // 🔥 检查日期是否有效
+        if (isNaN(startDate.getTime())) {
+            return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+        }
+        
         const now = new Date();
         const diff = now - startDate;
+        
+        // 如果差值为负数，返回0
+        if (diff < 0) {
+            return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+        }
         
         const days = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));

@@ -66,9 +66,24 @@ class StatsSync {
         if (!element) return;
 
         const settings = await window.blogDataStore.getSettings();
-        const startDate = new Date(settings.startDate);
+        // 🔥 添加默认值处理，防止 startDate 为空时出现 NaN
+        const startDateStr = settings.startDate || '2025-01-01';
+        const startDate = new Date(startDateStr);
+        
+        // 检查日期是否有效
+        if (isNaN(startDate.getTime())) {
+            element.textContent = '0分0秒';
+            return;
+        }
+        
         const now = new Date();
         const diff = now - startDate;
+        
+        // 如果差值为负数（开始日期在未来），显示0
+        if (diff < 0) {
+            element.textContent = '0分0秒';
+            return;
+        }
         
         const totalDays = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
