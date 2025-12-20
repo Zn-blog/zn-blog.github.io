@@ -5,18 +5,26 @@
 
 class BlogDataStoreWrapper {
     constructor() {
-        // 使用数据适配层
-        this.adapter = window.dataAdapter || new DataAdapter();
+        // 🔥 使用新的 BlogDataStore 而不是旧的 data-adapter
+        if (window.BlogDataStore) {
+            this.adapter = new window.BlogDataStore();
+            console.log('✅ 使用新的 BlogDataStore 类');
+        } else {
+            // 降级到旧的 data-adapter
+            this.adapter = window.dataAdapter || new DataAdapter();
+            console.log('⚠️ 降级使用旧的 DataAdapter');
+        }
+        
         // 🔥 添加配置属性（编辑器需要）
-        this.useJSONFiles = this.adapter.useJSON || true;
+        this.useJSONFiles = this.adapter.useJSONFiles || this.adapter.useJSON || true;
         this.jsonBaseURL = this.adapter.jsonBaseURL || '../data';
         this.dataLoaded = false;
         console.log('✅ BlogDataStore包装器已初始化');
         console.log('🔍 使用的适配器:', {
             adapterType: this.adapter.constructor.name,
-            useJSON: this.adapter.useJSON,
+            useJSON: this.adapter.useJSON || this.adapter.useJSONFiles,
             useEnvironmentAdapter: this.adapter.useEnvironmentAdapter,
-            apiBaseURL: this.adapter.apiBaseURL
+            apiBaseURL: this.adapter.apiBaseURL || this.adapter.getApiBaseURL?.()
         });
     }
 

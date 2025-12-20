@@ -2999,35 +2999,6 @@ function renderGuestbookUI(messages, messagesList) {
     // 设置事件委托处理留言按钮点击
     setupGuestbookButtonHandlers();
 }
-    const pinnedMessagesEl = document.getElementById('pinnedMessages');
-    const totalLikesEl = document.getElementById('totalLikes');
-    
-    if (totalMessagesEl) totalMessagesEl.textContent = messages.length;
-    if (pinnedMessagesEl) pinnedMessagesEl.textContent = messages.filter(m => m.pinned).length;
-    if (totalLikesEl) totalLikesEl.textContent = messages.reduce((sum, m) => sum + (m.likes || 0), 0);
-    
-    if (messages.length === 0) {
-        messagesList.innerHTML = `
-            <div style="text-align: center; padding: 3rem; color: #999;">
-                <div style="font-size: 3rem; margin-bottom: 1rem;">📝</div>
-                <p>暂无留言</p>
-            </div>
-        `;
-        return;
-    }
-    
-    // 分离置顶和普通留言
-    const pinnedMessages = messages.filter(m => m.pinned);
-    const normalMessages = messages.filter(m => !m.pinned);
-    
-    messagesList.innerHTML = [
-        ...pinnedMessages.map(msg => renderAdminMessage(msg)),
-        ...normalMessages.map(msg => renderAdminMessage(msg))
-    ].join('');
-    
-    // 设置事件委托处理留言按钮点击
-    setupGuestbookButtonHandlers();
-}
 
 // 渲染单条留言（后台）
 function renderAdminMessage(message) {
