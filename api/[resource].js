@@ -502,25 +502,26 @@ function validateAndCleanData(resource, data) {
     // 资源特定验证
     switch (resource) {
       case 'articles':
-        if (!cleaned.title || typeof cleaned.title !== 'string') {
-          return { valid: false, error: '文章标题不能为空' };
+        // 🔥 更新操作时不强制要求所有字段
+        // 只有当字段存在且不为 null/undefined 时才验证格式
+        if (cleaned.title != null && typeof cleaned.title !== 'string') {
+          return { valid: false, error: '文章标题格式错误' };
         }
-        if (!cleaned.content || typeof cleaned.content !== 'string') {
-          return { valid: false, error: '文章内容不能为空' };
+        if (cleaned.content != null && typeof cleaned.content !== 'string') {
+          return { valid: false, error: '文章内容格式错误' };
         }
-        // 设置默认值
-        cleaned.views = cleaned.views || 0;
-        cleaned.likes = cleaned.likes || 0;
-        cleaned.status = cleaned.status || 'draft';
-        cleaned.publishDate = cleaned.publishDate || new Date().toISOString().split('T')[0];
+        // 设置默认值（仅当字段存在时）
+        if (cleaned.views === undefined) cleaned.views = cleaned.views || 0;
+        if (cleaned.likes === undefined) cleaned.likes = cleaned.likes || 0;
         break;
         
       case 'categories':
       case 'tags':
-        if (!cleaned.name || typeof cleaned.name !== 'string') {
-          return { valid: false, error: '名称不能为空' };
+        // 🔥 更新操作时不强制要求 name 字段
+        // 只有当字段存在且不为 null/undefined 时才验证格式
+        if (cleaned.name != null && typeof cleaned.name !== 'string') {
+          return { valid: false, error: '名称格式错误' };
         }
-        cleaned.count = cleaned.count || 0;
         break;
         
       case 'users':
@@ -543,62 +544,82 @@ function validateAndCleanData(resource, data) {
         break;
         
       case 'comments':
-        if (!cleaned.content || typeof cleaned.content !== 'string') {
-          return { valid: false, error: '评论内容不能为空' };
+        // 🔥 更新操作时不强制要求 content 字段
+        // 只有当 content 字段存在且不为 null/undefined 时才验证格式
+        if (cleaned.content != null && typeof cleaned.content !== 'string') {
+          return { valid: false, error: '评论内容格式错误' };
         }
-        cleaned.status = cleaned.status || 'pending';
-        cleaned.likes = cleaned.likes || 0;
+        // 只在有 status 字段时设置默认值
+        if (cleaned.status === undefined && cleaned.content) {
+          cleaned.status = 'pending';
+        }
+        if (cleaned.likes === undefined) {
+          cleaned.likes = cleaned.likes || 0;
+        }
         break;
         
       case 'guestbook':
-        if (!cleaned.content || typeof cleaned.content !== 'string') {
-          return { valid: false, error: '留言内容不能为空' };
+        // 🔥 更新操作时不强制要求 content 字段
+        // 只有当 content 字段存在且不为 null/undefined 时才验证格式
+        if (cleaned.content != null && typeof cleaned.content !== 'string') {
+          return { valid: false, error: '留言内容格式错误' };
         }
-        cleaned.likes = cleaned.likes || 0;
-        cleaned.isTop = cleaned.isTop || false;
+        if (cleaned.likes === undefined) {
+          cleaned.likes = cleaned.likes || 0;
+        }
         break;
         
       case 'images':
-        if (!cleaned.filename || typeof cleaned.filename !== 'string') {
-          return { valid: false, error: '文件名不能为空' };
+        // 🔥 更新操作时不强制要求所有字段
+        // 支持 filename 或 name 字段
+        if (cleaned.filename == null && cleaned.name != null) {
+          cleaned.filename = cleaned.name;
         }
-        if (!cleaned.url || typeof cleaned.url !== 'string') {
-          return { valid: false, error: '图片URL不能为空' };
+        if (cleaned.filename != null && typeof cleaned.filename !== 'string') {
+          return { valid: false, error: '文件名格式错误' };
+        }
+        if (cleaned.url != null && typeof cleaned.url !== 'string') {
+          return { valid: false, error: '图片URL格式错误' };
         }
         break;
         
       case 'music':
-        if (!cleaned.title || typeof cleaned.title !== 'string') {
-          return { valid: false, error: '音乐标题不能为空' };
+        // 🔥 更新操作时不强制要求 name 字段
+        // 音乐使用 name 字段而不是 title
+        if (cleaned.name != null && typeof cleaned.name !== 'string') {
+          return { valid: false, error: '音乐名称格式错误' };
         }
         break;
         
       case 'videos':
-        if (!cleaned.title || typeof cleaned.title !== 'string') {
-          return { valid: false, error: '视频标题不能为空' };
+        // 🔥 更新操作时不强制要求 name 字段
+        // 视频使用 name 字段而不是 title
+        if (cleaned.name != null && typeof cleaned.name !== 'string') {
+          return { valid: false, error: '视频名称格式错误' };
         }
         break;
         
       case 'links':
-        if (!cleaned.name || typeof cleaned.name !== 'string') {
-          return { valid: false, error: '链接名称不能为空' };
+        // 🔥 更新操作时不强制要求所有字段
+        if (cleaned.name != null && typeof cleaned.name !== 'string') {
+          return { valid: false, error: '链接名称格式错误' };
         }
-        if (!cleaned.url || typeof cleaned.url !== 'string') {
-          return { valid: false, error: '链接URL不能为空' };
+        if (cleaned.url != null && typeof cleaned.url !== 'string') {
+          return { valid: false, error: '链接URL格式错误' };
         }
         break;
         
       case 'apps':
-        if (!cleaned.name || typeof cleaned.name !== 'string') {
-          return { valid: false, error: '应用名称不能为空' };
+        // 🔥 更新操作时不强制要求 name 字段
+        if (cleaned.name != null && typeof cleaned.name !== 'string') {
+          return { valid: false, error: '应用名称格式错误' };
         }
-        cleaned.status = cleaned.status || 'enabled';
-        cleaned.order = cleaned.order || 0;
         break;
         
       case 'events':
-        if (!cleaned.title || typeof cleaned.title !== 'string') {
-          return { valid: false, error: '事件标题不能为空' };
+        // 🔥 更新操作时不强制要求 title 字段
+        if (cleaned.title != null && typeof cleaned.title !== 'string') {
+          return { valid: false, error: '事件标题格式错误' };
         }
         break;
     }

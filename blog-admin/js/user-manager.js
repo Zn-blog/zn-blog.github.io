@@ -65,6 +65,10 @@ class UserManager {
     // 获取单个用户
     async getUser(username) {
         if (window.blogDataStore) {
+            // 🔥 使用异步方法获取用户
+            if (typeof window.blogDataStore.getUserByUsernameAsync === 'function') {
+                return await window.blogDataStore.getUserByUsernameAsync(username);
+            }
             return await window.blogDataStore.getUserByUsername(username);
         } else {
             const users = await this.getAllUsers();

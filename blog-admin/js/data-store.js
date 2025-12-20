@@ -2482,6 +2482,12 @@ class BlogDataStore {
         const users = this.getUsers();
         return users.find(user => user.username === username);
     }
+    
+    // 🔥 异步根据用户名获取用户
+    async getUserByUsernameAsync(username) {
+        const users = await this.getUsersAsync();
+        return users.find(user => user.username === username);
+    }
 
     // 添加用户
     async addUser(userData) {
