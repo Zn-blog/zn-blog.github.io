@@ -719,16 +719,63 @@ class BlogDataStore {
 
     // 分类相关方法
     getCategories() {
+        // 🔥 在Vercel环境下，同步方法返回空数组，应使用异步方法
+        const hostname = window.location.hostname;
+        const isVercelEnv = hostname.includes('vercel.app') || 
+                           hostname.includes('vercel.com') ||
+                           hostname.includes('web3v.vip') || 
+                           hostname.includes('slxhdjy.top');
+        
+        if (isVercelEnv) {
+            console.warn('⚠️ Vercel环境下请使用 getCategoriesAsync() 异步方法');
+            // 返回localStorage中的缓存数据（如果有）
+            const data = this.getAllData();
+            return data?.categories || [];
+        }
+        
         const data = this.getAllData();
         // 同步分类统计
         this.syncCategoryStats();
         return data.categories;
     }
     
-    // 🔥 异步获取分类（优先从 JSON 文件）
+    // 🔥 异步获取分类（优先从API获取）
     async getCategoriesAsync() {
-        const data = await this.getAllDataAsync();
-        return data.categories || [];
+        const hostname = window.location.hostname;
+        const isVercelEnv = hostname.includes('vercel.app') || 
+                           hostname.includes('vercel.com') ||
+                           hostname.includes('web3v.vip') || 
+                           hostname.includes('slxhdjy.top');
+        
+        if (isVercelEnv || this.useApi) {
+            try {
+                const apiBase = this.getApiBaseURL();
+                console.log('📡 从API获取分类列表，URL:', `${apiBase}/categories`);
+                
+                const response = await fetch(`${apiBase}/categories`);
+                if (!response.ok) {
+                    throw new Error(`API请求失败: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                console.log('✅ API返回分类列表:', result);
+                
+                let categories = [];
+                if (result.success && result.data) {
+                    categories = result.data;
+                } else if (Array.isArray(result)) {
+                    categories = result;
+                }
+                
+                return categories;
+            } catch (error) {
+                console.error('❌ API获取分类失败:', error);
+            }
+        }
+        
+        // 降级到localStorage
+        const data = this.getAllData();
+        return data?.categories || [];
     }
     
     // 同步分类统计（独立调用版本）
@@ -845,16 +892,62 @@ class BlogDataStore {
 
     // 标签相关方法
     getTags() {
+        // 🔥 在Vercel环境下，同步方法返回空数组，应使用异步方法
+        const hostname = window.location.hostname;
+        const isVercelEnv = hostname.includes('vercel.app') || 
+                           hostname.includes('vercel.com') ||
+                           hostname.includes('web3v.vip') || 
+                           hostname.includes('slxhdjy.top');
+        
+        if (isVercelEnv) {
+            console.warn('⚠️ Vercel环境下请使用 getTagsAsync() 异步方法');
+            const data = this.getAllData();
+            return data?.tags || [];
+        }
+        
         const data = this.getAllData();
         // 同步标签统计
         this.syncTagStats();
         return data.tags;
     }
     
-    // 🔥 异步获取标签（优先从 JSON 文件）
+    // 🔥 异步获取标签（优先从API获取）
     async getTagsAsync() {
-        const data = await this.getAllDataAsync();
-        return data.tags || [];
+        const hostname = window.location.hostname;
+        const isVercelEnv = hostname.includes('vercel.app') || 
+                           hostname.includes('vercel.com') ||
+                           hostname.includes('web3v.vip') || 
+                           hostname.includes('slxhdjy.top');
+        
+        if (isVercelEnv || this.useApi) {
+            try {
+                const apiBase = this.getApiBaseURL();
+                console.log('📡 从API获取标签列表，URL:', `${apiBase}/tags`);
+                
+                const response = await fetch(`${apiBase}/tags`);
+                if (!response.ok) {
+                    throw new Error(`API请求失败: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                console.log('✅ API返回标签列表:', result);
+                
+                let tags = [];
+                if (result.success && result.data) {
+                    tags = result.data;
+                } else if (Array.isArray(result)) {
+                    tags = result;
+                }
+                
+                return tags;
+            } catch (error) {
+                console.error('❌ API获取标签失败:', error);
+            }
+        }
+        
+        // 降级到localStorage
+        const data = this.getAllData();
+        return data?.tags || [];
     }
     
     // 同步标签统计（独立调用版本）
@@ -1357,7 +1450,30 @@ class BlogDataStore {
 
     // 统计方法
     getStats() {
+        // 🔥 在Vercel环境下，同步方法可能返回不完整数据
+        const hostname = window.location.hostname;
+        const isVercelEnv = hostname.includes('vercel.app') || 
+                           hostname.includes('vercel.com') ||
+                           hostname.includes('web3v.vip') || 
+                           hostname.includes('slxhdjy.top');
+        
+        if (isVercelEnv) {
+            console.warn('⚠️ Vercel环境下请使用 getStatsAsync() 异步方法');
+        }
+        
         const data = this.getAllData();
+        
+        // 如果数据为空，返回默认值
+        if (!data || !data.articles) {
+            return {
+                totalArticles: 0,
+                totalComments: 0,
+                totalViews: 0,
+                totalVisitors: 0,
+                totalWords: 0,
+                runningDays: 0
+            };
+        }
         
         // 计算总字数（所有已发布文章的字数总和）
         const totalWords = data.articles
@@ -1368,25 +1484,82 @@ class BlogDataStore {
         const totalViews = data.articles.reduce((sum, article) => sum + (article.views || 0), 0);
         
         // 计算运行天数
-        const runningDays = Math.floor((Date.now() - new Date(data.settings.startDate).getTime()) / (1000 * 60 * 60 * 24));
-        
-        // 🔥 移除自动保存逻辑，避免每次获取统计时都触发保存
-        // 统计数据应该是只读的，不应该自动修改设置
-        console.log('📊 统计数据计算完成 (只读):', {
-            totalWords: totalWords,
-            totalViews: totalViews,
-            settingsWords: data.settings.totalWords,
-            settingsViews: data.settings.totalViews
-        });
+        const runningDays = Math.floor((Date.now() - new Date(data.settings?.startDate || Date.now()).getTime()) / (1000 * 60 * 60 * 24));
         
         return {
             totalArticles: data.articles.filter(a => a.status === 'published').length,
-            totalComments: data.comments.length,
+            totalComments: data.comments?.length || 0,
             totalViews: totalViews,
-            totalVisitors: data.settings.totalVisitors,
+            totalVisitors: data.settings?.totalVisitors || 0,
             totalWords: totalWords,
             runningDays: runningDays
         };
+    }
+    
+    // 🔥 异步获取统计数据（优先从API获取）
+    async getStatsAsync() {
+        const hostname = window.location.hostname;
+        const isVercelEnv = hostname.includes('vercel.app') || 
+                           hostname.includes('vercel.com') ||
+                           hostname.includes('web3v.vip') || 
+                           hostname.includes('slxhdjy.top');
+        
+        if (isVercelEnv || this.useApi) {
+            try {
+                // 并行获取文章、评论和设置
+                const apiBase = this.getApiBaseURL();
+                const [articlesRes, commentsRes, settingsRes] = await Promise.all([
+                    fetch(`${apiBase}/articles`),
+                    fetch(`${apiBase}/comments`),
+                    fetch(`${apiBase}/settings`)
+                ]);
+                
+                let articles = [];
+                let comments = [];
+                let settings = {};
+                
+                if (articlesRes.ok) {
+                    const result = await articlesRes.json();
+                    articles = result.success && result.data ? result.data : (Array.isArray(result) ? result : []);
+                }
+                
+                if (commentsRes.ok) {
+                    const result = await commentsRes.json();
+                    comments = result.success && result.data ? result.data : (Array.isArray(result) ? result : []);
+                }
+                
+                if (settingsRes.ok) {
+                    const result = await settingsRes.json();
+                    settings = result.success && result.data ? result.data : (result || {});
+                }
+                
+                // 计算统计数据
+                const publishedArticles = articles.filter(a => a.status === 'published');
+                const totalWords = publishedArticles.reduce((sum, article) => sum + (article.content?.length || 0), 0);
+                const totalViews = articles.reduce((sum, article) => sum + (article.views || 0), 0);
+                const runningDays = Math.floor((Date.now() - new Date(settings.startDate || Date.now()).getTime()) / (1000 * 60 * 60 * 24));
+                
+                console.log('📊 API统计数据获取完成:', {
+                    totalArticles: publishedArticles.length,
+                    totalComments: comments.length,
+                    totalViews: totalViews
+                });
+                
+                return {
+                    totalArticles: publishedArticles.length,
+                    totalComments: comments.length,
+                    totalViews: totalViews,
+                    totalVisitors: settings.totalVisitors || 0,
+                    totalWords: totalWords,
+                    runningDays: runningDays
+                };
+            } catch (error) {
+                console.error('❌ API获取统计失败:', error);
+            }
+        }
+        
+        // 降级到同步方法
+        return this.getStats();
     }
 
     // 增加浏览量
@@ -1404,6 +1577,41 @@ class BlogDataStore {
 
     // 图片管理方法
     async getImages() {
+        // 🔥 在Vercel环境下优先从API获取
+        const hostname = window.location.hostname;
+        const isVercelEnv = hostname.includes('vercel.app') || 
+                           hostname.includes('vercel.com') ||
+                           hostname.includes('web3v.vip') || 
+                           hostname.includes('slxhdjy.top');
+        
+        if (isVercelEnv || this.useApi) {
+            try {
+                const apiBase = this.getApiBaseURL();
+                console.log('📡 从API获取图片列表，URL:', `${apiBase}/images`);
+                
+                const response = await fetch(`${apiBase}/images`);
+                if (!response.ok) {
+                    throw new Error(`API请求失败: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                console.log('✅ API返回图片列表:', result);
+                
+                let images = [];
+                if (result.success && result.data) {
+                    images = result.data;
+                } else if (Array.isArray(result)) {
+                    images = result;
+                }
+                
+                // 同时更新localStorage作为缓存
+                localStorage.setItem('blog_media', JSON.stringify(images));
+                return images;
+            } catch (error) {
+                console.error('❌ API获取图片失败:', error);
+            }
+        }
+        
         // 优先从 data-adapter 读取（JSON文件）
         if (window.dataAdapter) {
             try {
@@ -1819,8 +2027,60 @@ class BlogDataStore {
     
     // 获取所有友情链接
     getLinks() {
+        // 🔥 在Vercel环境下，同步方法返回空数组，应使用异步方法
+        const hostname = window.location.hostname;
+        const isVercelEnv = hostname.includes('vercel.app') || 
+                           hostname.includes('vercel.com') ||
+                           hostname.includes('web3v.vip') || 
+                           hostname.includes('slxhdjy.top');
+        
+        if (isVercelEnv) {
+            console.warn('⚠️ Vercel环境下请使用 getLinksAsync() 异步方法');
+            const data = this.getAllData();
+            return data?.links || [];
+        }
+        
         const data = this.getAllData();
         return data.links || [];
+    }
+    
+    // 🔥 异步获取友情链接（优先从API获取）
+    async getLinksAsync() {
+        const hostname = window.location.hostname;
+        const isVercelEnv = hostname.includes('vercel.app') || 
+                           hostname.includes('vercel.com') ||
+                           hostname.includes('web3v.vip') || 
+                           hostname.includes('slxhdjy.top');
+        
+        if (isVercelEnv || this.useApi) {
+            try {
+                const apiBase = this.getApiBaseURL();
+                console.log('📡 从API获取友情链接列表，URL:', `${apiBase}/links`);
+                
+                const response = await fetch(`${apiBase}/links`);
+                if (!response.ok) {
+                    throw new Error(`API请求失败: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                console.log('✅ API返回友情链接列表:', result);
+                
+                let links = [];
+                if (result.success && result.data) {
+                    links = result.data;
+                } else if (Array.isArray(result)) {
+                    links = result;
+                }
+                
+                return links;
+            } catch (error) {
+                console.error('❌ API获取友情链接失败:', error);
+            }
+        }
+        
+        // 降级到localStorage
+        const data = this.getAllData();
+        return data?.links || [];
     }
 
     // 根据ID获取友情链接
@@ -1934,8 +2194,60 @@ class BlogDataStore {
     
     // 获取所有用户
     getUsers() {
+        // 🔥 在Vercel环境下，同步方法返回空数组，应使用异步方法
+        const hostname = window.location.hostname;
+        const isVercelEnv = hostname.includes('vercel.app') || 
+                           hostname.includes('vercel.com') ||
+                           hostname.includes('web3v.vip') || 
+                           hostname.includes('slxhdjy.top');
+        
+        if (isVercelEnv) {
+            console.warn('⚠️ Vercel环境下请使用 getUsersAsync() 异步方法');
+            const data = this.getAllData();
+            return data?.users || [];
+        }
+        
         const data = this.getAllData();
         return data.users || [];
+    }
+    
+    // 🔥 异步获取用户列表（优先从API获取）
+    async getUsersAsync() {
+        const hostname = window.location.hostname;
+        const isVercelEnv = hostname.includes('vercel.app') || 
+                           hostname.includes('vercel.com') ||
+                           hostname.includes('web3v.vip') || 
+                           hostname.includes('slxhdjy.top');
+        
+        if (isVercelEnv || this.useApi) {
+            try {
+                const apiBase = this.getApiBaseURL();
+                console.log('📡 从API获取用户列表，URL:', `${apiBase}/users`);
+                
+                const response = await fetch(`${apiBase}/users`);
+                if (!response.ok) {
+                    throw new Error(`API请求失败: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                console.log('✅ API返回用户列表:', result);
+                
+                let users = [];
+                if (result.success && result.data) {
+                    users = result.data;
+                } else if (Array.isArray(result)) {
+                    users = result;
+                }
+                
+                return users;
+            } catch (error) {
+                console.error('❌ API获取用户失败:', error);
+            }
+        }
+        
+        // 降级到localStorage
+        const data = this.getAllData();
+        return data?.users || [];
     }
 
     // 根据ID获取用户

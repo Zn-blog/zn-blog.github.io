@@ -103,11 +103,11 @@ async function renderDashboard() {
         
         console.log('📋 刷新仪表盘数据');
         
-        // 🔥 修改为异步调用，确保在Vercel环境下从API获取数据
+        // 🔥 使用异步方法获取数据，确保在Vercel环境下从API获取
         const [stats, articles, comments] = await Promise.all([
-            Promise.resolve(window.blogDataStore.getStats()), // getStats是同步的
-            window.blogDataStore.getArticles('published'),     // 现在是异步的
-            window.blogDataStore.getComments()                 // 现在是异步的
+            window.blogDataStore.getStatsAsync ? window.blogDataStore.getStatsAsync() : Promise.resolve(window.blogDataStore.getStats()),
+            window.blogDataStore.getArticles('published'),
+            window.blogDataStore.getComments()
         ]);
         
         console.log('📊 仪表盘数据获取完成:', {
@@ -376,7 +376,8 @@ async function renderCategoriesTable() {
     }
     
     try {
-        const categories = await window.blogDataStore.getCategories();
+        // 🔥 使用异步方法获取分类
+        const categories = await window.blogDataStore.getCategoriesAsync();
         
         // 按文章数量降序排序
         const sortedCategories = [...categories].sort((a, b) => b.count - a.count);
@@ -417,7 +418,8 @@ async function renderTagsGrid() {
     tagsGrid.innerHTML = '<div style="text-align:center; padding:2rem; color:#999;">加载中...</div>';
     
     try {
-        const tags = await window.blogDataStore.getTags();
+        // 🔥 使用异步方法获取标签
+        const tags = await window.blogDataStore.getTagsAsync();
         
         // 按文章数量降序排序
         const sortedTags = [...tags].sort((a, b) => b.count - a.count);
@@ -3343,7 +3345,8 @@ async function renderAppsManager() {
 
 // 渲染友情链接表格
 async function renderLinksTable() {
-    const links = await window.blogDataStore.getLinks();
+    // 🔥 使用异步方法获取友情链接
+    const links = await window.blogDataStore.getLinksAsync();
     const tbody = document.getElementById('linksTable');
     if (!tbody) return;
 

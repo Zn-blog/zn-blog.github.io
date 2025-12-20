@@ -33,6 +33,10 @@ class UserManager {
     async getAllUsers() {
         try {
             if (window.blogDataStore) {
+                // 🔥 使用异步方法获取用户
+                if (typeof window.blogDataStore.getUsersAsync === 'function') {
+                    return await window.blogDataStore.getUsersAsync();
+                }
                 return await window.blogDataStore.getUsers();
             } else {
                 // 回退到localStorage
