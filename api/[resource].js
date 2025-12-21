@@ -453,11 +453,14 @@ export default async function handler(req, res) {
           // 🔥 设置更新 - 区分前台统计更新和后台完整更新
           const existingSettings = await kv.get('settings') || {};
           
-          // 检查是否是前台统计更新（只包含统计字段）
-          const statsOnlyFields = ['totalViews', 'totalVisitors', 'totalWords'];
+          // 🔥 受保护的统计字段 - 只能通过专门的 increment API 修改
+          const protectedStatsFields = ['totalViews', 'totalVisitors'];
+          
+          // 检查是否是前台统计更新（只包含 totalWords）
+          const allowedFrontendFields = ['totalWords', 'updatedAt'];
           const requestFields = Object.keys(requestBody);
           const isStatsOnlyUpdate = requestFields.every(field => 
-            statsOnlyFields.includes(field) || field === 'updatedAt'
+            allowedFrontendFields.includes(field)
           );
           
           // 检查是否有 adminUpdate 标记（后台完整更新）
@@ -473,28 +476,35 @@ export default async function handler(req, res) {
           let updatedSettings;
           
           if (isStatsOnlyUpdate) {
-            // 前台统计更新：只更新统计字段，保留其他设置
-            console.log('📊 前台统计更新模式');
+            // 前台统计更新：只更新 totalWords，保留其他设置（包括 totalViews 和 totalVisitors）
+            console.log('📊 前台统计更新模式（只更新字数）');
             updatedSettings = {
               ...existingSettings,
-              totalViews: requestBody.totalViews ?? existingSettings.totalViews,
-              totalVisitors: requestBody.totalVisitors ?? existingSettings.totalVisitors,
               totalWords: requestBody.totalWords ?? existingSettings.totalWords,
               updatedAt: new Date().toISOString()
             };
           } else if (isAdminUpdate) {
-            // 后台完整更新：允许更新所有字段
+            // 后台完整更新：允许更新所有字段，但仍然保护 totalViews 和 totalVisitors
             console.log('🔧 后台完整更新模式');
             const { _adminUpdate, ...cleanedBody } = requestBody; // 移除标记字段
+            
+            // 🔥 后台更新时也保护访问量统���，除非明确要重置
+            const shouldProtectStats = !cleanedBody._resetStats;
+            if (shouldProtectStats) {
+              delete cleanedBody.totalViews;
+              delete cleanedBody.totalVisitors;
+            }
+            delete cleanedBody._resetStats;
+            
             updatedSettings = {
               ...existingSettings,
               ...cleanedBody,
               updatedAt: new Date().toISOString()
             };
           } else {
-            // 默认：合并更新，但保护关键字段不被清空
+            // 默认：合并更新，但保护关键字段不被清空，且保护访问量统计
             console.log('⚠️ 默认合并更新模式');
-            const protectedFields = ['siteName', 'siteDescription', 'avatar', 'startDate', 'theme', 'frontendTheme'];
+            const protectedFields = ['siteName', 'siteDescription', 'avatar', 'startDate', 'theme', 'frontendTheme', 'totalViews', 'totalVisitors'];
             updatedSettings = { ...existingSettings };
             
             for (const [key, value] of Object.entries(requestBody)) {
