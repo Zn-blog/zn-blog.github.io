@@ -465,69 +465,63 @@ class DataAdapter {
             .filter(a => a.status === 'published')
             .reduce((sum, article) => sum + (article.content?.length || 0), 0);
         
-        // 实时计算文章总浏览量
-        const calculatedViews = articles.reduce((sum, article) => sum + (article.views || 0), 0);
+        // 🔥 文章总浏览量（所有文章的 views 累加）- 仅用于显示，不覆盖 totalViews
+        const articleViewsSum = articles.reduce((sum, article) => sum + (article.views || 0), 0);
         
         // 计算运行天数
         const runningDays = Math.floor((Date.now() - new Date(settings.startDate || Date.now()).getTime()) / (1000 * 60 * 60 * 24));
         
-        // 🔥 检查是否需要更新统计数据
-        const needUpdate = (settings.totalWords !== calculatedWords) || (settings.totalViews !== calculatedViews);
+        // 🔥 只更新 totalWords，不更新 totalViews（totalViews 由 increment-views API 单独管理）
+        const needUpdate = settings.totalWords !== calculatedWords;
         
         if (needUpdate) {
-            console.log('📊 统计数据有变化，准备更新:', {
+            console.log('📊 字数统计有变化，准备更新:', {
                 oldWords: settings.totalWords,
-                newWords: calculatedWords,
-                oldViews: settings.totalViews,
-                newViews: calculatedViews
+                newWords: calculatedWords
             });
             
-            // 🔥 根据环境调用 API 更新统计数据
+            // 🔥 根据环境调用 API 更新统计数据（只更新字数）
             const environment = this.environmentAdapter?.environment;
             
             if (environment === 'vercel') {
-                // Vercel 环境：调用 API 更新（只更新统计字段）
                 try {
                     const apiBase = this.environmentAdapter.apiBase || '/api';
                     const response = await fetch(`${apiBase}/settings`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            // 🔥 只发送统计字段，不发送完整 settings
-                            totalWords: calculatedWords,
-                            totalViews: calculatedViews
+                            // 🔥 只更新字数，不更新访问量
+                            totalWords: calculatedWords
                         })
                     });
                     
                     if (response.ok) {
-                        console.log('✅ [Vercel] 统计数据已更新到数据库');
+                        console.log('✅ [Vercel] 字数统计已更新到数据库');
                     } else {
-                        console.warn('⚠️ [Vercel] 更新统计数据失败:', response.status);
+                        console.warn('⚠️ [Vercel] 更新字数统计失败:', response.status);
                     }
                 } catch (error) {
-                    console.error('❌ [Vercel] 更新统计数据出错:', error);
+                    console.error('❌ [Vercel] 更新字数统计出错:', error);
                 }
             } else if (environment === 'local') {
-                // 本地环境：调用本地服务器 API 更新（只更新统计字段）
                 try {
                     const apiBase = this.environmentAdapter.apiBase || 'http://localhost:3001/api';
                     const response = await fetch(`${apiBase}/settings`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            // 🔥 只发送统计字段，不发送完整 settings
-                            totalWords: calculatedWords,
-                            totalViews: calculatedViews
+                            // 🔥 只更新字数，不更新访问量
+                            totalWords: calculatedWords
                         })
                     });
                     
                     if (response.ok) {
-                        console.log('✅ [本地] 统计数据已更新到 JSON 文件');
+                        console.log('✅ [本地] 字数统计已更新到 JSON 文件');
                     } else {
-                        console.warn('⚠️ [本地] 更新统计数据失败:', response.status);
+                        console.warn('⚠️ [本地] 更新字数统计失败:', response.status);
                     }
                 } catch (error) {
-                    console.error('❌ [本地] 更新统计数据出错:', error);
+                    console.error('❌ [本地] 更新字数统计出错:', error);
                 }
             } else {
                 // GitHub Pages 等静态环境：只读，不更新
@@ -538,10 +532,13 @@ class DataAdapter {
         return {
             totalArticles: articles.filter(a => a.status === 'published').length,
             totalComments: comments.length,
-            totalViews: calculatedViews,
+            // 🔥 使用数据库中的 totalViews（网站总访问量），不使用文章浏览量累加
+            totalViews: settings.totalViews || 0,
             totalVisitors: settings.totalVisitors || 0,
             totalWords: calculatedWords,
-            runningDays: runningDays
+            runningDays: runningDays,
+            // 🔥 额外提供文章浏览量累加（如果需要显示）
+            articleViewsSum: articleViewsSum
         };
     }
 }
